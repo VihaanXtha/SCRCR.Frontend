@@ -5,7 +5,7 @@ import AdminNews from '../admin/AdminNews'
 import AdminGallery from '../admin/AdminGallery'
 import AdminNotices from '../admin/AdminNotices'
 import AdminMemories from '../admin/AdminMemories'
-import '../components/admin/admin.css'
+import '../admin/admin.css'
 
 export default function Admin() {
   const [loggedIn, setLoggedIn] = useState<boolean>(() => {
