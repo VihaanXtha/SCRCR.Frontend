@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "postinstall": "npm rebuild lightningcss || true",
     "lint": "eslint .",
     "preview": "vite preview"
   },
