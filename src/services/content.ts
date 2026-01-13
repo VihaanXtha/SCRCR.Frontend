@@ -13,13 +13,29 @@ function absolute(u: string): string {
   return u
 }
 
+const TIMEOUT_MS = 8000
+async function requestJson<T>(input: string, init?: RequestInit, fallback?: T): Promise<T> {
+  try {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
+    const res = await fetch(input, { ...(init || {}), signal: controller.signal })
+    clearTimeout(timer)
+    if (!res.ok) {
+      if (fallback !== undefined) return fallback
+      throw new Error(`Request failed: ${res.status}`)
+    }
+    return res.json()
+  } catch {
+    if (fallback !== undefined) return fallback
+    throw new Error('Network error')
+  }
+}
+
 export async function fetchNews(params?: { active?: boolean; popup?: boolean }): Promise<NewsItem[]> {
   const qs = new URLSearchParams()
   if (params?.active) qs.set('active', 'true')
   if (params?.popup) qs.set('popup', 'true')
-  const res = await fetch(`${base}/api/news${qs.toString() ? `?${qs.toString()}` : ''}`)
-  if (!res.ok) throw new Error('Failed to fetch news')
-  return res.json()
+  return requestJson<NewsItem[]>(`${base}/api/news${qs.toString() ? `?${qs.toString()}` : ''}`, undefined, [])
 }
 export async function createNews(body: Omit<NewsItem, '_id'>): Promise<NewsItem> {
   const res = await fetch(`${base}/api/news`, {
@@ -49,20 +65,14 @@ export async function deleteNews(id: string): Promise<NewsItem> {
 }
 
 export async function fetchGallery(): Promise<GalleryItem[]> {
-  const res = await fetch(`${base}/api/gallery`)
-  if (!res.ok) throw new Error('Failed to fetch gallery')
-  return res.json()
+  return requestJson<GalleryItem[]>(`${base}/api/gallery`, undefined, [])
 }
 export async function fetchMemories(): Promise<string[]> {
-  const res = await fetch(`${base}/api/memories`)
-  if (!res.ok) throw new Error('Failed to fetch memories')
-  const items: string[] = await res.json()
+  const items: string[] = await requestJson<string[]>(`${base}/api/memories`, undefined, [])
   return items.map(absolute)
 }
 export async function fetchMemoryAlbums(): Promise<MemoryAlbum[]> {
-  const res = await fetch(`${base}/api/memories/albums`)
-  if (!res.ok) throw new Error('Failed to fetch albums')
-  const albums: MemoryAlbum[] = await res.json()
+  const albums: MemoryAlbum[] = await requestJson<MemoryAlbum[]>(`${base}/api/memories/albums`, undefined, [])
   return albums.map(a => ({ ...a, cover: a.cover ? absolute(a.cover) : undefined }))
 }
 export async function createMemoryAlbum(name: string): Promise<{ name: string }> {
@@ -83,9 +93,7 @@ export async function deleteMemoryAlbum(name: string): Promise<{ ok: true }> {
   return res.json()
 }
 export async function fetchAlbumImages(name: string): Promise<string[]> {
-  const res = await fetch(`${base}/api/memories/${encodeURIComponent(name)}`)
-  if (!res.ok) throw new Error('Failed to fetch album images')
-  const items: string[] = await res.json()
+  const items: string[] = await requestJson<string[]>(`${base}/api/memories/${encodeURIComponent(name)}`, undefined, [])
   return items.map(absolute)
 }
 export async function uploadAlbumImages(name: string, files: File[]): Promise<{ uploaded: string[] }> {
@@ -139,9 +147,7 @@ export async function fetchNotices(params?: { active?: boolean; popup?: boolean 
   const qs = new URLSearchParams()
   if (params?.active) qs.set('active', 'true')
   if (params?.popup) qs.set('popup', 'true')
-  const res = await fetch(`${base}/api/notices${qs.toString() ? `?${qs.toString()}` : ''}`)
-  if (!res.ok) throw new Error('Failed to fetch notices')
-  return res.json()
+  return requestJson<NoticeItem[]>(`${base}/api/notices${qs.toString() ? `?${qs.toString()}` : ''}`, undefined, [])
 }
 export async function createNotice(body: Omit<NoticeItem, '_id'>): Promise<NoticeItem> {
   const res = await fetch(`${base}/api/notices`, {
