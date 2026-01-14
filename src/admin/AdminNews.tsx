@@ -5,7 +5,7 @@ import { AdminFormActions } from './components/AdminFormActions'
 
 export default function AdminNews() {
   const [news, setNews] = useState<NewsItem[]>([])
-  const [newNews, setNewNews] = useState<Omit<NewsItem, '_id'>>({ title: '', text: '', img: '', active: true, popup: false })
+  const [newNews, setNewNews] = useState<Omit<NewsItem, '_id'>>({ title: '', text: '', img: '', active: true, popup: false, created_at: new Date().toISOString() })
   const [editingId, setEditingId] = useState<string | null>(null)
   
   // Drag state
@@ -27,7 +27,7 @@ export default function AdminNews() {
         const created = await createNews(payload)
         setNews([created, ...news])
       }
-      setNewNews({ title: '', text: '', img: '', active: true, popup: false })
+      setNewNews({ title: '', text: '', img: '', active: true, popup: false, created_at: new Date().toISOString() })
     } catch {
       alert(editingId ? 'Failed to update news' : 'Failed to create news')
     }
@@ -39,6 +39,7 @@ export default function AdminNews() {
     setNewNews({
       title: n.title,
       text: n.text,
+      created_at: n.created_at,
       img: n.img,
       active: n.active,
       popup: n.popup
@@ -49,7 +50,7 @@ export default function AdminNews() {
 
   const onCancelEdit = () => {
     setEditingId(null)
-    setNewNews({ title: '', text: '', img: '', active: true, popup: false })
+    setNewNews({ title: '', text: '', img: '', active: true, popup: false, created_at: new Date().toISOString() })
   }
 
   const onDelete = async (id?: string) => {
@@ -136,6 +137,16 @@ export default function AdminNews() {
             {newNews.img && <img src={newNews.img} alt="Preview" style={{ height: 60, marginTop: 5, objectFit: 'cover' }} />}
           </div>
           
+          <div className="checkbox-group">
+            <label>
+              <input 
+                type="checkbox" 
+                checked={newNews.popup} 
+                onChange={e => setNewNews({ ...newNews, popup: e.target.checked })} 
+              /> Popup (Show on Home)
+            </label>
+          </div>
+          
           <AdminFormActions 
             onPublish={() => onSubmit(false)}
             onSaveDraft={() => onSubmit(true)}
@@ -159,12 +170,21 @@ export default function AdminNews() {
               <div className="view-item">
                 <div className="info">
                   <strong>{n.title}</strong>
-                  <span className={`status ${n.active ? 'active' : 'inactive'}`}>
-                    {n.active ? 'Active' : 'Inactive'}
-                  </span>
+                  <div className="badges">
+                    {n.popup && <span className="badge popup">Popup</span>}
+                    <span className={`status ${n.active ? 'active' : 'inactive'}`}>
+                        {n.active ? 'Active' : 'Inactive'}
+                    </span>
+                  </div>
                 </div>
                 <div className="actions">
                   <button className="btn sm" onClick={() => onEdit(n)}>Edit</button>
+                  <button className="btn sm" onClick={async () => {
+                      const updated = await updateNews(n._id!, { ...n, popup: !n.popup })
+                      setNews(news.map(x => x._id === updated._id ? updated : x))
+                  }}>
+                    {n.popup ? 'Remove Popup' : 'Make Popup'}
+                  </button>
                   <button className="btn sm" onClick={() => onToggleActive(n)}>
                     {n.active ? 'Hide' : 'Show'}
                   </button>
