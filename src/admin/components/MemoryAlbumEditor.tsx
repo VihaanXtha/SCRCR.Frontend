@@ -38,22 +38,32 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
     if (!stagedFiles.length) return
     setUploading(true)
     
-    // Batch upload (increased to 6 for faster speed, still safe)
-    const BATCH_SIZE = 6
+    // Batch upload (sequential batches of 1 to ensure per-file limit safety)
+    const BATCH_SIZE = 1
+    // Concurrency: How many batches to run in parallel
+    const CONCURRENCY = 3
+    
     const total = stagedFiles.length
     let uploadedCount = 0
 
     try {
-        // Upload batches in parallel
+        // Create chunks of 1
         const chunks = []
         for (let i = 0; i < total; i += BATCH_SIZE) {
             chunks.push(stagedFiles.slice(i, i + BATCH_SIZE))
         }
 
-        for (const batch of chunks) {
-            setProgress(`Uploading ${uploadedCount + 1}-${Math.min(uploadedCount + batch.length, total)} of ${total}...`)
+        // Process chunks with concurrency
+        const processBatch = async (batch: File[]) => {
             await uploadAlbumImages(albumName, batch)
             uploadedCount += batch.length
+            setProgress(`Uploading ${Math.min(uploadedCount, total)} of ${total}...`)
+        }
+
+        // Run in parallel with limit
+        for (let i = 0; i < chunks.length; i += CONCURRENCY) {
+            const slice = chunks.slice(i, i + CONCURRENCY)
+            await Promise.all(slice.map(processBatch))
         }
         
         // Refresh
