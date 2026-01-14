@@ -33,7 +33,7 @@ export default function Notices({ t }: { t: (k: string) => string }) {
                     allowFullScreen 
                   />
                 ) : (
-                  <img src={n.mediaUrl} alt={n.title} />
+                  <img src={n.mediaUrl} alt={n.title} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
                 )}
               </div>
             )}

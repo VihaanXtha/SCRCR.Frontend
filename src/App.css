@@ -409,9 +409,8 @@
 
 .notice-media-large img {
   width: 100%;
-  height: auto;
-  max-height: 500px;
-  object-fit: contain;
+  height: 200px;
+  object-fit: cover;
   display: block;
 }
 
