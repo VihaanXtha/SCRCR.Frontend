@@ -1,31 +1,57 @@
 import { useEffect, useState } from 'react'
 import type { GalleryItem } from '../types/content'
-import { fetchGallery, createGallery, deleteGallery, uploadImage, reorderContent } from '../services/content'
+import { fetchGallery, createGallery, updateGallery, deleteGallery, uploadImage, reorderContent } from '../services/content'
 
 export default function AdminGallery() {
   const [gallery, setGallery] = useState<GalleryItem[]>([])
   const [newGallery, setNewGallery] = useState<Omit<GalleryItem, '_id'>>({ type: 'image', videoUrl: '', title: '', img: '' })
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [draggedItem, setDraggedItem] = useState<GalleryItem | null>(null)
 
   useEffect(() => {
     fetchGallery().then(setGallery).catch(() => setGallery([]))
   }, [])
 
-  const onCreate = async () => {
+  const onSubmit = async () => {
     try {
-      const created = await createGallery(newGallery)
-      setGallery([created, ...gallery])
+      if (editingId) {
+        const updated = await updateGallery(editingId, newGallery)
+        setGallery(gallery.map(g => g._id === editingId ? updated : g))
+        setEditingId(null)
+      } else {
+        const created = await createGallery(newGallery)
+        setGallery([created, ...gallery])
+      }
       setNewGallery({ type: 'image', videoUrl: '', title: '', img: '' })
     } catch {
-      alert('Failed to add gallery item')
+      alert(editingId ? 'Failed to update gallery item' : 'Failed to add gallery item')
     }
+  }
+
+  const onEdit = (g: GalleryItem) => {
+    if (!g._id) return
+    setEditingId(g._id)
+    setNewGallery({
+      type: g.type || 'image',
+      videoUrl: g.videoUrl || '',
+      title: g.title || '',
+      img: g.img || ''
+    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const onCancelEdit = () => {
+    setEditingId(null)
+    setNewGallery({ type: 'image', videoUrl: '', title: '', img: '' })
   }
 
   const onDelete = async (id?: string) => {
     if (!id) return
+    if (!confirm('Are you sure you want to delete this item?')) return
     try {
       await deleteGallery(id)
       setGallery(gallery.filter(g => g._id !== id))
+      if (editingId === id) onCancelEdit()
     } catch {
       alert('Failed to delete')
     }
@@ -102,7 +128,10 @@ export default function AdminGallery() {
             value={newGallery.title} 
             onChange={e => setNewGallery({ ...newGallery, title: e.target.value })} 
           />
-          <button className="btn sm" onClick={onCreate}>Add {newGallery.type === 'image' ? 'Image' : 'Video'}</button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button className="btn sm" onClick={onSubmit}>{editingId ? 'Update' : `Add ${newGallery.type === 'image' ? 'Image' : 'Video'}`}</button>
+            {editingId && <button className="btn sm danger" onClick={onCancelEdit}>Cancel</button>}
+          </div>
         </div>
 
           <div className="list-card">
@@ -131,10 +160,7 @@ export default function AdminGallery() {
                     {g.type === 'image' && g.img && <img src={g.img} alt="thumb" style={{ height: 30, marginLeft: 10 }} />}
                   </div>
                   <div className="actions">
-                    <button className="btn sm" onClick={() => {
-                        setNewGallery(g)
-                        onDelete(g._id)
-                    }}>Edit</button>
+                    <button className="btn sm" onClick={() => onEdit(g)}>Edit</button>
                     <button className="btn sm danger" onClick={() => onDelete(g._id)}>Delete</button>
                   </div>
                 </div>

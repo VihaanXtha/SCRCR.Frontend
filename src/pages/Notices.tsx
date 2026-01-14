@@ -20,27 +20,28 @@ export default function Notices({ t }: { t: (k: string) => string }) {
   return (
     <div className="page">
       <SubHero title={t('nav.notices')} img="https://placehold.co/1600x420" />
-      <div className="posts">
+      <div className="posts-container">
         {items.map(n => (
-          <div key={n._id ?? n.title} className="notice-card" onClick={() => setActivePopup(n)}>
-            <div className="post-title">{n.title}</div>
+          <div key={n._id ?? n.title} className="notice-card full-width" onClick={() => setActivePopup(n)}>
             {n.mediaUrl && (
-              <div className="notice-preview">
+              <div className="notice-media-large">
                 {getEmbedUrl(n.mediaUrl) ? (
-                  <div className="video-thumb">
-                    <img 
-                      src={`https://img.youtube.com/vi/${getEmbedUrl(n.mediaUrl)?.split('/').pop()}/mqdefault.jpg`} 
-                      alt={n.title} 
-                    />
-                    <div className="play-icon">▶</div>
-                  </div>
+                  <iframe 
+                    src={getEmbedUrl(n.mediaUrl)} 
+                    title={n.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen 
+                  />
                 ) : (
-                  <img src={n.mediaUrl} alt={n.title} className="image-thumb" />
+                  <img src={n.mediaUrl} alt={n.title} />
                 )}
               </div>
             )}
-            <div className="post-text clip-text">{n.text}</div>
-            <div className="post-date">{n.active ? 'Active' : 'Inactive'}</div>
+            <div className="notice-content-large">
+              <div className="post-title large">{n.title}</div>
+              <div className="post-text">{n.text}</div>
+              <div className="post-date">{n.active ? 'Active' : 'Inactive'}</div>
+            </div>
           </div>
         ))}
       </div>

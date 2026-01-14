@@ -5,6 +5,7 @@ import { fetchNotices, createNotice, updateNotice, deleteNotice, uploadImage, re
 export default function AdminNotices() {
   const [notices, setNotices] = useState<NoticeItem[]>([])
   const [newNotice, setNewNotice] = useState<Omit<NoticeItem, '_id'>>({ title: '', text: '', mediaUrl: '', active: true, popup: false })
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [mediaType, setMediaType] = useState<'image' | 'video'>('image')
   const [draggedItem, setDraggedItem] = useState<NoticeItem | null>(null)
   const [viewMode, setViewMode] = useState<'all' | 'image' | 'video'>('all')
@@ -27,21 +28,55 @@ export default function AdminNotices() {
     fetchNotices().then(setNotices).catch(() => setNotices([]))
   }, [])
 
-  const onCreate = async () => {
+  const onSubmit = async () => {
     try {
-      const created = await createNotice(newNotice)
-      setNotices([created, ...notices])
+      if (editingId) {
+        const updated = await updateNotice(editingId, newNotice)
+        setNotices(notices.map(n => n._id === editingId ? updated : n))
+        setEditingId(null)
+      } else {
+        const created = await createNotice(newNotice)
+        setNotices([created, ...notices])
+      }
       setNewNotice({ title: '', text: '', mediaUrl: '', active: true, popup: false })
     } catch {
-      alert('Failed to create notice')
+      alert(editingId ? 'Failed to update notice' : 'Failed to create notice')
     }
+  }
+
+  const onEdit = (n: NoticeItem) => {
+    if (!n._id) return
+    setEditingId(n._id)
+    setNewNotice({
+      title: n.title,
+      text: n.text,
+      mediaUrl: n.mediaUrl,
+      active: n.active,
+      popup: n.popup
+    })
+    
+    // Auto-detect media type for the tab
+    if (n.mediaUrl && (n.mediaUrl.includes('youtube') || n.mediaUrl.includes('youtu.be'))) {
+      setMediaType('video')
+    } else {
+      setMediaType('image')
+    }
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const onCancelEdit = () => {
+    setEditingId(null)
+    setNewNotice({ title: '', text: '', mediaUrl: '', active: true, popup: false })
   }
 
   const onDelete = async (id?: string) => {
     if (!id) return
+    if (!confirm('Are you sure you want to delete this notice?')) return
     try {
       await deleteNotice(id)
       setNotices(notices.filter(n => n._id !== id))
+      if (editingId === id) onCancelEdit()
     } catch {
       alert('Failed to delete')
     }
@@ -160,7 +195,10 @@ export default function AdminNotices() {
               /> Popup
             </label>
           </div>
-          <button className="btn sm" onClick={onCreate}>Create</button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button className="btn sm" onClick={onSubmit}>{editingId ? 'Update' : 'Create'}</button>
+            {editingId && <button className="btn sm danger" onClick={onCancelEdit}>Cancel</button>}
+          </div>
         </div>
 
         <div className="list-card">
@@ -201,10 +239,7 @@ export default function AdminNotices() {
                   </div>
                 </div>
                 <div className="actions">
-                  <button className="btn sm" onClick={() => {
-                    setNewNotice(n)
-                    onDelete(n._id)
-                  }}>Edit</button>
+                  <button className="btn sm" onClick={() => onEdit(n)}>Edit</button>
                   <button className="btn sm" onClick={() => onToggleActive(n)}>
                     {n.active ? 'Deactivate' : 'Activate'}
                   </button>

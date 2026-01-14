@@ -5,6 +5,7 @@ import { fetchNews, createNews, updateNews, deleteNews, uploadImage, reorderCont
 export default function AdminNews() {
   const [news, setNews] = useState<NewsItem[]>([])
   const [newNews, setNewNews] = useState<Omit<NewsItem, '_id'>>({ title: '', text: '', img: '', active: true, popup: false })
+  const [editingId, setEditingId] = useState<string | null>(null)
   
   // Drag state
   const [draggedItem, setDraggedItem] = useState<NewsItem | null>(null)
@@ -13,21 +14,48 @@ export default function AdminNews() {
     fetchNews().then(setNews).catch(() => setNews([]))
   }, [])
 
-  const onCreate = async () => {
+  const onSubmit = async () => {
     try {
-      const created = await createNews(newNews)
-      setNews([created, ...news])
+      if (editingId) {
+        const updated = await updateNews(editingId, newNews)
+        setNews(news.map(n => n._id === editingId ? updated : n))
+        setEditingId(null)
+      } else {
+        const created = await createNews(newNews)
+        setNews([created, ...news])
+      }
       setNewNews({ title: '', text: '', img: '', active: true, popup: false })
     } catch {
-      alert('Failed to create news')
+      alert(editingId ? 'Failed to update news' : 'Failed to create news')
     }
+  }
+
+  const onEdit = (n: NewsItem) => {
+    if (!n._id) return
+    setEditingId(n._id)
+    setNewNews({
+      title: n.title,
+      text: n.text,
+      img: n.img,
+      active: n.active,
+      popup: n.popup
+    })
+    // Scroll to top to see form
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const onCancelEdit = () => {
+    setEditingId(null)
+    setNewNews({ title: '', text: '', img: '', active: true, popup: false })
   }
 
   const onDelete = async (id?: string) => {
     if (!id) return
+    if (!confirm('Are you sure you want to delete this news item?')) return
     try {
       await deleteNews(id)
       setNews(news.filter(n => n._id !== id))
+      if (editingId === id) onCancelEdit()
     } catch {
       alert('Failed to delete news')
     }
@@ -111,7 +139,10 @@ export default function AdminNews() {
               onChange={e => setNewNews({ ...newNews, active: e.target.checked })} 
             /> Active
           </label>
-          <button className="btn sm" onClick={onCreate}>Publish</button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button className="btn sm" onClick={onSubmit}>{editingId ? 'Update' : 'Publish'}</button>
+            {editingId && <button className="btn sm danger" onClick={onCancelEdit}>Cancel</button>}
+          </div>
         </div>
 
         <div className="list-card">
@@ -134,10 +165,7 @@ export default function AdminNews() {
                   </span>
                 </div>
                 <div className="actions">
-                  <button className="btn sm" onClick={() => {
-                    setNewNews(n)
-                    onDelete(n._id) // Remove from list, put in edit form essentially (simple edit hack)
-                  }}>Edit</button>
+                  <button className="btn sm" onClick={() => onEdit(n)}>Edit</button>
                   <button className="btn sm" onClick={() => onToggleActive(n)}>
                     {n.active ? 'Hide' : 'Show'}
                   </button>

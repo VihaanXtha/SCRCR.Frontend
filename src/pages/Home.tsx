@@ -156,18 +156,18 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       </section>
       {popupNotice && (
         <div className="member-modal" onClick={() => setPopupNotice(null)}>
-          <div className="notice-modal-content" onClick={e => e.stopPropagation()}>
+          <div className={`notice-modal-content ${popupNotice.mediaUrl && popupNotice.text ? 'wide' : ''}`} onClick={e => e.stopPropagation()}>
             <div className="notice-header">
               <div className="notice-title">{popupNotice.title}</div>
               <button className="notice-close" onClick={() => setPopupNotice(null)}>×</button>
             </div>
-            <div className="notice-body">
+            <div className={popupNotice.mediaUrl && popupNotice.text ? "notice-body-grid" : "notice-body-single"}>
               {popupNotice.mediaUrl && (
-                <div style={{ marginBottom: 16 }}>
+                <div className={popupNotice.text ? "notice-media-col" : "notice-media-full"}>
                   {getEmbedUrl(popupNotice.mediaUrl) ? (
                     <iframe 
                       width="100%" 
-                      height="240" 
+                      height={popupNotice.text ? "300" : "400"} 
                       src={getEmbedUrl(popupNotice.mediaUrl)!} 
                       title="Notice Video" 
                       frameBorder="0" 
@@ -179,12 +179,16 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                     <img 
                       src={popupNotice.mediaUrl} 
                       alt={popupNotice.title} 
-                      style={{ width: '100%', borderRadius: 8, maxHeight: 300, objectFit: 'contain' }} 
+                      style={{ width: '100%', borderRadius: 8, maxHeight: popupNotice.text ? 400 : '60vh', objectFit: 'contain' }} 
                     />
                   )}
                 </div>
               )}
-              <div style={{ whiteSpace: 'pre-wrap' }}>{popupNotice.text}</div>
+              {popupNotice.text && (
+                <div className={popupNotice.mediaUrl ? "notice-text-col" : "notice-text-full"}>
+                  <div style={{ whiteSpace: 'pre-wrap' }}>{popupNotice.text}</div>
+                </div>
+              )}
             </div>
           </div>
         </div>
