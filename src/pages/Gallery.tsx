@@ -88,7 +88,8 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
                 }
                 setActive(a.name)
                 const imgs = await fetchAlbumImages(a.name)
-                setAlbumImages(imgs)
+                // imgs is now MemoryImage[], not string[]
+                setAlbumImages(imgs.map(img => img.url))
               }}
             />
           ))}
