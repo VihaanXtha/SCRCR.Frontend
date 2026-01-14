@@ -39,7 +39,8 @@ export default function Notices({ t }: { t: (k: string) => string }) {
             )}
             <div className="notice-content-large">
               <div className="post-title large">{n.title}</div>
-              <div className="post-text">{n.text}</div>
+              <div className="post-text">{n.text && n.text.length > 200 ? n.text.slice(0, 200) + '...' : n.text}</div>
+              <span className="post-link" onClick={(e) => { e.stopPropagation(); setActivePopup(n); }}>{t('news.read_more')}</span>
               <div className="post-date">{n.active ? 'Active' : 'Inactive'}</div>
             </div>
           </div>
