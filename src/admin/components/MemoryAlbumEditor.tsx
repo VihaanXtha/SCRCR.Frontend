@@ -8,6 +8,7 @@ interface MemoryAlbumEditorProps {
 
 export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps) {
   const [images, setImages] = useState<string[]>([])
+  const [pendingImages, setPendingImages] = useState<string[]>([])
   const [draggedImage, setDraggedImage] = useState<string | null>(null)
   const fileInput = useRef<HTMLInputElement>(null)
 
@@ -18,13 +19,24 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
   const onUpload = async () => {
     if (!fileInput.current?.files?.length) return
     const files = Array.from(fileInput.current.files)
+    
+    // Create local previews
+    const localPreviews = files.map(file => URL.createObjectURL(file))
+    setPendingImages(localPreviews)
+
     try {
       await uploadAlbumImages(albumName, files)
       const imgs = await fetchAlbumImages(albumName)
       setImages(imgs)
+      setPendingImages([]) // Clear previews
       if (fileInput.current) fileInput.current.value = ''
+      
+      // Revoke object URLs to avoid memory leaks
+      localPreviews.forEach(url => URL.revokeObjectURL(url))
     } catch {
       alert('Upload failed')
+      setPendingImages([])
+      localPreviews.forEach(url => URL.revokeObjectURL(url))
     }
   }
 
@@ -78,6 +90,18 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
       </div>
 
       <div className="image-grid">
+        {pendingImages.map((url, i) => (
+          <div key={`pending-${i}`} className="image-card pending" style={{ opacity: 0.6 }}>
+            <img src={url} alt="uploading..." />
+            <div className="loading-overlay" style={{ 
+              position: 'absolute', inset: 0, display: 'flex', 
+              alignItems: 'center', justifyContent: 'center', 
+              background: 'rgba(255,255,255,0.4)', fontSize: '12px', color: '#000'
+            }}>
+              Uploading...
+            </div>
+          </div>
+        ))}
         {images.map((img, index) => (
           <div 
             key={img} 
