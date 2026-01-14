@@ -26,18 +26,21 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
     // 1. Fetch Popup Notices
     const p1 = fetchNotices({ active: true, popup: true })
       .then(items => items.filter(i => {
-        // Filter out if older than 24h
-        if (!i.created_at && !i.updated_at) return true // fallback if no date
-        const date = new Date(i.created_at || i.updated_at!)
-        return (Date.now() - date.getTime()) < 24 * 60 * 60 * 1000
+        const dateStr = i.created_at || i.updated_at
+        if (!dateStr) return false // No date = No popup
+        const date = new Date(dateStr)
+        const age = Date.now() - date.getTime()
+        return age < 24 * 60 * 60 * 1000 // 24 hours
       }))
 
     // 2. Fetch Popup News
     const p2 = fetchNews({ active: true, popup: true })
       .then(items => items.filter(i => {
-        // Filter out if older than 24h
-        const date = new Date(i.publishedAt || i.created_at!)
-        return (Date.now() - date.getTime()) < 24 * 60 * 60 * 1000
+        const dateStr = i.publishedAt || i.created_at
+        if (!dateStr) return false // No date = No popup
+        const date = new Date(dateStr)
+        const age = Date.now() - date.getTime()
+        return age < 24 * 60 * 60 * 1000 // 24 hours
       }))
       // Convert NewsItem to NoticeItem structure for uniform display
       .then(items => items.map(n => ({
