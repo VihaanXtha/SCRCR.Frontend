@@ -158,7 +158,7 @@ export default function AdminMembers() {
               {editing?._id === m._id ? (
                 <div className="edit-form">
                   <input value={editing?.name || ''} onChange={e => setEditing({ ...editing!, name: e.target.value })} />
-                  <select value={editing?.type || ''} onChange={e => setEditing({ ...editing!, type: e.target.value as any })}>
+                  <select value={editing?.type || ''} onChange={e => setEditing({ ...editing!, type: e.target.value as 'Founding' | 'Lifetime' | 'Senior-Citizen' | 'donation' | 'helper' })}>
                     <option value="Founding">Founding</option>
                     <option value="Lifetime">Lifetime</option>
                     <option value="Senior-Citizen">Senior-Citizen</option>
