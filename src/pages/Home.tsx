@@ -23,8 +23,47 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
   }
 
   useEffect(() => {
-    fetchNotices({ active: true, popup: true }).then(items => setPopupNotice(items[0] ?? null)).catch(() => setPopupNotice(null))
-    fetchNews().then(items => {
+    // 1. Fetch Popup Notices
+    const p1 = fetchNotices({ active: true, popup: true })
+      .then(items => items.filter(i => {
+        // Filter out if older than 24h
+        if (!i.created_at && !i.updated_at) return true // fallback if no date
+        const date = new Date(i.created_at || i.updated_at!)
+        return (Date.now() - date.getTime()) < 24 * 60 * 60 * 1000
+      }))
+
+    // 2. Fetch Popup News
+    const p2 = fetchNews({ active: true, popup: true })
+      .then(items => items.filter(i => {
+        // Filter out if older than 24h
+        const date = new Date(i.publishedAt || i.created_at!)
+        return (Date.now() - date.getTime()) < 24 * 60 * 60 * 1000
+      }))
+      // Convert NewsItem to NoticeItem structure for uniform display
+      .then(items => items.map(n => ({
+        _id: n._id,
+        title: n.title,
+        text: n.text,
+        mediaUrl: n.img, // Map img -> mediaUrl
+        active: n.active,
+        popup: n.popup,
+        created_at: n.created_at
+      } as NoticeItem)))
+
+    Promise.all([p1, p2]).then(([notices, news]) => {
+      // Combine and show the most recent one
+      const all = [...notices, ...news].sort((a, b) => {
+         const da = new Date(a.created_at || 0).getTime()
+         const db = new Date(b.created_at || 0).getTime()
+         return db - da
+      })
+      if (all.length > 0) {
+        setPopupNotice(all[0])
+      }
+    }).catch(() => setPopupNotice(null))
+
+    // Fetch Latest News for Section
+    fetchNews({ active: true }).then(items => {
       const sorted = items.sort((a, b) => {
         const ta = a.publishedAt ? new Date(a.publishedAt).getTime() : 0
         const tb = b.publishedAt ? new Date(b.publishedAt).getTime() : 0
