@@ -29,14 +29,15 @@ export default function AdminNotices() {
     fetchNotices().then(setNotices).catch(() => setNotices([]))
   }, [])
 
-  const onSubmit = async (p0: boolean) => {
+  const onSubmit = async (asDraft = false) => {
     try {
+      const payload = { ...newNotice, active: asDraft ? false : newNotice.active }
       if (editingId) {
-        const updated = await updateNotice(editingId, newNotice)
+        const updated = await updateNotice(editingId, payload)
         setNotices(notices.map(n => n._id === editingId ? updated : n))
         setEditingId(null)
       } else {
-        const created = await createNotice(newNotice)
+        const created = await createNotice(payload)
         setNotices([created, ...notices])
       }
       setNewNotice({ title: '', text: '', mediaUrl: '', active: true, popup: false })

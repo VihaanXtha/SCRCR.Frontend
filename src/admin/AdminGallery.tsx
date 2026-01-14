@@ -133,10 +133,12 @@ export default function AdminGallery() {
             value={newGallery.title} 
             onChange={e => setNewGallery({ ...newGallery, title: e.target.value })} 
           />
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button className="btn sm" onClick={onSubmit}>{editingId ? 'Update' : `Add ${newGallery.type === 'image' ? 'Image' : 'Video'}`}</button>
-            {editingId && <button className="btn sm danger" onClick={onCancelEdit}>Cancel</button>}
-          </div>
+          <AdminFormActions 
+            onPublish={() => onSubmit(false)}
+            onSaveDraft={() => onSubmit(true)}
+            onCancel={editingId ? onCancelEdit : undefined}
+            isEditing={!!editingId}
+          />
         </div>
 
           <div className="list-card">

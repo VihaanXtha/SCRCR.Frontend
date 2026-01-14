@@ -135,13 +135,6 @@ export default function AdminNews() {
             />
             {newNews.img && <img src={newNews.img} alt="Preview" style={{ height: 60, marginTop: 5, objectFit: 'cover' }} />}
           </div>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={newNews.active} 
-              onChange={e => setNewNews({ ...newNews, active: e.target.checked })} 
-            /> Active
-          </label>
           
           <AdminFormActions 
             onPublish={() => onSubmit(false)}
