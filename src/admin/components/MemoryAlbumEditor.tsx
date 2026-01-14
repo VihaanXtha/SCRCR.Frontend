@@ -68,8 +68,13 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
       </div>
       
       <div className="upload-box">
-        <input type="file" ref={fileInput} accept="image/*" multiple />
-        <button className="btn sm" onClick={onUpload}>Upload Images (Max 50)</button>
+        <input 
+          type="file" 
+          ref={fileInput} 
+          accept="image/*" 
+          multiple 
+          onChange={onUpload}
+        />
       </div>
 
       <div className="image-grid">
