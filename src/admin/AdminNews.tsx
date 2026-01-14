@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { NewsItem } from '../types/content'
 import { fetchNews, createNews, updateNews, deleteNews, uploadImage, reorderContent } from '../services/content'
+import { AdminFormActions } from './components/AdminFormActions'
 
 export default function AdminNews() {
   const [news, setNews] = useState<NewsItem[]>([])
@@ -14,14 +15,16 @@ export default function AdminNews() {
     fetchNews().then(setNews).catch(() => setNews([]))
   }, [])
 
-  const onSubmit = async () => {
+  const onSubmit = async (asDraft = false) => {
     try {
+      const payload = { ...newNews, active: asDraft ? false : newNews.active }
+      
       if (editingId) {
-        const updated = await updateNews(editingId, newNews)
+        const updated = await updateNews(editingId, payload)
         setNews(news.map(n => n._id === editingId ? updated : n))
         setEditingId(null)
       } else {
-        const created = await createNews(newNews)
+        const created = await createNews(payload)
         setNews([created, ...news])
       }
       setNewNews({ title: '', text: '', img: '', active: true, popup: false })
@@ -139,10 +142,13 @@ export default function AdminNews() {
               onChange={e => setNewNews({ ...newNews, active: e.target.checked })} 
             /> Active
           </label>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button className="btn sm" onClick={onSubmit}>{editingId ? 'Update' : 'Publish'}</button>
-            {editingId && <button className="btn sm danger" onClick={onCancelEdit}>Cancel</button>}
-          </div>
+          
+          <AdminFormActions 
+            onPublish={() => onSubmit(false)}
+            onSaveDraft={() => onSubmit(true)}
+            onCancel={editingId ? onCancelEdit : undefined}
+            isEditing={!!editingId}
+          />
         </div>
 
         <div className="list-card">

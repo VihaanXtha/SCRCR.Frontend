@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import type { GalleryItem } from '../types/content'
 import { fetchGallery, createGallery, updateGallery, deleteGallery, uploadImage, reorderContent } from '../services/content'
+import { AdminFormActions } from './components/AdminFormActions'
 
 export default function AdminGallery() {
   const [gallery, setGallery] = useState<GalleryItem[]>([])
-  const [newGallery, setNewGallery] = useState<Omit<GalleryItem, '_id'>>({ type: 'image', videoUrl: '', title: '', img: '' })
+  // Add active: true to default state
+  const [newGallery, setNewGallery] = useState<Omit<GalleryItem, '_id'>>({ type: 'image', videoUrl: '', title: '', img: '', active: true })
   const [editingId, setEditingId] = useState<string | null>(null)
   const [draggedItem, setDraggedItem] = useState<GalleryItem | null>(null)
 
@@ -12,17 +14,19 @@ export default function AdminGallery() {
     fetchGallery().then(setGallery).catch(() => setGallery([]))
   }, [])
 
-  const onSubmit = async () => {
+  const onSubmit = async (asDraft = false) => {
     try {
+      const payload = { ...newGallery, active: asDraft ? false : newGallery.active }
+      
       if (editingId) {
-        const updated = await updateGallery(editingId, newGallery)
+        const updated = await updateGallery(editingId, payload)
         setGallery(gallery.map(g => g._id === editingId ? updated : g))
         setEditingId(null)
       } else {
-        const created = await createGallery(newGallery)
+        const created = await createGallery(payload)
         setGallery([created, ...gallery])
       }
-      setNewGallery({ type: 'image', videoUrl: '', title: '', img: '' })
+      setNewGallery({ type: 'image', videoUrl: '', title: '', img: '', active: true })
     } catch {
       alert(editingId ? 'Failed to update gallery item' : 'Failed to add gallery item')
     }
@@ -35,14 +39,15 @@ export default function AdminGallery() {
       type: g.type || 'image',
       videoUrl: g.videoUrl || '',
       title: g.title || '',
-      img: g.img || ''
+      img: g.img || '',
+      active: g.active ?? true
     })
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const onCancelEdit = () => {
     setEditingId(null)
-    setNewGallery({ type: 'image', videoUrl: '', title: '', img: '' })
+    setNewGallery({ type: 'image', videoUrl: '', title: '', img: '', active: true })
   }
 
   const onDelete = async (id?: string) => {
@@ -158,6 +163,9 @@ export default function AdminGallery() {
                     <strong>{g.title || 'Untitled'}</strong>
                     <small>{g.type === 'video' ? 'Video' : 'Image'}</small>
                     {g.type === 'image' && g.img && <img src={g.img} alt="thumb" style={{ height: 30, marginLeft: 10 }} />}
+                    <span className={`status ${g.active !== false ? 'active' : 'inactive'}`} style={{ marginLeft: 8, fontSize: '0.8em' }}>
+                      {g.active !== false ? 'Active' : 'Draft'}
+                    </span>
                   </div>
                   <div className="actions">
                     <button className="btn sm" onClick={() => onEdit(g)}>Edit</button>

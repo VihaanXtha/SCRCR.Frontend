@@ -27,7 +27,7 @@ export default function Notices({ t }: { t: (k: string) => string }) {
               <div className="notice-media-large">
                 {getEmbedUrl(n.mediaUrl) ? (
                   <iframe 
-                    src={getEmbedUrl(n.mediaUrl)} 
+                    src={getEmbedUrl(n.mediaUrl) || undefined}
                     title={n.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowFullScreen 

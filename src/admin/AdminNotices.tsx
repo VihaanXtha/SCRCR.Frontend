@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { NoticeItem } from '../types/content'
 import { fetchNotices, createNotice, updateNotice, deleteNotice, uploadImage, reorderContent } from '../services/content'
+import { AdminFormActions } from './components/AdminFormActions'
 
 export default function AdminNotices() {
   const [notices, setNotices] = useState<NoticeItem[]>([])
@@ -28,7 +29,7 @@ export default function AdminNotices() {
     fetchNotices().then(setNotices).catch(() => setNotices([]))
   }, [])
 
-  const onSubmit = async () => {
+  const onSubmit = async (p0: boolean) => {
     try {
       if (editingId) {
         const updated = await updateNotice(editingId, newNotice)
@@ -195,10 +196,13 @@ export default function AdminNotices() {
               /> Popup
             </label>
           </div>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button className="btn sm" onClick={onSubmit}>{editingId ? 'Update' : 'Create'}</button>
-            {editingId && <button className="btn sm danger" onClick={onCancelEdit}>Cancel</button>}
-          </div>
+          
+          <AdminFormActions 
+            onPublish={() => onSubmit(false)}
+            onSaveDraft={() => onSubmit(true)}
+            onCancel={editingId ? onCancelEdit : undefined}
+            isEditing={!!editingId}
+          />
         </div>
 
         <div className="list-card">
