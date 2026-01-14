@@ -54,9 +54,19 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
       </div>
       <div className="section">
         <h3>{t('gallery.video')}</h3>
-        <div className="video-row">
+        <div className="video-grid">
           {videos.map((v, i) => (
-            <iframe key={v._id ?? i} src={toEmbed(v.videoUrl ?? '')} title={v.title ?? 'video'} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen width={360} height={200} />
+            <div key={v._id ?? i} className="video-card">
+              <iframe 
+                src={toEmbed(v.videoUrl ?? '')} 
+                title={v.title ?? 'video'} 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen 
+              />
+              <div className="video-info">
+                <div className="video-title">{v.title || 'Untitled Video'}</div>
+              </div>
+            </div>
           ))}
         </div>
       </div>

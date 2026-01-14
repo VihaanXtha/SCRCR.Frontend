@@ -176,6 +176,21 @@ export async function deleteNotice(id: string): Promise<NoticeItem> {
   return res.json()
 }
 
+export async function reorderContent(resource: 'news' | 'gallery' | 'notices', updates: { id: string; rank: number }[]): Promise<void> {
+  const res = await fetch(`${base}/api/${resource}/reorder`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(getToken() ? { 'x-admin-token': getToken()! } : {})
+    },
+    body: JSON.stringify({ updates })
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || `Failed to reorder ${resource}`)
+  }
+  return res.json()
+}
 export async function uploadImage(file: File): Promise<{ url: string }> {
   const fd = new FormData()
   fd.append('image', file)

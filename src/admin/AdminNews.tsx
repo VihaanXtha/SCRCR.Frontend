@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 import type { NewsItem } from '../types/content'
-import { fetchNews, createNews, updateNews, deleteNews, uploadImage } from '../services/content'
+import { fetchNews, createNews, updateNews, deleteNews, uploadImage, reorderContent } from '../services/content'
 
 export default function AdminNews() {
   const [news, setNews] = useState<NewsItem[]>([])
   const [newNews, setNewNews] = useState<Omit<NewsItem, '_id'>>({ title: '', text: '', img: '', active: true, popup: false })
+  
+  // Drag state
+  const [draggedItem, setDraggedItem] = useState<NewsItem | null>(null)
 
   useEffect(() => {
     fetchNews().then(setNews).catch(() => setNews([]))
@@ -37,6 +40,32 @@ export default function AdminNews() {
       setNews(news.map(x => x._id === updated._id ? updated : x))
     } catch {
       alert('Update failed')
+    }
+  }
+
+  // Drag Handlers
+  const onDragStart = (e: React.DragEvent, item: NewsItem) => {
+    setDraggedItem(item)
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
+  const onDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    const draggedOverItem = news[index]
+    if (draggedItem === draggedOverItem) return
+    
+    const items = news.filter(item => item !== draggedItem)
+    items.splice(index, 0, draggedItem!)
+    setNews(items)
+  }
+
+  const onDragEnd = async () => {
+    setDraggedItem(null)
+    const updates = news.map((n, i) => ({ id: n._id!, rank: i })).filter(u => u.id)
+    try {
+      await reorderContent('news', updates)
+    } catch (e: any) {
+      alert(e.message || 'Failed to save order')
     }
   }
 
@@ -87,8 +116,16 @@ export default function AdminNews() {
 
         <div className="list-card">
           <h4>News List</h4>
-          {news.map(n => (
-            <div key={n._id} className="list-item">
+          {news.map((n, index) => (
+            <div 
+              key={n._id} 
+              className="list-item"
+              draggable
+              onDragStart={(e) => onDragStart(e, n)}
+              onDragOver={(e) => onDragOver(e, index)}
+              onDragEnd={onDragEnd}
+              style={{ cursor: 'move', opacity: draggedItem === n ? 0.5 : 1 }}
+            >
               <div className="view-item">
                 <div className="info">
                   <strong>{n.title}</strong>
@@ -97,6 +134,10 @@ export default function AdminNews() {
                   </span>
                 </div>
                 <div className="actions">
+                  <button className="btn sm" onClick={() => {
+                    setNewNews(n)
+                    onDelete(n._id) // Remove from list, put in edit form essentially (simple edit hack)
+                  }}>Edit</button>
                   <button className="btn sm" onClick={() => onToggleActive(n)}>
                     {n.active ? 'Hide' : 'Show'}
                   </button>

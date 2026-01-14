@@ -103,8 +103,8 @@ export default function AdminMemories() {
           <h4>Album: {activeAlbum}</h4>
           
           <div className="upload-box">
-            <input type="file" multiple ref={fileInput} accept="image/*" />
-            <button className="btn sm" onClick={onUpload}>Upload Images</button>
+            <input type="file" ref={fileInput} accept="image/*" />
+            <button className="btn sm" onClick={onUpload}>Upload Image</button>
           </div>
 
           <div className="image-grid">

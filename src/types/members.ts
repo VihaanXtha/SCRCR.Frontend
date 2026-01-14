@@ -19,6 +19,7 @@ type NewType = {
   name: string
   img: string
   details?: MemberDetails
+  rank?: number
 }
 
 export type Member = NewType

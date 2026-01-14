@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Member } from '../types/members'
-import { fetchMembers, updateMember, deleteMember, createMember } from '../services/members'
+import { fetchMembers, updateMember, deleteMember, createMember, reorderMembers } from '../services/members'
 import { uploadImage } from '../services/content'
 
 export default function AdminMembers() {
@@ -13,6 +13,9 @@ export default function AdminMembers() {
     details: {},
     type: 'Founding'
   })
+
+  // Drag state
+  const [draggedItem, setDraggedItem] = useState<Member | null>(null)
 
   useEffect(() => {
     fetchMembers(type).then(setMembers).catch(() => setMembers([]))
@@ -42,10 +45,39 @@ export default function AdminMembers() {
   const onCreate = async () => {
     try {
       const created = await createMember(creating)
-      if (created.type === type) setMembers(ms => [created, ...ms])
+      if (created.type === type) setMembers(ms => [...ms, created]) // Add to end now
       setCreating({ name: '', img: '', details: {}, type })
     } catch {
       alert('Create failed. Are you authorized?')
+    }
+  }
+
+  // Drag Handlers
+  const onDragStart = (e: React.DragEvent, member: Member) => {
+    setDraggedItem(member)
+    e.dataTransfer.effectAllowed = 'move'
+    // Optional: set ghost image
+  }
+
+  const onDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    const draggedOverItem = members[index]
+    if (draggedItem === draggedOverItem) return
+    
+    // Reorder locally
+    const items = members.filter(item => item !== draggedItem)
+    items.splice(index, 0, draggedItem!)
+    setMembers(items)
+  }
+
+  const onDragEnd = async () => {
+    setDraggedItem(null)
+    const updates = members.map((m, i) => ({ id: m._id!, rank: i })).filter(u => u.id)
+    try {
+      await reorderMembers(updates)
+    } catch (e: any) {
+      console.error(e)
+      alert(e.message || 'Failed to save order')
     }
   }
 
@@ -153,8 +185,16 @@ export default function AdminMembers() {
 
         <div className="list-card">
           <h4>Member List</h4>
-          {members.map(m => (
-            <div key={m._id} className="list-item">
+          {members.map((m, index) => (
+            <div 
+              key={m._id} 
+              className="list-item"
+              draggable={!editing}
+              onDragStart={(e) => onDragStart(e, m)}
+              onDragOver={(e) => onDragOver(e, index)}
+              onDragEnd={onDragEnd}
+              style={{ cursor: editing ? 'default' : 'move', opacity: draggedItem === m ? 0.5 : 1 }}
+            >
               {editing?._id === m._id ? (
                 <div className="edit-form">
                   <input value={editing?.name || ''} onChange={e => setEditing({ ...editing!, name: e.target.value })} />

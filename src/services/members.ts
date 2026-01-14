@@ -53,3 +53,19 @@ export async function createMember(member: Omit<Member, '_id'> & { type: 'Foundi
   if (!res.ok) throw new Error('Failed to create member')
   return res.json()
 }
+
+export async function reorderMembers(updates: { id: string; rank: number }[]): Promise<void> {
+  const res = await fetch(`${base}/api/members/reorder`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(getToken() ? { 'x-admin-token': getToken()! } : {})
+    },
+    body: JSON.stringify({ updates })
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || 'Failed to reorder members')
+  }
+  return res.json()
+}

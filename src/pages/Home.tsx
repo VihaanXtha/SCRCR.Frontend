@@ -17,6 +17,11 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
   const [latestNews, setLatestNews] = useState<{ title: string; img?: string; publishedAt?: string }[]>([])
   const [popupNotice, setPopupNotice] = useState<NoticeItem | null>(null)
 
+  const getEmbedUrl = (url: string) => {
+    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i)
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null
+  }
+
   useEffect(() => {
     fetchNotices({ active: true, popup: true }).then(items => setPopupNotice(items[0] ?? null)).catch(() => setPopupNotice(null))
     fetchNews().then(items => {
@@ -151,13 +156,35 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       </section>
       {popupNotice && (
         <div className="member-modal" onClick={() => setPopupNotice(null)}>
-          <div className="modal-body" onClick={e => e.stopPropagation()}>
-            <div className="modal-header">
-              <div className="modal-title">{popupNotice.title}</div>
-              <button className="modal-close" onClick={() => setPopupNotice(null)}>×</button>
+          <div className="notice-modal-content" onClick={e => e.stopPropagation()}>
+            <div className="notice-header">
+              <div className="notice-title">{popupNotice.title}</div>
+              <button className="notice-close" onClick={() => setPopupNotice(null)}>×</button>
             </div>
-            <div className="modal-grid">
-              <div>{popupNotice.text}</div>
+            <div className="notice-body">
+              {popupNotice.mediaUrl && (
+                <div style={{ marginBottom: 16 }}>
+                  {getEmbedUrl(popupNotice.mediaUrl) ? (
+                    <iframe 
+                      width="100%" 
+                      height="240" 
+                      src={getEmbedUrl(popupNotice.mediaUrl)!} 
+                      title="Notice Video" 
+                      frameBorder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                      allowFullScreen 
+                      style={{ borderRadius: 8 }}
+                    />
+                  ) : (
+                    <img 
+                      src={popupNotice.mediaUrl} 
+                      alt={popupNotice.title} 
+                      style={{ width: '100%', borderRadius: 8, maxHeight: 300, objectFit: 'contain' }} 
+                    />
+                  )}
+                </div>
+              )}
+              <div style={{ whiteSpace: 'pre-wrap' }}>{popupNotice.text}</div>
             </div>
           </div>
         </div>
