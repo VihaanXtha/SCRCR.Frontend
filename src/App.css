@@ -936,6 +936,7 @@
   .members-grid { grid-template-columns: repeat(2, 1fr); }
   .members-row { grid-template-columns: repeat(2, 1fr); }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-row { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {

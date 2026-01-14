@@ -13,6 +13,7 @@ export default function Admin() {
   })
   
   const [section, setSection] = useState<'members' | 'news' | 'gallery' | 'memories' | 'notices'>('members')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const onLogin = (token: string) => {
     localStorage.setItem('adminToken', token)
@@ -30,16 +31,23 @@ export default function Admin() {
 
   return (
     <div className="admin-page">
-      <aside className="admin-sidebar">
+      <button className="admin-toggle" onClick={() => setSidebarOpen(true)}>☰</button>
+      
+      {sidebarOpen && <div className="admin-overlay" onClick={() => setSidebarOpen(false)}></div>}
+
+      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <h2>Admin Panel</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2>Admin Panel</h2>
+            <button className="admin-close-sidebar" onClick={() => setSidebarOpen(false)}>×</button>
+          </div>
         </div>
         <nav className="sidebar-nav">
-          <button className={section === 'members' ? 'active' : ''} onClick={() => setSection('members')}>Members</button>
-          <button className={section === 'news' ? 'active' : ''} onClick={() => setSection('news')}>News</button>
-          <button className={section === 'gallery' ? 'active' : ''} onClick={() => setSection('gallery')}>Gallery</button>
-          <button className={section === 'notices' ? 'active' : ''} onClick={() => setSection('notices')}>Notices</button>
-          <button className={section === 'memories' ? 'active' : ''} onClick={() => setSection('memories')}>Memories</button>
+          <button className={section === 'members' ? 'active' : ''} onClick={() => { setSection('members'); setSidebarOpen(false); }}>Members</button>
+          <button className={section === 'news' ? 'active' : ''} onClick={() => { setSection('news'); setSidebarOpen(false); }}>News</button>
+          <button className={section === 'gallery' ? 'active' : ''} onClick={() => { setSection('gallery'); setSidebarOpen(false); }}>Gallery</button>
+          <button className={section === 'notices' ? 'active' : ''} onClick={() => { setSection('notices'); setSidebarOpen(false); }}>Notices</button>
+          <button className={section === 'memories' ? 'active' : ''} onClick={() => { setSection('memories'); setSidebarOpen(false); }}>Memories</button>
         </nav>
         <div className="sidebar-footer">
           <button onClick={() => window.location.hash = '/'} style={{ marginBottom: 8, background: '#34495e' }}>Back to Home</button>
