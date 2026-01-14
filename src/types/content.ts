@@ -12,3 +12,4 @@ export interface GalleryItem {
 }
 export type NoticeItem = { _id?: string; title: string; text: string; mediaUrl?: string; active: boolean; popup: boolean }
 export type MemoryAlbum = { name: string; count: number; cover?: string }
+export type MemoryImage = { _id: string; url: string; rank: number }

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import { uploadAlbumImages, deleteAlbumImage, fetchAlbumImages } from '../../services/content'
+import { uploadAlbumImages, deleteAlbumImage, fetchAlbumImages, reorderContent } from '../../services/content'
+import type { MemoryImage } from '../../types/content'
 
 interface MemoryAlbumEditorProps {
   albumName: string
@@ -7,9 +8,9 @@ interface MemoryAlbumEditorProps {
 }
 
 export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps) {
-  const [images, setImages] = useState<string[]>([])
+  const [images, setImages] = useState<MemoryImage[]>([])
   const [pendingImages, setPendingImages] = useState<string[]>([])
-  const [draggedImage, setDraggedImage] = useState<string | null>(null)
+  const [draggedImage, setDraggedImage] = useState<MemoryImage | null>(null)
   const fileInput = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -40,16 +41,16 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
     }
   }
 
-  const onDeleteImage = async (img: string) => {
+  const onDeleteImage = async (img: MemoryImage) => {
     try {
-      await deleteAlbumImage(albumName, img.split('/').pop() || '')
-      setImages(images.filter(i => i !== img))
+      await deleteAlbumImage(albumName, img.url.split('/').pop() || '')
+      setImages(images.filter(i => i._id !== img._id))
     } catch {
       alert('Delete failed')
     }
   }
 
-  const onDragStart = (e: React.DragEvent, img: string) => {
+  const onDragStart = (e: React.DragEvent, img: MemoryImage) => {
     setDraggedImage(img)
     e.dataTransfer.effectAllowed = 'move'
   }
@@ -59,16 +60,19 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
     const draggedOverImage = images[index]
     if (draggedImage === draggedOverImage) return
     
-    const newImages = images.filter(img => img !== draggedImage)
+    const newImages = images.filter(img => img._id !== draggedImage?._id)
     newImages.splice(index, 0, draggedImage!)
     setImages(newImages)
   }
 
-  const onDragEnd = () => {
+  const onDragEnd = async () => {
     setDraggedImage(null)
-    // Note: Reordering logic for file-based storage is complex as files are usually listed alphabetically or by date.
-    // For now, this just updates the local view. Persisting order would require a DB or renaming files.
-    // Since the requirement is to change order by dragging, we implement the UI part.
+    const updates = images.map((img, i) => ({ id: img._id, rank: i }))
+    try {
+      await reorderContent('memories', updates)
+    } catch {
+      alert('Failed to save order')
+    }
   }
 
   return (
@@ -76,7 +80,7 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <button className="btn sm secondary" onClick={onBack}>← Back to Albums</button>
         <h4>Album: {albumName}</h4>
-        <button className="btn sm" onClick={() => alert('Order saved (locally)')}>Save Order</button>
+        <div style={{ fontSize: '12px', color: '#666' }}>Drag images to reorder</div>
       </div>
       
       <div className="upload-box">
@@ -104,7 +108,7 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
         ))}
         {images.map((img, index) => (
           <div 
-            key={img} 
+            key={img._id} 
             className="image-card"
             draggable
             onDragStart={(e) => onDragStart(e, img)}
@@ -112,7 +116,7 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
             onDragEnd={onDragEnd}
             style={{ opacity: draggedImage === img ? 0.5 : 1, cursor: 'move' }}
           >
-            <img src={img} alt="memory" />
+            <img src={img.url} alt="memory" />
             <button className="delete-btn" onClick={() => onDeleteImage(img)}>×</button>
           </div>
         ))}

@@ -1,4 +1,4 @@
-import type { NewsItem, GalleryItem, NoticeItem, MemoryAlbum } from '../types/content'
+import type { NewsItem, GalleryItem, NoticeItem, MemoryAlbum, MemoryImage } from '../types/content'
 
 type EnvMeta = { env?: { VITE_API_BASE?: string } }
 const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'https://scrcr-backend.vercel.app'
@@ -92,9 +92,9 @@ export async function deleteMemoryAlbum(name: string): Promise<{ ok: true }> {
   if (!res.ok) throw new Error('Failed to delete album')
   return res.json()
 }
-export async function fetchAlbumImages(name: string): Promise<string[]> {
-  const items: string[] = await requestJson<string[]>(`${base}/api/memories/${encodeURIComponent(name)}`, undefined, [])
-  return items.map(absolute)
+export async function fetchAlbumImages(name: string): Promise<MemoryImage[]> {
+  const items: MemoryImage[] = await requestJson<MemoryImage[]>(`${base}/api/memories/${encodeURIComponent(name)}`, undefined, [])
+  return items.map(i => ({ ...i, url: absolute(i.url) }))
 }
 export async function uploadAlbumImages(name: string, files: File[]): Promise<{ uploaded: string[] }> {
   const fd = new FormData()
@@ -176,7 +176,7 @@ export async function deleteNotice(id: string): Promise<NoticeItem> {
   return res.json()
 }
 
-export async function reorderContent(resource: 'news' | 'gallery' | 'notices', updates: { id: string; rank: number }[]): Promise<void> {
+export async function reorderContent(resource: 'news' | 'gallery' | 'notices' | 'memories', updates: { id: string; rank: number }[]): Promise<void> {
   const res = await fetch(`${base}/api/${resource}/reorder`, {
     method: 'PUT',
     headers: {
