@@ -9,7 +9,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [password, setPassword] = useState('doramon12')
   
   type EnvMeta = { env?: { VITE_API_BASE?: string } }
-  const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'http://localhost:8081'
+  const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'https://scrcr-backend.vercel.app'
 
   const login = async () => {
     try {
