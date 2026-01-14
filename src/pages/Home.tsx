@@ -15,7 +15,21 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
   }
   const [gallery, setGallery] = useState<string[]>([])
   const [latestNews, setLatestNews] = useState<{ title: string; img?: string; publishedAt?: string }[]>([])
-  const [popupNotice, setPopupNotice] = useState<NoticeItem | null>(null)
+  const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([])
+  const [currentPopup, setCurrentPopup] = useState<NoticeItem | null>(null)
+
+  useEffect(() => {
+    // If no popup is showing but we have items in queue, show the next one
+    if (!currentPopup && popupQueue.length > 0) {
+      setCurrentPopup(popupQueue[0])
+      setPopupQueue(prev => prev.slice(1))
+    }
+  }, [popupQueue, currentPopup])
+
+  const closePopup = () => {
+    setCurrentPopup(null)
+    // Effect will trigger next one automatically
+  }
 
   const getEmbedUrl = (url: string) => {
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i)
@@ -27,43 +41,54 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
     const p1 = fetchNotices({ active: true, popup: true })
       .then(items => items.filter(i => {
         const dateStr = i.created_at || i.updated_at
-        if (!dateStr) return false // No date = No popup
+        if (!dateStr) return false
         const date = new Date(dateStr)
         const age = Date.now() - date.getTime()
-        return age < 24 * 60 * 60 * 1000 // 24 hours
+        return age < 24 * 60 * 60 * 1000
       }))
 
     // 2. Fetch Popup News
     const p2 = fetchNews({ active: true, popup: true })
       .then(items => items.filter(i => {
         const dateStr = i.publishedAt || i.created_at
-        if (!dateStr) return false // No date = No popup
+        if (!dateStr) return false
         const date = new Date(dateStr)
         const age = Date.now() - date.getTime()
-        return age < 24 * 60 * 60 * 1000 // 24 hours
+        return age < 24 * 60 * 60 * 1000
       }))
-      // Convert NewsItem to NoticeItem structure for uniform display
       .then(items => items.map(n => ({
         _id: n._id,
         title: n.title,
         text: n.text,
-        mediaUrl: n.img, // Map img -> mediaUrl
+        mediaUrl: n.img,
         active: n.active,
         popup: n.popup,
-        created_at: n.created_at
-      } as NoticeItem)))
+        created_at: n.created_at,
+        type: 'news' // Marker to identify news
+      } as NoticeItem & { type?: string })))
 
     Promise.all([p1, p2]).then(([notices, news]) => {
-      // Combine and show the most recent one
-      const all = [...notices, ...news].sort((a, b) => {
+      // Sort: News first, then Notices. Within category, sort by date (newest first).
+      
+      const sortedNews = news.sort((a, b) => {
          const da = new Date(a.created_at || 0).getTime()
          const db = new Date(b.created_at || 0).getTime()
          return db - da
       })
-      if (all.length > 0) {
-        setPopupNotice(all[0])
+
+      const sortedNotices = notices.sort((a, b) => {
+         const da = new Date(a.created_at || 0).getTime()
+         const db = new Date(b.created_at || 0).getTime()
+         return db - da
+      })
+
+      // Combine: News First, Then Notices
+      const finalQueue = [...sortedNews, ...sortedNotices]
+      
+      if (finalQueue.length > 0) {
+        setPopupQueue(finalQueue)
       }
-    }).catch(() => setPopupNotice(null))
+    }).catch(() => setPopupQueue([]))
 
     // Fetch Latest News for Section
     fetchNews({ active: true }).then(items => {
@@ -196,21 +221,21 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           <button className="btn">{t('subscribe.cta')}</button>
         </form>
       </section>
-      {popupNotice && (
-        <div className="member-modal" onClick={() => setPopupNotice(null)}>
-          <div className={`notice-modal-content ${popupNotice.mediaUrl && popupNotice.text ? 'wide' : ''}`} onClick={e => e.stopPropagation()}>
+      {currentPopup && (
+        <div className="member-modal" onClick={closePopup}>
+          <div className={`notice-modal-content ${currentPopup.mediaUrl && currentPopup.text ? 'wide' : ''}`} onClick={e => e.stopPropagation()}>
             <div className="notice-header">
-              <div className="notice-title">{popupNotice.title}</div>
-              <button className="notice-close" onClick={() => setPopupNotice(null)}>×</button>
+              <div className="notice-title">{currentPopup.title}</div>
+              <button className="notice-close" onClick={closePopup}>×</button>
             </div>
-            <div className={popupNotice.mediaUrl && popupNotice.text ? "notice-body-grid" : "notice-body-single"}>
-              {popupNotice.mediaUrl && (
-                <div className={popupNotice.text ? "notice-media-col" : "notice-media-full"}>
-                  {getEmbedUrl(popupNotice.mediaUrl) ? (
+            <div className={currentPopup.mediaUrl && currentPopup.text ? "notice-body-grid" : "notice-body-single"}>
+              {currentPopup.mediaUrl && (
+                <div className={currentPopup.text ? "notice-media-col" : "notice-media-full"}>
+                  {getEmbedUrl(currentPopup.mediaUrl) ? (
                     <iframe 
                       width="100%" 
-                      height={popupNotice.text ? "300" : "400"} 
-                      src={getEmbedUrl(popupNotice.mediaUrl)!} 
+                      height={currentPopup.text ? "300" : "400"} 
+                      src={getEmbedUrl(currentPopup.mediaUrl)!} 
                       title="Notice Video" 
                       frameBorder="0" 
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -219,16 +244,16 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                     />
                   ) : (
                     <img 
-                      src={popupNotice.mediaUrl} 
-                      alt={popupNotice.title} 
-                      style={{ width: '100%', borderRadius: 8, maxHeight: popupNotice.text ? 400 : '60vh', objectFit: 'contain' }} 
+                      src={currentPopup.mediaUrl} 
+                      alt={currentPopup.title} 
+                      style={{ width: '100%', borderRadius: 8, maxHeight: currentPopup.text ? 400 : '60vh', objectFit: 'contain' }} 
                     />
                   )}
                 </div>
               )}
-              {popupNotice.text && (
-                <div className={popupNotice.mediaUrl ? "notice-text-col" : "notice-text-full"}>
-                  <div style={{ whiteSpace: 'pre-wrap' }}>{popupNotice.text}</div>
+              {currentPopup.text && (
+                <div className={currentPopup.mediaUrl ? "notice-text-col" : "notice-text-full"}>
+                  <div style={{ whiteSpace: 'pre-wrap' }}>{currentPopup.text}</div>
                 </div>
               )}
             </div>
