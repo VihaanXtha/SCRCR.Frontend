@@ -1,7 +1,7 @@
 import type { Member } from '../types/members'
 
 type EnvMeta = { env?: { VITE_API_BASE?: string } }
-const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'http://localhost:8081'
+const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'https://scrcr-backend.vercel.app'
 
 export async function fetchMembers(type: 'Founding' | 'Lifetime' | 'Senior-Citizen' | 'donation' | 'helper'): Promise<Member[]> {
   const res = await fetch(`${base}/api/members/${type}`)
