@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { uploadAlbumImages, deleteAlbumImage, fetchAlbumImages } from '../services/content'
+import { uploadAlbumImages, deleteAlbumImage, fetchAlbumImages } from '../../services/content'
 
 interface MemoryAlbumEditorProps {
   albumName: string
