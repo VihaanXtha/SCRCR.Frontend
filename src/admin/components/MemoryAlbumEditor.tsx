@@ -38,16 +38,20 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
     if (!stagedFiles.length) return
     setUploading(true)
     
-    // Batch upload to avoid payload limits (e.g., 3 images at a time)
-    const BATCH_SIZE = 3
+    // Batch upload (increased to 6 for faster speed, still safe)
+    const BATCH_SIZE = 6
     const total = stagedFiles.length
     let uploadedCount = 0
 
     try {
-        for (let i = 0; i < stagedFiles.length; i += BATCH_SIZE) {
-            const batch = stagedFiles.slice(i, i + BATCH_SIZE)
+        // Upload batches in parallel
+        const chunks = []
+        for (let i = 0; i < total; i += BATCH_SIZE) {
+            chunks.push(stagedFiles.slice(i, i + BATCH_SIZE))
+        }
+
+        for (const batch of chunks) {
             setProgress(`Uploading ${uploadedCount + 1}-${Math.min(uploadedCount + batch.length, total)} of ${total}...`)
-            
             await uploadAlbumImages(albumName, batch)
             uploadedCount += batch.length
         }
