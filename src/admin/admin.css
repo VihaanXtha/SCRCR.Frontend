@@ -330,6 +330,7 @@
   border-radius: 4px;
   font-size: 0.7rem;
   margin-right: 5px;
+  vertical-align: middle;
 }
 
 .badge.active {
@@ -338,8 +339,8 @@
 }
 
 .badge.popup {
-  background-color: #f1c40f;
-  color: black;
+  background-color: #9b59b6; /* Purple for popup to distinguish */
+  color: white;
 }
 
 .badge.inactive {
