@@ -116,6 +116,13 @@
   backdrop-filter: blur(2px);
 }
 
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
 @media (max-width: 900px) {
   .admin-toggle {
     display: block;
@@ -299,6 +306,7 @@
   margin-bottom: 20px;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .tab {
