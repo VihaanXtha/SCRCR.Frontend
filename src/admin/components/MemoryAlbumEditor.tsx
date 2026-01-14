@@ -20,11 +20,14 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
   }, [albumName])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      setStagedFiles(prev => [...prev, ...Array.from(e.target.files!)])
+    if (e.target.files && e.target.files.length > 0) {
+      // Force array conversion and update state immediately
+      const newFiles = Array.from(e.target.files)
+      setStagedFiles(prev => [...prev, ...newFiles])
+      
+      // Clear input value to allow selecting same file again
+      e.target.value = ''
     }
-    // reset input so same file can be selected again if needed
-    if (fileInput.current) fileInput.current.value = ''
   }
 
   const removeStagedFile = (index: number) => {
