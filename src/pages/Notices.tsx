@@ -20,15 +20,16 @@ export default function Notices({ t }: { t: (k: string) => string }) {
   return (
     <div className="page">
       <SubHero title={t('nav.notices')} img="https://placehold.co/1600x420" />
-      <div className="posts-container">
+      <div className="posts">
         {items.map(n => (
-          <div key={n._id ?? n.title} className="notice-card full-width" onClick={() => setActivePopup(n)}>
+          <div key={n._id ?? n.title} className="post-card" onClick={() => setActivePopup(n)}>
             {n.mediaUrl && (
-              <div className="notice-media-large">
+              <div style={{ width: '100%' }}>
                 {getEmbedUrl(n.mediaUrl) ? (
                   <iframe 
                     src={getEmbedUrl(n.mediaUrl) || undefined}
                     title={n.title}
+                    style={{ width: '100%', aspectRatio: '16/9', border: 0 }}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowFullScreen 
                   />
@@ -37,9 +38,9 @@ export default function Notices({ t }: { t: (k: string) => string }) {
                 )}
               </div>
             )}
-            <div className="notice-content-large">
-              <div className="post-title large">{n.title}</div>
-              <div className="post-text">{n.text && n.text.length > 200 ? n.text.slice(0, 200) + '...' : n.text}</div>
+            <div style={{ padding: 15, display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <div className="post-title">{n.title}</div>
+              <div className="post-text">{n.text && n.text.length > 100 ? n.text.slice(0, 100) + '...' : n.text}</div>
               <span className="post-link" onClick={(e) => { e.stopPropagation(); setActivePopup(n); }}>{t('news.read_more')}</span>
               <div className="post-date">{n.active ? 'Active' : 'Inactive'}</div>
             </div>
