@@ -5,7 +5,15 @@ import { AdminFormActions } from './components/AdminFormActions'
 
 export default function AdminNotices() {
   const [notices, setNotices] = useState<NoticeItem[]>([])
-  const [newNotice, setNewNotice] = useState<Omit<NoticeItem, '_id'>>({ title: '', text: '', mediaUrl: '', active: true, popup: false })
+  const [newNotice, setNewNotice] = useState<Omit<NoticeItem, '_id'>>({ 
+    title: '', 
+    text: '', 
+    mediaUrl: '', 
+    active: true, 
+    popup: false, 
+    created_at: undefined, 
+    updated_at: undefined 
+  })
   const [editingId, setEditingId] = useState<string | null>(null)
   const [mediaType, setMediaType] = useState<'image' | 'video'>('image')
   const [draggedItem, setDraggedItem] = useState<NoticeItem | null>(null)
@@ -40,7 +48,7 @@ export default function AdminNotices() {
         const created = await createNotice(payload)
         setNotices([created, ...notices])
       }
-      setNewNotice({ title: '', text: '', mediaUrl: '', active: true, popup: false })
+      setNewNotice({ title: '', text: '', mediaUrl: '', active: true, popup: false, created_at: undefined, updated_at: undefined })
     } catch {
       alert(editingId ? 'Failed to update notice' : 'Failed to create notice')
     }
@@ -52,6 +60,8 @@ export default function AdminNotices() {
     setNewNotice({
       title: n.title,
       text: n.text,
+      created_at: n.created_at,
+      updated_at: n.updated_at,
       mediaUrl: n.mediaUrl,
       active: n.active,
       popup: n.popup
@@ -69,7 +79,7 @@ export default function AdminNotices() {
 
   const onCancelEdit = () => {
     setEditingId(null)
-    setNewNotice({ title: '', text: '', mediaUrl: '', active: true, popup: false })
+    setNewNotice({ title: '', text: '', mediaUrl: '', active: true, popup: false, created_at: undefined, updated_at: undefined })
   }
 
   const onDelete = async (id?: string) => {
