@@ -9,39 +9,61 @@ interface MemoryAlbumEditorProps {
 
 export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps) {
   const [images, setImages] = useState<MemoryImage[]>([])
-  const [pendingImages, setPendingImages] = useState<string[]>([])
+  const [stagedFiles, setStagedFiles] = useState<File[]>([])
   const [draggedImage, setDraggedImage] = useState<MemoryImage | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [progress, setProgress] = useState('')
   const fileInput = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetchAlbumImages(albumName).then(setImages).catch(() => setImages([]))
   }, [albumName])
 
-  const onUpload = async () => {
-    if (!fileInput.current?.files?.length) return
-    const files = Array.from(fileInput.current.files)
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.length) {
+      setStagedFiles(prev => [...prev, ...Array.from(e.target.files!)])
+    }
+    // reset input so same file can be selected again if needed
+    if (fileInput.current) fileInput.current.value = ''
+  }
+
+  const removeStagedFile = (index: number) => {
+    setStagedFiles(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const handleUploadStaged = async () => {
+    if (!stagedFiles.length) return
+    setUploading(true)
     
-    // Create local previews
-    const localPreviews = files.map(file => URL.createObjectURL(file))
-    setPendingImages(localPreviews)
+    // Batch upload to avoid payload limits (e.g., 3 images at a time)
+    const BATCH_SIZE = 3
+    const total = stagedFiles.length
+    let uploadedCount = 0
 
     try {
-      await uploadAlbumImages(albumName, files)
-      const imgs = await fetchAlbumImages(albumName)
-      setImages(imgs)
-      setPendingImages([]) // Clear previews
-      if (fileInput.current) fileInput.current.value = ''
-      
-      // Revoke object URLs to avoid memory leaks
-      localPreviews.forEach(url => URL.revokeObjectURL(url))
-    } catch {
-      alert('Upload failed')
-      setPendingImages([])
-      localPreviews.forEach(url => URL.revokeObjectURL(url))
+        for (let i = 0; i < stagedFiles.length; i += BATCH_SIZE) {
+            const batch = stagedFiles.slice(i, i + BATCH_SIZE)
+            setProgress(`Uploading ${uploadedCount + 1}-${Math.min(uploadedCount + batch.length, total)} of ${total}...`)
+            
+            await uploadAlbumImages(albumName, batch)
+            uploadedCount += batch.length
+        }
+        
+        // Refresh
+        const imgs = await fetchAlbumImages(albumName)
+        setImages(imgs)
+        setStagedFiles([])
+        setProgress('')
+    } catch (e) {
+        alert('Some images failed to upload. Please try again.')
+    } finally {
+        setUploading(false)
+        setProgress('')
     }
   }
 
   const onDeleteImage = async (img: MemoryImage) => {
+    if (!confirm('Delete this image?')) return
     try {
       await deleteAlbumImage(albumName, img.url.split('/').pop() || '')
       setImages(images.filter(i => i._id !== img._id))
@@ -83,29 +105,47 @@ export function MemoryAlbumEditor({ albumName, onBack }: MemoryAlbumEditorProps)
         <div style={{ fontSize: '12px', color: '#666' }}>Drag images to reorder</div>
       </div>
       
-      <div className="upload-box">
-        <input 
-          type="file" 
-          ref={fileInput} 
-          accept="image/*" 
-          multiple 
-          onChange={onUpload}
-        />
+      <div className="upload-box" style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 10, display: 'flex', gap: 10 }}>
+            <button className="btn sm" onClick={() => fileInput.current?.click()} disabled={uploading}>
+                {uploading ? 'Uploading...' : 'Add Images'}
+            </button>
+            <input 
+                type="file" 
+                ref={fileInput} 
+                accept="image/*" 
+                multiple 
+                onChange={handleFileSelect}
+                style={{ display: 'none' }}
+            />
+        </div>
+
+        {/* Staged Files Area */}
+        {stagedFiles.length > 0 && (
+            <div className="staged-area" style={{ background: '#f8f9fa', padding: 15, borderRadius: 8, marginBottom: 15 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <strong>Selected ({stagedFiles.length})</strong>
+                    {uploading && <span>{progress}</span>}
+                </div>
+                <div className="image-grid" style={{ marginBottom: 15 }}>
+                    {stagedFiles.map((file, i) => (
+                        <div key={i} className="image-card staged">
+                            <img src={URL.createObjectURL(file)} alt="preview" onLoad={(e) => URL.revokeObjectURL(e.currentTarget.src)} />
+                            {!uploading && (
+                                <button className="delete-btn" onClick={() => removeStagedFile(i)}>×</button>
+                            )}
+                        </div>
+                    ))}
+                </div>
+                <button className="btn sm active" onClick={handleUploadStaged} disabled={uploading} style={{ width: '100%' }}>
+                    {uploading ? 'Uploading...' : 'Confirm Upload'}
+                </button>
+            </div>
+        )}
       </div>
 
+      <h5 style={{ marginBottom: 10 }}>Album Images ({images.length})</h5>
       <div className="image-grid">
-        {pendingImages.map((url, i) => (
-          <div key={`pending-${i}`} className="image-card pending" style={{ opacity: 0.6 }}>
-            <img src={url} alt="uploading..." />
-            <div className="loading-overlay" style={{ 
-              position: 'absolute', inset: 0, display: 'flex', 
-              alignItems: 'center', justifyContent: 'center', 
-              background: 'rgba(255,255,255,0.4)', fontSize: '12px', color: '#000'
-            }}>
-              Uploading...
-            </div>
-          </div>
-        ))}
         {images.map((img, index) => (
           <div 
             key={img._id} 
