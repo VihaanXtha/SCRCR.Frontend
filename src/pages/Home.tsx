@@ -50,7 +50,8 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
     // 2. Fetch Popup News
     const p2 = fetchNews({ active: true, popup: true })
       .then(items => items.filter(i => {
-        const dateStr = i.publishedAt || i.created_at
+        // Use updated_at if available (for recently toggled items), else published/created
+        const dateStr = i.updated_at || i.publishedAt || i.created_at
         if (!dateStr) return false
         const date = new Date(dateStr)
         const age = Date.now() - date.getTime()

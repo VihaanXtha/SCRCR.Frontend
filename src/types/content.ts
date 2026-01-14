@@ -1,4 +1,14 @@
-export type NewsItem = { _id?: string; title: string; text: string; img: string; publishedAt?: string; active: boolean; popup: boolean }
+export type NewsItem = {
+  created_at: string | undefined; 
+  updated_at?: string;
+  _id?: string; 
+  title: string; 
+  text: string; 
+  img: string; 
+  publishedAt?: string; 
+  active: boolean; 
+  popup: boolean 
+}
 export interface GalleryItem {
   _id?: string
   id?: string // Supabase alias
@@ -10,6 +20,9 @@ export interface GalleryItem {
   active?: boolean
   rank?: number
 }
-export type NoticeItem = { _id?: string; title: string; text: string; mediaUrl?: string; active: boolean; popup: boolean }
+export type NoticeItem = {
+  created_at: any;
+  updated_at: any; _id?: string; title: string; text: string; mediaUrl?: string; active: boolean; popup: boolean 
+}
 export type MemoryAlbum = { name: string; count: number; cover?: string }
 export type MemoryImage = { _id: string; url: string; rank: number }
