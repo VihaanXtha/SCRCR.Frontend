@@ -1,21 +1,21 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import type { MemoryAlbum } from '../types/content'
-import { fetchMemoryAlbums, createMemoryAlbum, deleteMemoryAlbum, fetchAlbumImages, uploadAlbumImages, deleteAlbumImage } from '../services/content'
+import { fetchMemoryAlbums, createMemoryAlbum, deleteMemoryAlbum } from '../services/content'
+import { MemoryAlbumEditor } from './components/MemoryAlbumEditor'
 
 export default function AdminMemories() {
   const [albums, setAlbums] = useState<MemoryAlbum[]>([])
   const [activeAlbum, setActiveAlbum] = useState<string>('')
-  const [albumImages, setAlbumImages] = useState<string[]>([])
   const [newAlbumName, setNewAlbumName] = useState('')
-  const fileInput = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetchMemoryAlbums().then(setAlbums).catch(() => setAlbums([]))
   }, [])
 
+  // Refresh albums when returning from editor to update counts
   useEffect(() => {
-    if (activeAlbum) {
-      fetchAlbumImages(activeAlbum).then(setAlbumImages).catch(() => setAlbumImages([]))
+    if (!activeAlbum) {
+      fetchMemoryAlbums().then(setAlbums).catch(() => setAlbums([]))
     }
   }, [activeAlbum])
 
@@ -38,28 +38,6 @@ export default function AdminMemories() {
       if (activeAlbum === name) setActiveAlbum('')
     } catch {
       alert('Failed to delete album')
-    }
-  }
-
-  const onUpload = async () => {
-    if (!fileInput.current?.files?.length) return
-    const files = Array.from(fileInput.current.files)
-    try {
-      await uploadAlbumImages(activeAlbum, files)
-      const imgs = await fetchAlbumImages(activeAlbum)
-      setAlbumImages(imgs)
-      if (fileInput.current) fileInput.current.value = ''
-    } catch {
-      alert('Upload failed')
-    }
-  }
-
-  const onDeleteImage = async (img: string) => {
-    try {
-      await deleteAlbumImage(activeAlbum, img)
-      setAlbumImages(albumImages.filter(i => i !== img))
-    } catch {
-      alert('Delete failed')
     }
   }
 
@@ -98,24 +76,10 @@ export default function AdminMemories() {
           </div>
         </div>
       ) : (
-        <div className="album-view">
-          <button className="btn sm secondary" onClick={() => setActiveAlbum('')}>← Back to Albums</button>
-          <h4>Album: {activeAlbum}</h4>
-          
-          <div className="upload-box">
-            <input type="file" ref={fileInput} accept="image/*" multiple />
-            <button className="btn sm" onClick={onUpload}>Upload Images (Max 50)</button>
-          </div>
-
-          <div className="image-grid">
-            {albumImages.map(img => (
-              <div key={img} className="image-card">
-                <img src={img} alt="memory" />
-                <button className="delete-btn" onClick={() => onDeleteImage(img.split('/').pop() || '')}>×</button>
-              </div>
-            ))}
-          </div>
-        </div>
+        <MemoryAlbumEditor 
+          albumName={activeAlbum} 
+          onBack={() => setActiveAlbum('')} 
+        />
       )}
     </div>
   )
