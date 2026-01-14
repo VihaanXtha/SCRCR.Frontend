@@ -1,7 +1,7 @@
 import type { NewsItem, GalleryItem, NoticeItem, MemoryAlbum } from '../types/content'
 
 type EnvMeta = { env?: { VITE_API_BASE?: string } }
-const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'https://scrcr.onrender.com'
+const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'https://scrcr-backend.vercel.app'
 
 function getToken(): string | undefined {
   try { return localStorage.getItem('adminToken') ?? undefined } catch { return undefined }
