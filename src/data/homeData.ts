@@ -76,47 +76,47 @@ export const dpmt = [
   {
     name: "श्री पार्वता बेल्वासे",
     role: "संयोजक",
-    img: getImage(""),
+    img: getImage("Parvata"),
   },
   {
     name: "श्री पावित्रा पराजुली",
     role: "सह संयोजक",
-    img: getImage("1"),
+    img: getImage("Pabitra"),
   },
   {
     name: "श्री सुजता भण्डारी ",
     role: "सचिव",
-    img: getImage(""),
+    img: getImage("Sujata"),
   },
   {
     name: "श्री रेनु क्षेत्री",
     role: "सदस्य",
-    img: getImage(""),
+    img: getImage("Renu"),
   },
   {
     name: "श्री मिना पाण्डे",
     role: "सदस्य",
-    img: getImage(""),
+    img: getImage("Mina"),
   },
   {
     name: "श्री सरस्वती पाण्डे",
     role: "सदस्य",
-    img: getImage(""),
+    img: getImage("Saraswati"),
   },
   {
     name: "श्री विष्णुदेवी खराल",
     role: "सदस्य",
-    img: getImage(""),
+    img: getImage("Vishnu"),
   },
   {
     name: "श्री मन्दिरा शर्मा",
     role: "सदस्य",
-    img: getImage(""),
+    img: getImage("Mandira"),
   },
   {
     name: "श्री रमा ज्ञवाली",
     role: "सदस्य",
-    img: getImage(""),
+    img: getImage("Rama"),
   },
   {
     name: "श्री अर्जुनराज धीमीरे",
