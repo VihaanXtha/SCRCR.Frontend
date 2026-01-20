@@ -3,7 +3,7 @@ import { useRef } from 'react'
 
 
 
-export default function StaffSection({ staff, t }: { staff: Person[]; t: (k: string) => string }) {
+export default function DPMT({ staff, t }: { staff: { name: string; role: string; img: string }[]; t: (k: string) => string }) {
   const ref = useRef<HTMLDivElement | null>(null)
   const scroll = (dir: 'left' | 'right') => {
     const el = ref.current

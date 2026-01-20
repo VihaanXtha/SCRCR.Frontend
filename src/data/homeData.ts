@@ -1,4 +1,12 @@
 import pabitraImg from '../assets/images/dpmt-images/Pabitra.png';
+import firstImg from "../assets/images/Baristha-sadayabalami buwa.png";
+import secondImg from '../assets/images/Baristha-sadaya/yadunath pandey.png';
+import thirdImg from '../assets/images/Baristha-sadaya/khem.png';
+import fourthImg from '../assets/images/Baristha-sadaya/netra buwa.png';
+import fifthImg from '../assets/images/Baristha-sadaya/rishi bhanttari.png';
+import sixthImg from '../assets/images/Baristha-sadaya/ok.png';
+import seventhImg from '../assets/images/Baristha-sadaya/Untitled-1.png';
+
 
 export const activities = [
   { title: 'सामाजिक कार्यक्रम', img: 'https://placehold.co/400x260' },
@@ -28,12 +36,13 @@ export const leaders = [
 ]
 
 export const staff = [
-  { name: 'ऑफिस 1', role: 'स्टाफ', img: 'https://placehold.co/160x160' },
-  { name: 'ऑफिस 2', role: 'स्टाफ', img: 'https://placehold.co/160x160' },
-  { name: 'ऑफिस 3', role: 'स्टाफ', img: 'https://placehold.co/160x160' },
-  { name: 'ऑफिस 4', role: 'स्टाफ', img: 'https://placehold.co/160x160' },
-  { name: 'ऑफिस 5', role: 'स्टाफ', img: 'https://placehold.co/160x160' },
-  { name: 'ऑफिस 6', role: 'स्टाफ', img: 'https://placehold.co/160x160' }
+  { name: 'ऑफिस 1', role: 'स्टाफ', img: firstImg },
+  { name: 'ऑफिस 2', role: 'स्टाफ', img: secondImg },
+  { name: 'ऑफिस 3', role: 'स्टाफ', img: thirdImg },
+  { name: 'ऑफिस 4', role: 'स्टाफ', img: fourthImg },
+  { name: 'ऑफिस 5', role: 'स्टाफ', img: fifthImg },
+  { name: 'ऑफिस 6', role: 'स्टाफ', img: sixthImg },
+  { name: 'ऑफिस 7', role: 'स्टाफ', img: seventhImg }
 ]
 
 export const dpmt = [
