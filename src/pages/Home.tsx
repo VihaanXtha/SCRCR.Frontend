@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import Intro from '../components/Intro'
 import StaffSection from '../components/StaffSection'
+import DPMT from '../components/DPMT'
 import { fetchNotices, fetchNews, fetchGallery } from '../services/content'
-import { activities, leaderQuotes, leaders, staff } from '../data/homeData'
+import { activities, dpmt, leaderQuotes, leaders, staff } from '../data/homeData'
 import type { NoticeItem } from '../types/content'
+
 
 export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en' | 'ne' }) {
   const carouselRef = useRef<HTMLDivElement | null>(null)
@@ -181,7 +183,9 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
               <div className="profile-role">{l.role}</div>
             </div>
           ))}
-        </div> <StaffSection staff={staff} t={t} />
+        </div>
+         <StaffSection staff={staff} t={t} />
+          <DPMT staff={dpmt} t={t} />
 
       </section>
 

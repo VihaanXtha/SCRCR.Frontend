@@ -9,5 +9,5 @@ export default function Helping({ t }: { t: (k: string) => string }) {
   useEffect(() => {
     fetchMembers('helper').then(setMembers).catch(() => setMembers([]))
   }, [])
-  return <MembersGrid title={t('Helping.title')} members={members} t={t} />
+  return <MembersGrid title={t('nav.members.Helping')} members={members} t={t} />
 }

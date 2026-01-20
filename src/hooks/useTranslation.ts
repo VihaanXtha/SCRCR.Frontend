@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 const dictionary: Record<string, Record<string, string>> = {
   "brand.title": {
-    en: "Senior Citizen Recreation Centre",
-    ne: "ज्येष्ठ नागरिक मिलन केन्द्र",
+    en: "Senior Citizen Recreation Centre Rupandehi",
+    ne: "ज्येष्ठ नागरिक मिलन केन्द्र रुपन्देही",
   },
   "brand.sub": {
     en: "Shri Ramkrishna Namdev Samaj Sansthan",
@@ -12,13 +12,13 @@ const dictionary: Record<string, Record<string, string>> = {
   "nav.home": { en: "Home", ne: "होम" },
   "nav.about": { en: "About", ne: "परिचय" },
   "nav.members": { en: "Members", ne: "सदस्य" },
-  "nav.members.Founding": { en: "Founding Members", ne: "आदरणीय सदस्य" },
+  "nav.members.Founding": { en: "Founding Members", ne: "संस्थापक सदस्य" },
   "nav.members.Lifetime": { en: "Lifetime Members", ne: "आजीवन सदस्य" },
   "nav.members.Senior-Citizen": {
-    en: "Senior-Citizen Citizen Members",
-    ne: "ज्येष्ठ नागरिक सदस्य",
+    en: "Senior-Citizen Members",
+    ne: "सेवाग्राही सदस्य",
   },
-  "nav.members.donation": { en: "Donation Members", ne: "दान सदस्य" },
+  "nav.members.donation": { en: "Endowment Donor Members", ne: "अक्षकोष दाता सदस्य" },
   "nav.members.Helping": { en: "Helping Members", ne: "सहयोगी सदस्य" },
   "nav.news": { en: "News", ne: "समाचार" },
   "nav.gallery": { en: "Gallery", ne: "गैलरी" },
@@ -31,13 +31,14 @@ const dictionary: Record<string, Record<string, string>> = {
   "hero.step3": { en: "Branch", ne: "शाखा" },
   "intro.heading": { en: "Welcome Message", ne: "स्वागत संदेश" },
   "intro.p": {
-    en: "Our community focuses on unity, cooperation and progress. Various social, cultural and educational activities are organized.",
-    ne: "हमारे समाज का उद्देश्य एकता, सहयोग और प्रगति है। यहां विभिन्न सामाजिक, सांस्कृतिक और शैक्षणिक गतिविधियों का आयोजन किया जाता है।",
+    en: "The establishment of the Senior Citizens Recreation Center, Shringeshwardham, Rupandehi aims to address the challenges faced by senior citizens and provide them with a supportive environment for their physical, mental, and psychological well-being. In response to the growing sense of loneliness experienced by the elderly in modern society, the center seeks to bridge the generational gap and promote the exchange of knowledge, skills, and experiences.Recognizing the inherent rights of senior citizens to dignity, respect, and care in old age, this initiative strives to create a harmonious space that fosters mutual understanding between generations and encourages the preservation and promotion of cultural values. Through this compassionate vision, the center envisions a prosperous nation that values and celebrates the wisdom and legacy of its elderly citizens.",
+    ne: "जेष्ठ नागरिक मनोरञ्जन केन्द्र, श्रृङ्गेश्वरधाम, रुपन्देही” को स्थापनाले जेष्ठ नागरिकहरूले सामना गर्ने चुनौतीहरूलाई सम्बोधन गर्न र उनीहरूलाई शारीरिक, मानसिक र मनोवैज्ञानिक कल्याणको लागि सहयोगी वातावरण उपलब्ध गराउन खोजेको छ। आधुनिक समाजमा वरिष्ठहरूले अनुभव गरेको बढ्दो एक्लोपनको प्रतिक्रियामा, केन्द्रले पुस्ताको खाडललाई पुल गर्ने र ज्ञान, सीप र अनुभवहरूको स्थानान्तरणलाई प्रवर्द्धन गर्ने लक्ष्य राखेको छ। वृद्धावस्थामा ज्येष्ठ नागरिकको मर्यादा, सम्मान र हेरचाहको प्राकृतिक अधिकारलाई मान्यता दिँदै, पहलले पुस्ताहरू बीचको आपसी समझदारीलाई बढावा दिँदै सांस्कृतिक मूल्यहरूको संरक्षण र प्रवर्द्धन गर्ने सामंजस्यपूर्ण ठाउँ सिर्जना गर्ने प्रयास गर्दछ। यस दयालु दृष्टिकोण मार्फत, केन्द्रले एक समृद्ध राष्ट्रको परिकल्पना गर्दछ जसले आफ्ना वृद्ध नागरिकहरूको बुद्धि र विरासतलाई मूल्याङ्कन गर्दछ र मनाउँछ |",
   },
   "activities.title": { en: "Our Activities", ne: "हमारी गतिविधियाँ" },
   "leaders.title": { en: "Our Leadership", ne: "हमारे नेतृत्व" },
   "core.title": { en: "Core Management Team", ne: "कोर मैनेजमेंट टीम" },
   "staff.title": { en: "Office Staff", ne: "ऑफिस स्टाफ" },
+  "dpmt.title": { en: "Daily Program Management Team (DPMT)", ne: "दैनिक कार्यक्रम व्यवस्थापन उप-समिति (DPMT)" },
   "gallery.title": { en: "Gallery", ne: "गैलरी" },
   "gallery.memories": { en: "Our Memories", ne: "Our Memories" },
   "gallery.video": { en: "Video Gallery", ne: "Video Gallery" },
@@ -68,8 +69,8 @@ const dictionary: Record<string, Record<string, string>> = {
   "about.title": { en: "Introduction", ne: "परिचय" },
   "about.heading": { en: "Introduction", ne: "परिचय" },
   "about.p1": {
-    en: "The Senior Citizen Recreation Centre was founded to provide social and psychological support to elders.",
-    ne: "ज्येष्ठ नागरिक मिलन केन्द्र, तिलोत्तमा, रूपन्देही को स्थापना वृद्ध नागरिकहरूको सामाजिक तथा मनोवैज्ञानिक सहाराका लागि गरिएको हो।",
+    en: "The establishment of the Senior Citizens Recreation Center, Shringeshwardham, Rupandehi aims to address the challenges faced by senior citizens and provide them with a supportive environment for their physical, mental, and psychological well-being. In response to the growing sense of loneliness experienced by the elderly in modern society, the center seeks to bridge the generational gap and promote the exchange of knowledge, skills, and experiences.Recognizing the inherent rights of senior citizens to dignity, respect, and care in old age, this initiative strives to create a harmonious space that fosters mutual understanding between generations and encourages the preservation and promotion of cultural values. Through this compassionate vision, the center envisions a prosperous nation that values and celebrates the wisdom and legacy of its elderly citizens.",
+    ne: "जेष्ठ नागरिक मनोरञ्जन केन्द्र, श्रृङ्गेश्वरधाम, रुपन्देही” को स्थापनाले जेष्ठ नागरिकहरूले सामना गर्ने चुनौतीहरूलाई सम्बोधन गर्न र उनीहरूलाई शारीरिक, मानसिक र मनोवैज्ञानिक कल्याणको लागि सहयोगी वातावरण उपलब्ध गराउन खोजेको छ। आधुनिक समाजमा वरिष्ठहरूले अनुभव गरेको बढ्दो एक्लोपनको प्रतिक्रियामा, केन्द्रले पुस्ताको खाडललाई पुल गर्ने र ज्ञान, सीप र अनुभवहरूको स्थानान्तरणलाई प्रवर्द्धन गर्ने लक्ष्य राखेको छ। वृद्धावस्थामा ज्येष्ठ नागरिकको मर्यादा, सम्मान र हेरचाहको प्राकृतिक अधिकारलाई मान्यता दिँदै, पहलले पुस्ताहरू बीचको आपसी समझदारीलाई बढावा दिँदै सांस्कृतिक मूल्यहरूको संरक्षण र प्रवर्द्धन गर्ने सामंजस्यपूर्ण ठाउँ सिर्जना गर्ने प्रयास गर्दछ। यस दयालु दृष्टिकोण मार्फत, केन्द्रले एक समृद्ध राष्ट्रको परिकल्पना गर्दछ जसले आफ्ना वृद्ध नागरिकहरूको बुद्धि र विरासतलाई मूल्याङ्कन गर्दछ र मनाउँछ |",
   },
   "about.p2": {
     en: "Through activities and programs, members exchange experience, knowledge and skills.",
