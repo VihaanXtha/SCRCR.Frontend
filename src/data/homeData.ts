@@ -1,4 +1,40 @@
-import pabitraImg from '../assets/images/dpmt-images/Pabitra parajuli.png';
+// Import ALL images from the assets/images directory recursively
+// This includes dpmt-images, Baristha-sadaya, and any other folders you add.
+const allAssets = import.meta.glob('../assets/images/**/*.{png,jpg,jpeg,svg}', { 
+  eager: true, 
+  import: 'default' 
+});
+
+// Helper function to get an image by filename (partial or full)
+// You can optionally pass a specific folder name to narrow down the search.
+const getImage = (searchName: string, folderName?: string) => {
+  // Filter keys by folder if provided
+  const candidateKeys = folderName 
+    ? Object.keys(allAssets).filter(key => key.includes(folderName))
+    : Object.keys(allAssets);
+
+  // 1. Try to find a file that contains the search string (case-insensitive)
+  const foundKey = candidateKeys.find(path => 
+    path.toLowerCase().includes(searchName.toLowerCase())
+  );
+
+  if (foundKey) {
+    return allAssets[foundKey];
+  }
+
+  // 2. Fallback: Use "Pabitra parajuli" as the default if looking in dpmt or generally
+  // (Preserving previous logic for dpmt fallback)
+  const defaultKey = Object.keys(allAssets).find(path => 
+    path.toLowerCase().includes('pabitra')
+  );
+  
+  if (defaultKey) {
+    return allAssets[defaultKey];
+  }
+
+  // 3. Last resort placeholder
+  return 'https://placehold.co/160x160';
+};
 
 export const activities = [
   { title: 'सामाजिक कार्यक्रम', img: 'https://placehold.co/400x260' },
@@ -40,76 +76,76 @@ export const dpmt = [
   {
     name: "श्री पार्वता बेल्वासे",
     role: "संयोजक",
-    img: pabitraImg,
+    img: getImage(""),
   },
   {
     name: "श्री पावित्रा पराजुली",
     role: "सह संयोजक",
-    img: pabitraImg,
+    img: getImage("1"),
   },
   {
     name: "श्री सुजता भण्डारी ",
     role: "सचिव",
-    img: pabitraImg,
+    img: getImage(""),
   },
   {
     name: "श्री रेनु क्षेत्री",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage(""),
   },
   {
     name: "श्री मिना पाण्डे",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage(""),
   },
   {
     name: "श्री सरस्वती पाण्डे",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage(""),
   },
   {
     name: "श्री विष्णुदेवी खराल",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage(""),
   },
   {
     name: "श्री मन्दिरा शर्मा",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage(""),
   },
   {
     name: "श्री रमा ज्ञवाली",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage(""),
   },
   {
     name: "श्री अर्जुनराज धीमीरे",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage("Arjun"),
   },
   {
     name: "श्री गंगाधर अधिकारी",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage("Ganga"),
   },
   {
     name: "श्री लक्ष्मी थापा",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage("Laxmi"),
   },
   {
     name: "श्री यमुना अधिकारी ",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage("Yamuna"),
   },
   {
     name: "श्री संगीता भुसाल",
     role: "सदस्य",
-    img: pabitraImg,
+    img: getImage("Sangita"),
   },
   {
     name: "श्री सावित्रा खत्री",
     role: "स्सदस्य",
-    img: pabitraImg,
+    img: getImage("Savitra"),
   },
 ];
