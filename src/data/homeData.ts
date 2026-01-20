@@ -1,5 +1,5 @@
 import pabitraImg from '../assets/images/dpmt-images/Pabitra.png';
-import firstImg from "../assets/images/Baristha-sadayabalami buwa.png";
+import firstImg from "../assets/images/Baristha-sadaya/balami buwa.png";
 import secondImg from '../assets/images/Baristha-sadaya/yadunath pandey.png';
 import thirdImg from '../assets/images/Baristha-sadaya/khem.png';
 import fourthImg from '../assets/images/Baristha-sadaya/netra buwa.png';
