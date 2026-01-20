@@ -1,7 +1,7 @@
 import '../App.css'
 import { useRef } from 'react'
 
-type Person = { name: string; role: string; img: string }
+
 
 export default function StaffSection({ staff, t }: { staff: Person[]; t: (k: string) => string }) {
   const ref = useRef<HTMLDivElement | null>(null)
