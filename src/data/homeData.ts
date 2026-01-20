@@ -35,19 +35,79 @@ export const staff = [
 ]
 
 export const dpmt = [
-  { name: 'श्री पार्वता बेल्वासे', role: 'संयोजक', img: 'https://placehold.co/160x160' },
-  { name: 'श्री पावित्रा पराजुली', role: 'सह संयोजक', img: 'https://placehold.co/160x160' },
-  { name: 'श्री सुजता भण्डारी ', role: 'सचिव', img: 'https://placehold.co/160x160' },
-  { name: 'श्री रेनु क्षेत्री', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री मिना पाण्डे', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री सरस्वती पाण्डे', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री विष्णुदेवी खराल', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री मन्दिरा शर्मा', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री रमा ज्ञवाली', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री अर्जुनराज धीमीरे', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री गंगाधर अधिकारी', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री लक्ष्मी थापा', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री यमुना अधिकारी ', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री संगीता भुसाल', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'श्री सावित्रा खत्री', role: 'स्सदस्य', img: 'https://placehold.co/160x160' }
-]
+  {
+    name: "श्री पार्वता बेल्वासे",
+    role: "संयोजक",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री पावित्रा पराजुली",
+    role: "सह संयोजक",
+    img: require('../assets/images/dpmt-images/Pabitra parajuli.png'),
+  },
+  {
+    name: "श्री सुजता भण्डारी ",
+    role: "सचिव",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री रेनु क्षेत्री",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री मिना पाण्डे",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री सरस्वती पाण्डे",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री विष्णुदेवी खराल",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री मन्दिरा शर्मा",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री रमा ज्ञवाली",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री अर्जुनराज धीमीरे",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री गंगाधर अधिकारी",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री लक्ष्मी थापा",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री यमुना अधिकारी ",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री संगीता भुसाल",
+    role: "सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+  {
+    name: "श्री सावित्रा खत्री",
+    role: "स्सदस्य",
+    img: "https://placehold.co/160x160",
+  },
+];
