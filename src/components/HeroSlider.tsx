@@ -16,28 +16,26 @@ export default function HeroSlider() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000); // Change image every 3 seconds
+    }, 4000); // Change image every 4 seconds for better slide feel
 
     return () => clearInterval(interval);
   }, []);
 
+  const getSlideClass = (index: number) => {
+    if (index === currentIndex) return 'active';
+    if (index === (currentIndex - 1 + images.length) % images.length) return 'prev';
+    if (index === (currentIndex + 1) % images.length) return 'next';
+    return 'off';
+  };
+
   return (
-    <div className="hero-slider" style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden' }}>
+    <div className="hero-slider">
       {images.map((img, index) => (
         <img
           key={index}
           src={img}
           alt={`Slide ${index + 1}`}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            opacity: index === currentIndex ? 1 : 0,
-            transition: 'opacity 1s ease-in-out',
-          }}
+          className={getSlideClass(index)}
         />
       ))}
     </div>

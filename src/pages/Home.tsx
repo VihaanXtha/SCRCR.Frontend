@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import Intro from '../components/Intro'
+import HeroSlider from '../components/HeroSlider'
 import StaffSection from '../components/StaffSection'
 import DPMT from '../components/DPMT'
 import { fetchNotices, fetchNews, fetchGallery } from '../services/content'
 import { activities, dpmt, leaderQuotes, leaders, staff } from '../data/homeData'
-import type { NoticeItem } from '../types/content'
+import type { NoticeItem, NewsItem } from '../types/content'
+import Intro from '../components/Intro'
 
 
 export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en' | 'ne' }) {
@@ -16,7 +17,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
     el.scrollTo({ left: dir === 'left' ? el.scrollLeft - amount : el.scrollLeft + amount, behavior: 'smooth' })
   }
   const [gallery, setGallery] = useState<string[]>([])
-  const [latestNews, setLatestNews] = useState<{ title: string; img?: string; publishedAt?: string }[]>([])
+  const [latestNews, setLatestNews] = useState<NewsItem[]>([])
   const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([])
   const [currentPopup, setCurrentPopup] = useState<NoticeItem | null>(null)
 
@@ -102,8 +103,6 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       })
       setLatestNews(sorted.slice(0, 3))
     }).catch(() => setLatestNews([]))
-    
-    // Fetch gallery preview
     fetchGallery().then(items => {
       // Filter for images and take first 8
       const images = items
@@ -118,7 +117,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
   return (
     <>
       <section className="hero">
-        <img src="https://placehold.co/1600x520" alt="hero" />
+        <HeroSlider />
         <div className="hero-steps">
           <div className="step">
             <div className="circle">01</div>
@@ -206,8 +205,8 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       <section className="section">
         <h3>{t('news.title')}</h3>
         <div className="news">
-          {latestNews.map(n => (
-            <div key={n.title} className="news-card">
+          {latestNews.map((n, i) => (
+            <div key={n._id || i} className="news-card">
               {n.img && <img src={n.img} alt={n.title} />}
               <div className="news-body">
                 <div className="news-title">{n.title}</div>
