@@ -1,6 +1,7 @@
 import '../App.css'
 import type { Member } from '../types/members'
 import { useEffect } from 'react'
+import { getOptimizedUrl } from '../utils/image'
 
 export default function MemberDetail({ member, onClose, t }: {
   member: Member
@@ -23,7 +24,14 @@ export default function MemberDetail({ member, onClose, t }: {
         </div>
         <div className="modal-body">
           <div className="modal-left">
-            <img src={member.img} alt={member.name} />
+            <img 
+              src={getOptimizedUrl(member.img, { width: 600 })} 
+              alt={member.name} 
+              loading="lazy"
+              width="600"
+              height="600"
+              style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+            />
           </div>
           <div className="modal-right">
             <div className="detail-grid">

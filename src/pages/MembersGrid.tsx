@@ -2,6 +2,7 @@ import '../App.css'
 
 import SubHero from '../components/SubHero'
 import MemberDetail from '../components/MemberDetail'
+import { getOptimizedUrl } from '../utils/image'
 
 import { useState } from 'react'
 import type { Member } from '../types/members'
@@ -16,7 +17,13 @@ export default function MembersGrid({ title, members, t }: { title: string; memb
       <div className="members-grid">
         {members.map((m, i) => (
           <div key={`${m.name}-${i}`} className="member-card" onClick={() => setSelected(m)}>
-            <img src={m.img} alt={m.name} />
+            <img 
+              src={getOptimizedUrl(m.img, { width: 300, height: 300, fit: 'cover' })} 
+              alt={m.name} 
+              loading="lazy"
+              width="300"
+              height="300"
+            />
             <div className="member-name">{m.name}</div>
           </div>
         ))}

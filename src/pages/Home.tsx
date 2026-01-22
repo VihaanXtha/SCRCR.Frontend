@@ -6,6 +6,7 @@ import { fetchNotices, fetchNews, fetchGallery } from '../services/content'
 import { activities, dpmt, leaderQuotes, leaders, staff } from '../data/homeData'
 import type { NoticeItem, NewsItem } from '../types/content'
 import Intro from '../components/Intro'
+import { getOptimizedUrl } from '../utils/image'
 
 
 export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en' | 'ne' }) {
@@ -35,8 +36,13 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
   }
 
   const getEmbedUrl = (url: string) => {
+    // Check for Cloudinary or direct video files
+    if (url.includes('cloudinary') || url.match(/\.(mp4|webm|mov)$/i)) {
+      return { type: 'video', src: getOptimizedUrl(url, { quality: 'auto' }) }
+    }
+    
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i)
-    return match ? `https://www.youtube.com/embed/${match[1]}` : null
+    return match ? { type: 'iframe', src: `https://www.youtube.com/embed/${match[1]}` } : null
   }
 
   useEffect(() => {
@@ -141,8 +147,8 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       <section className="section">
         <h3>{t('activities.title')}</h3>
         <div className="grid">
-          {activities.map(a => (
-            <div key={a.title} className="card">
+          {activities.map((a, i) => (
+            <div key={`${a.title}-${i}`} className="card">
               <img src={a.img} alt={a.title} />
               <div className="card-title">{a.title}</div>
             </div>
@@ -156,7 +162,11 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           {leaderQuotes.map((q, i) => (
             <div key={`${q.name}-${i}`} className="quote-card">
               <div className="quote-top">
-                <img src={q.img} alt={q.name} />
+                <img 
+                  src={getOptimizedUrl(q.img, { width: 100, height: 100, fit: 'cover' })} 
+                  alt={q.name} 
+                  loading="lazy"
+                />
                 <div>
                   <div className="quote-name">{q.name}</div>
                   <div className="quote-role">{q.role}</div>
@@ -177,7 +187,11 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <div className="carousel" ref={carouselRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
           {leaders.map((l, i) => (
             <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-              <img src={l.img} alt={l.name} />
+              <img 
+                src={getOptimizedUrl(l.img, { width: 150, height: 150, fit: 'cover' })} 
+                alt={l.name} 
+                loading="lazy"
+              />
               <div className="profile-name">{l.name}</div>
               <div className="profile-role">{l.role}</div>
             </div>
@@ -193,7 +207,11 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <div className="grid">
           {gallery.map((g, i) => (
             <div key={i} className="card">
-              <img src={g} alt={'img' + i} />
+              <img 
+                src={getOptimizedUrl(g, { width: 400, height: 300, fit: 'cover' })} 
+                alt={'img' + i} 
+                loading="lazy"
+              />
             </div>
           ))}
         </div>
@@ -207,7 +225,13 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <div className="news">
           {latestNews.map((n, i) => (
             <div key={n._id || i} className="news-card">
-              {n.img && <img src={n.img} alt={n.title} />}
+              {n.img && (
+                <img 
+                  src={getOptimizedUrl(n.img, { width: 400, height: 300, fit: 'cover' })} 
+                  alt={n.title} 
+                  loading="lazy"
+                />
+              )}
               <div className="news-body">
                 <div className="news-title">{n.title}</div>
                 <p>{n.publishedAt ? new Date(n.publishedAt).toLocaleDateString() : ''}</p>
@@ -235,24 +259,42 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
             <div className={currentPopup.mediaUrl && currentPopup.text ? "notice-body-grid" : "notice-body-single"}>
               {currentPopup.mediaUrl && (
                 <div className={currentPopup.text ? "notice-media-col" : "notice-media-full"}>
-                  {getEmbedUrl(currentPopup.mediaUrl) ? (
-                    <iframe 
-                      width="100%" 
-                      height={currentPopup.text ? "300" : "400"} 
-                      src={getEmbedUrl(currentPopup.mediaUrl)!} 
-                      title="Notice Video" 
-                      frameBorder="0" 
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                      allowFullScreen 
-                      style={{ borderRadius: 8 }}
-                    />
-                  ) : (
-                    <img 
-                      src={currentPopup.mediaUrl} 
-                      alt={currentPopup.title} 
-                      style={{ width: '100%', borderRadius: 8, maxHeight: currentPopup.text ? 400 : '60vh', objectFit: 'contain' }} 
-                    />
-                  )}
+                  {(() => {
+                    const embed = getEmbedUrl(currentPopup.mediaUrl)
+                    if (embed?.type === 'video') {
+                      return (
+                        <video 
+                          src={embed.src} 
+                          controls 
+                          autoPlay 
+                          muted 
+                          playsInline
+                          style={{ width: '100%', borderRadius: 8, maxHeight: currentPopup.text ? 400 : '60vh', objectFit: 'contain' }} 
+                        />
+                      )
+                    }
+                    if (embed?.type === 'iframe') {
+                      return (
+                        <iframe 
+                          width="100%" 
+                          height={currentPopup.text ? "300" : "400"} 
+                          src={embed.src} 
+                          title="Notice Video" 
+                          frameBorder="0" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowFullScreen 
+                          style={{ borderRadius: 8 }}
+                        />
+                      )
+                    }
+                    return (
+                      <img 
+                        src={getOptimizedUrl(currentPopup.mediaUrl, { width: 800 })} 
+                        alt={currentPopup.title} 
+                        style={{ width: '100%', borderRadius: 8, maxHeight: currentPopup.text ? 400 : '60vh', objectFit: 'contain' }} 
+                      />
+                    )
+                  })()}
                 </div>
               )}
               {currentPopup.text && (

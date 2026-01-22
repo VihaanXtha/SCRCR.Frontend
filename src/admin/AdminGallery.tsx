@@ -102,11 +102,31 @@ export default function AdminGallery() {
           </div>
 
           {newGallery.type === 'video' ? (
-            <input 
-              placeholder="Video URL (YouTube)" 
-              value={newGallery.videoUrl} 
-              onChange={e => setNewGallery({ ...newGallery, videoUrl: e.target.value })} 
-            />
+            <div className="form-group">
+              <label>Video (Upload or URL)</label>
+              <div style={{ display: 'grid', gap: 10 }}>
+                <input 
+                  placeholder="Video URL (YouTube)" 
+                  value={newGallery.videoUrl} 
+                  onChange={e => setNewGallery({ ...newGallery, videoUrl: e.target.value })} 
+                />
+                <div style={{ textAlign: 'center', fontSize: '0.9em', color: '#666' }}>- OR -</div>
+                <input 
+                  type="file" 
+                  accept="video/*"
+                  onChange={async e => {
+                    if (e.target.files?.[0]) {
+                      try {
+                        const { url } = await uploadImage(e.target.files[0])
+                        setNewGallery({ ...newGallery, videoUrl: url })
+                      } catch {
+                        alert('Upload failed')
+                      }
+                    }
+                  }} 
+                />
+              </div>
+            </div>
           ) : (
             <div className="form-group">
               <label>Image</label>
