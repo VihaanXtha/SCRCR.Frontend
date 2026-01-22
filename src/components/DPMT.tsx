@@ -18,9 +18,9 @@ export default function DPMT({ staff, t }: { staff: { name: string; role: string
         <button className="btn sm" onClick={() => scroll('left')}>‹</button>
         <button className="btn sm" onClick={() => scroll('right')}>›</button>
       </div>
-      <div className="carousel" ref={ref}>
-        {staff.map(s => (
-          <div key={s.name} className="profile">
+      <div className="carousel" ref={ref} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+        {staff.map((s, i) => (
+          <div key={`${s.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
             <img src={s.img} alt={s.name} />
             <div className="profile-name">{s.name}</div>
             <div className="profile-role">{s.role}</div>

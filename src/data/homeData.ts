@@ -1,6 +1,6 @@
-import pabitraImg from '../assets/images/dpmt-images/2.png';
-import firstImg from "../assets/images/Baristha-sadaya/3.png";
-import secondImg from '../assets/images/Baristha-sadaya/4.png';
+import pabitraImg from '../assets/images/dpmt-images/Pabitra.png';
+import firstImg from "../assets/images/Baristha-sadaya/balami buwa.png";
+import secondImg from '../assets/images/Baristha-sadaya/yadunath pandey.png';
 import thirdImg from '../assets/images/Baristha-sadaya/khem.png';
 import fourthImg from '../assets/images/Baristha-sadaya/netra buwa.png';
 import fifthImg from '../assets/images/Baristha-sadaya/rishi bhanttari.png';
@@ -9,7 +9,7 @@ import seventhImg from '../assets/images/Baristha-sadaya/Untitled-1.png';
 
 
 export const activities = [
-  { title: 'सामाजिक कार्यक्रम', img: 'https://placehold.co/400x260' },
+  { title: 'सामाजिक कार्यक्रम', video: 'https://placehold.co/400x260' },
   { title: 'सांस्कृतिक आयोजन', img: 'https://placehold.co/400x260' },
   { title: 'स्वास्थ्य सेवा', img: 'https://placehold.co/400x260' },
   { title: 'युवाओं के लिए', img: 'https://placehold.co/400x260' },
@@ -49,7 +49,7 @@ export const dpmt = [
   {
     name: "श्री पार्वता बेल्वासे",
     role: "संयोजक",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री पावित्रा पराजुली",
@@ -59,66 +59,66 @@ export const dpmt = [
   {
     name: "श्री सुजता भण्डारी ",
     role: "सचिव",
-    img:'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री रेनु क्षेत्री",
     role: "सदस्य",
-      img:'https://placehold.co/160x160',
-    },
+    img: pabitraImg,
+  },
   {
     name: "श्री मिना पाण्डे",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री सरस्वती पाण्डे",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री विष्णुदेवी खराल",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री मन्दिरा शर्मा",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री रमा ज्ञवाली",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160' ,
+    img: pabitraImg,
   },
   {
     name: "श्री अर्जुनराज धीमीरे",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री गंगाधर अधिकारी",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री लक्ष्मी थापा",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री यमुना अधिकारी ",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री संगीता भुसाल",
     role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    img: pabitraImg,
   },
   {
     name: "श्री सावित्रा खत्री",
-    role: "सदस्य",
-    img: 'https://placehold.co/160x160',
+    role: "स्सदस्य",
+    img: pabitraImg,
   },
 ];

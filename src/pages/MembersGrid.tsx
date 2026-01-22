@@ -14,8 +14,8 @@ export default function MembersGrid({ title, members, t }: { title: string; memb
     <div className="page">
       <SubHero title={title} solid />
       <div className="members-grid">
-        {members.map(m => (
-          <div key={m.name} className="member-card" onClick={() => setSelected(m)}>
+        {members.map((m, i) => (
+          <div key={`${m.name}-${i}`} className="member-card" onClick={() => setSelected(m)}>
             <img src={m.img} alt={m.name} />
             <div className="member-name">{m.name}</div>
           </div>

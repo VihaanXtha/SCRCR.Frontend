@@ -153,8 +153,8 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       <section className="section">
         <h3>{t('leaders.title')}</h3>
         <div className="quotes">
-          {leaderQuotes.map(q => (
-            <div key={q.name} className="quote-card">
+          {leaderQuotes.map((q, i) => (
+            <div key={`${q.name}-${i}`} className="quote-card">
               <div className="quote-top">
                 <img src={q.img} alt={q.name} />
                 <div>
@@ -174,9 +174,9 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           <button className="btn sm" onClick={() => scrollCarousel('left')}>‹</button>
           <button className="btn sm" onClick={() => scrollCarousel('right')}>›</button>
         </div>
-        <div className="carousel" ref={carouselRef}>
-          {leaders.map(l => (
-            <div key={l.name} className="profile">
+        <div className="carousel" ref={carouselRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+          {leaders.map((l, i) => (
+            <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
               <img src={l.img} alt={l.name} />
               <div className="profile-name">{l.name}</div>
               <div className="profile-role">{l.role}</div>
@@ -220,9 +220,9 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
       <section className="section">
         <h3>{t('subscribe.title')}</h3>
-        <form className="subscribe">
-          <input placeholder={lang === 'en' ? 'Your email' : 'आपका ईमेल'} />
-          <button className="btn">{t('subscribe.cta')}</button>
+        <form className="subscribe" style={{ flexWrap: 'wrap' }}>
+          <input placeholder={lang === 'en' ? 'Your email' : 'आपका ईमेल'} style={{ minWidth: '200px' }} />
+          <button className="btn" style={{ flex: '1 0 auto' }}>{t('subscribe.cta')}</button>
         </form>
       </section>
       {currentPopup && (

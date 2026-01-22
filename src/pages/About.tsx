@@ -1,10 +1,11 @@
 import '../App.css'
 import SubHero from '../components/SubHero'
+import img1 from '../assets/images/scrc-aboutus-1-1.jpg';
 
 export default function About({ t }: { t: (k: string) => string }) {
   return (
     <div className="page">
-      <SubHero title={t('about.title')} img="https://placehold.co/1600x420" />
+      <SubHero title={t('about.title')} img={img1} />
       <div className="about">
         <div className="about-grid">
           <div className="about-photo">

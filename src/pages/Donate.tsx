@@ -1,11 +1,12 @@
 import '../App.css'
+import img1 from '../assets/images/hero-slider/scrc-slider-1-1.jpg';
 
 import SubHero from '../components/SubHero'
 
 export default function Donate({ t }: { t: (k: string) => string }) {
   return (
     <div className="page">
-      <SubHero title={t('nav.donate')} img="https://placehold.co/1600x420" />
+      <SubHero title={t('nav.donate')} img={img1} />
       <div className="donate-layout">
         <div className="donate-left">
           <h3>{t('donate.support')}</h3>
