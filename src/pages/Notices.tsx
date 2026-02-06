@@ -40,7 +40,7 @@ export default function Notices({ t }: { t: (k: string) => string }) {
             )}
             <div style={{ padding: 15, display: 'flex', flexDirection: 'column', flex: 1 }}>
               <div className="post-title">{n.title}</div>
-              <div className="post-text">{n.text && n.text.length > 100 ? n.text.slice(0, 100) + '...' : n.text}</div>
+              <div className="post-text">{typeof n.text === 'string' && n.text.length > 100 ? n.text.slice(0, 100) + '...' : n.text}</div>
               <span className="post-link" onClick={(e) => { e.stopPropagation(); setActivePopup(n); }}>{t('news.read_more')}</span>
               <div className="post-date">{n.active ? 'Active' : 'Inactive'}</div>
             </div>

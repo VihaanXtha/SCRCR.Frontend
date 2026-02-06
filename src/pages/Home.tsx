@@ -149,7 +149,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <div className="grid">
           {activities.map((a, i) => (
             <div key={`${a.title}-${i}`} className="card">
-              <img src={a.img} alt={a.title} />
+              {a.img && <img src={a.img} alt={a.title} />}
               <div className="card-title">{a.title}</div>
             </div>
           ))}
@@ -162,11 +162,13 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           {leaderQuotes.map((q, i) => (
             <div key={`${q.name}-${i}`} className="quote-card">
               <div className="quote-top">
-                <img 
-                  src={getOptimizedUrl(q.img, { width: 100, height: 100, fit: 'cover' })} 
-                  alt={q.name} 
-                  loading="lazy"
-                />
+                {q.img && (
+                  <img 
+                    src={getOptimizedUrl(q.img, { width: 100, height: 100, fit: 'cover' })} 
+                    alt={q.name} 
+                    loading="lazy"
+                  />
+                )}
                 <div>
                   <div className="quote-name">{q.name}</div>
                   <div className="quote-role">{q.role}</div>
@@ -187,11 +189,13 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <div className="carousel" ref={carouselRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
           {leaders.map((l, i) => (
             <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-              <img 
-                src={getOptimizedUrl(l.img, { width: 150, height: 150, fit: 'cover' })} 
-                alt={l.name} 
-                loading="lazy"
-              />
+              {l.img && (
+                <img 
+                  src={getOptimizedUrl(l.img, { width: 150, height: 150, fit: 'cover' })} 
+                  alt={l.name} 
+                  loading="lazy"
+                />
+              )}
               <div className="profile-name">{l.name}</div>
               <div className="profile-role">{l.role}</div>
             </div>

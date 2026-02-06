@@ -21,7 +21,7 @@ export default function News({ t }: { t: (k: string) => string }) {
             {p.img && <img src={p.img} alt={p.title} style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: '4px 4px 0 0' }} />}
             <div style={{ padding: 15 }}>
               <div className="post-title">{p.title}</div>
-              <div className="post-text">{p.text && p.text.length > 100 ? p.text.slice(0, 100) + '...' : p.text}</div>
+              <div className="post-text">{typeof p.text === 'string' && p.text.length > 100 ? p.text.slice(0, 100) + '...' : p.text}</div>
               <span className="post-link" onClick={(e) => { e.stopPropagation(); setActivePopup(p); }}>{t('news.read_more')}</span>
               <div className="post-date">{p.publishedAt ? new Date(p.publishedAt).toLocaleDateString() : ''}</div>
             </div>

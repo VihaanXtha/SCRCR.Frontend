@@ -9,7 +9,7 @@ import seventhImg from '../assets/images/Baristha-sadaya/Untitled-1.png';
 
 
 export const activities = [
-  { title: 'सामाजिक कार्यक्रम', video: 'https://placehold.co/400x260' },
+  { title: 'सामाजिक कार्यक्रम', img: 'https://placehold.co/400x260' },
   { title: 'सांस्कृतिक आयोजन', img: 'https://placehold.co/400x260' },
   { title: 'स्वास्थ्य सेवा', img: 'https://placehold.co/400x260' },
   { title: 'युवाओं के लिए', img: 'https://placehold.co/400x260' },
