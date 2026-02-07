@@ -180,40 +180,59 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       </AnimatedSection>
 
       <AnimatedSection className="section" type="zoom-in">
-        <h3>{t('leaders.title')}</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-col gap-24 py-12">
           {leaderQuotes.map((q, i) => (
-            <div key={`${q.name}-${i}`} className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0c2f5f] to-[#1e4a7f] rounded-3xl transform -rotate-2 group-hover:-rotate-4 transition-transform duration-300"></div>
-              <div className="relative bg-white rounded-3xl p-6 shadow-xl transform rotate-1 group-hover:rotate-0 transition-transform duration-300 border border-gray-100">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="relative">
-                    {q.img && (
-                      <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-blue-50 shadow-md">
-                        <img 
-                          src={getOptimizedUrl(q.img, { width: 150, height: 150, fit: 'cover' })} 
-                          alt={q.name} 
-                          loading="lazy"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <div className="absolute -bottom-2 -right-2 bg-[#0c2f5f] text-white text-xs px-2 py-1 rounded-lg shadow-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-white"><path d="M14.017 21L14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017ZM14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017Z" stroke="none" /></svg>
+            <div key={`${q.name}-${i}`} className="w-full max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-4 shadow-sm">
+                  WELCOME TO SCRC
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+                  Message From <span className="text-[#e43f6f]">{q.role}</span>
+                </h2>
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-center">
+                {/* Left Column: Photo */}
+                <div className="relative w-full md:w-5/12 flex justify-center group">
+                  {/* Decorative background shapes */}
+                  <div className="absolute inset-0 bg-[#e43f6f] opacity-5 rounded-[2.5rem] transform rotate-6 scale-90 translate-x-4 transition-transform duration-500 group-hover:rotate-3"></div>
+                  <div className="absolute inset-0 bg-[#c6285b] opacity-10 rounded-[2.5rem] transform -rotate-3 scale-95 -translate-x-2 transition-transform duration-500 group-hover:-rotate-1"></div>
+                  
+                  {/* Main Photo Frame */}
+                  <div className="relative z-10 bg-white p-3 rounded-[2.5rem] shadow-2xl transform transition-transform duration-500 group-hover:scale-[1.02]">
+                    <img 
+                      src={getOptimizedUrl(q.img, { width: 500, height: 600, fit: 'cover' })} 
+                      alt={q.name}
+                      className="w-full aspect-[3/4] object-cover rounded-[2rem]"
+                    />
+                    
+                    {/* Name Label Overlay */}
+                    <div className="absolute bottom-8 left-0 bg-gradient-to-r from-[#e43f6f] to-[#c6285b] text-white px-8 py-4 rounded-r-full shadow-lg max-w-[90%] transform transition-transform duration-500 group-hover:translate-x-2">
+                      <div className="font-bold text-lg md:text-xl uppercase tracking-wide leading-tight">{q.name}</div>
+                      <div className="text-xs md:text-sm font-medium opacity-90 mt-1 uppercase tracking-wider">{q.role}</div>
                     </div>
                   </div>
-                  <div>
-                    <div className="text-xl font-bold text-gray-800">{q.name}</div>
-                    <div className="text-sm font-semibold text-[#e43f6f] uppercase tracking-wider">{q.role}</div>
-                  </div>
                 </div>
-                <div className="relative">
-                  <svg className="absolute -top-4 -left-2 text-gray-100 w-12 h-12 -z-10 transform -scale-x-100" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
-                    <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
-                  </svg>
-                  <p className="text-gray-600 italic leading-relaxed relative z-10 pl-2">
-                    "{q.quote}"
-                  </p>
+
+                {/* Right Column: Message */}
+                <div className="w-full md:w-7/12">
+                  <div className="bg-gradient-to-br from-gray-50 to-white rounded-[2.5rem] p-8 md:p-12 shadow-lg border border-gray-100 relative h-full flex flex-col justify-center transform transition-all duration-500 hover:shadow-xl">
+                    {/* Quote Icon */}
+                    <div className="absolute top-8 left-8 text-[#e43f6f] opacity-10">
+                      <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21L14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017ZM14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017Z" /></svg>
+                    </div>
+                    
+                    <div className="relative z-10">
+                      <p className="text-gray-600 text-lg md:text-xl leading-relaxed italic font-light">
+                        "{q.quote}"
+                      </p>
+                      <div className="mt-8 flex items-center gap-3">
+                        <div className="h-1 w-12 bg-[#e43f6f] rounded-full"></div>
+                        <div className="text-sm font-bold text-gray-400 uppercase tracking-widest">SCRC Leader</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
