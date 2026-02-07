@@ -170,23 +170,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <Intro t={t} lang={lang} />
       </AnimatedSection>
 
-      <AnimatedSection className="section" type="fade-left">
-        <h3>{t('activities.title')}</h3>
-        <div className="relative group" onMouseEnter={onMouseEnterActivities} onMouseLeave={onMouseLeaveActivities}>
-          <div className="carousel-controls">
-            <button className="btn sm" onClick={() => scrollActivities('left')}>‹</button>
-            <button className="btn sm" onClick={() => scrollActivities('right')}>›</button>
-          </div>
-          <div className="carousel" ref={activitiesRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
-            {activities.map((a, i) => (
-              <div key={`${a.title}-${i}`} className="card min-w-[420px]" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-                {a.img && <img src={a.img} alt={a.title} className="h-[312px] w-full object-cover" />}
-                <div className="card-title">{a.title}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </AnimatedSection>
+
 
       <AnimatedSection className="section" type="zoom-in">
         <div className="py-8">
@@ -262,6 +246,57 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                 aria-label={`View leader ${i + 1}`}
               />
             ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="fade-up">
+        <div className="bg-gradient-to-br from-pink-50 to-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-pink-100 relative overflow-hidden">
+          {/* Decorative Background */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+          
+          <div className="relative z-10">
+            <div className="flex justify-between items-end mb-8">
+              <div>
+                <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
+                  WHAT WE DO
+                </span>
+                <h3 className="text-3xl font-bold text-gray-800">{t('activities.title')}</h3>
+              </div>
+              <div className="carousel-controls flex gap-2">
+                <button className="btn sm bg-white shadow-md hover:bg-pink-50 border-pink-200" onClick={() => scrollActivities('left')}>‹</button>
+                <button className="btn sm bg-white shadow-md hover:bg-pink-50 border-pink-200" onClick={() => scrollActivities('right')}>›</button>
+              </div>
+            </div>
+
+            <div className="relative group" onMouseEnter={onMouseEnterActivities} onMouseLeave={onMouseLeaveActivities}>
+              <div className="carousel flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide" ref={activitiesRef}>
+                {activities.map((a, i) => (
+                  <div key={`${a.title}-${i}`} className="min-w-[380px] snap-start">
+                    <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 h-full">
+                      <div className="relative h-[280px] overflow-hidden">
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        {a.img && (
+                          <img 
+                            src={a.img} 
+                            alt={a.title} 
+                            className="w-full h-full object-cover transform transition-transform duration-700 hover:scale-110" 
+                          />
+                        )}
+                         <div className="absolute bottom-4 left-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                           <span className="px-3 py-1 bg-[#e43f6f] text-white text-xs font-bold rounded-full">SCRC Activity</span>
+                         </div>
+                      </div>
+                      <div className="p-6">
+                        <div className="text-xl font-bold text-gray-800 mb-2">{a.title}</div>
+                        <div className="h-1 w-12 bg-pink-200 rounded-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </AnimatedSection>
