@@ -301,25 +301,33 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         </div>
       </AnimatedSection>
 
-      <AnimatedSection className="section" type="fade-right">
-        <h3>{t('core.title')}</h3>
+      <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="fade-right">
+        <div className="text-center mb-12">
+           <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
+             LEADERSHIP
+           </span>
+           <h3 className="text-3xl md:text-4xl font-bold text-gray-800">{t('core.title')}</h3>
+        </div>
         <div className="relative group" onMouseEnter={onMouseEnterLeaders} onMouseLeave={onMouseLeaveLeaders}>
-          <div className="carousel-controls">
-            <button className="btn sm" onClick={() => scrollLeaders('left')}>‹</button>
-            <button className="btn sm" onClick={() => scrollLeaders('right')}>›</button>
+          <div className="carousel-controls flex justify-end gap-2 mb-4 px-4">
+            <button className="btn sm bg-white shadow-md hover:bg-pink-50 border-pink-200 rounded-full w-10 h-10 flex items-center justify-center" onClick={() => scrollLeaders('left')}>‹</button>
+            <button className="btn sm bg-white shadow-md hover:bg-pink-50 border-pink-200 rounded-full w-10 h-10 flex items-center justify-center" onClick={() => scrollLeaders('right')}>›</button>
           </div>
-          <div className="carousel" ref={carouselRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+          <div className="carousel flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide px-4" ref={carouselRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
             {leaders.map((l, i) => (
-              <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-                {l.img && (
-                  <img 
-                    src={getOptimizedUrl(l.img, { width: 200, height: 200, fit: 'cover' })} 
-                    alt={l.name} 
-                    loading="lazy"
-                  />
-                )}
-                <div className="profile-name">{l.name}</div>
-                <div className="profile-role">{l.role}</div>
+              <div key={`${l.name}-${i}`} className="min-w-[240px] snap-start bg-white rounded-[2rem] p-6 shadow-lg border border-pink-50 hover:shadow-xl transition-all text-center group/card">
+                <div className="relative w-40 h-40 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#e43f6f] to-[#c6285b]">
+                  {l.img && (
+                    <img 
+                      src={getOptimizedUrl(l.img, { width: 200, height: 200, fit: 'cover' })} 
+                      alt={l.name} 
+                      loading="lazy"
+                      className="w-full h-full object-cover rounded-full border-4 border-white"
+                    />
+                  )}
+                </div>
+                <div className="font-bold text-xl text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">{l.name}</div>
+                <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">{l.role}</div>
               </div>
             ))}
           </div>
@@ -329,53 +337,96 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
       </AnimatedSection>
 
-      <AnimatedSection className="section" type="fade-up">
-        <h3>{t('gallery.title')}</h3>
-        <div className="grid">
+      <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="fade-up">
+        <div className="text-center mb-12">
+           <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
+             MOMENTS
+           </span>
+           <h3 className="text-3xl md:text-4xl font-bold text-gray-800">{t('gallery.title')}</h3>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {gallery.map((g, i) => (
-            <div key={i} className="card">
+            <div key={i} className="relative group overflow-hidden rounded-[1.5rem] shadow-md hover:shadow-xl transition-all aspect-square cursor-pointer">
               <img 
-                src={getOptimizedUrl(g, { width: 400, height: 300, fit: 'cover' })} 
+                src={getOptimizedUrl(g, { width: 400, height: 400, fit: 'cover' })} 
                 alt={'img' + i} 
                 loading="lazy"
+                className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <span className="text-white text-sm font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">View Image</span>
+              </div>
             </div>
           ))}
         </div>
-        <div className="center">
-          <button className="btn">{lang === 'en' ? 'View more' : 'और देखें'}</button>
+        <div className="center mt-10">
+          <button className="btn rounded-full px-8 py-3 shadow-lg hover:shadow-pink-200/50 bg-white border-[#e43f6f] text-[#e43f6f] hover:bg-[#e43f6f] hover:text-white transition-all duration-300 font-bold tracking-wide">
+            {lang === 'en' ? 'View Gallery' : 'और देखें'}
+          </button>
         </div>
       </AnimatedSection>
 
-      <AnimatedSection className="section" type="scale-up">
-        <h3>{t('news.title')}</h3>
-        <div className="news">
+      <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="scale-up">
+        <div className="text-center mb-12">
+           <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
+             UPDATES
+           </span>
+           <h3 className="text-3xl md:text-4xl font-bold text-gray-800">{t('news.title')}</h3>
+        </div>
+        <div className="grid md:grid-cols-3 gap-8">
           {latestNews.map((n, i) => (
-            <div key={n._id || i} className="news-card">
-              {n.img && (
-                <img 
-                  src={getOptimizedUrl(n.img, { width: 400, height: 300, fit: 'cover' })} 
-                  alt={n.title} 
-                  loading="lazy"
-                />
-              )}
-              <div className="news-body">
-                <div className="news-title">{n.title}</div>
-                <p>{n.publishedAt ? new Date(n.publishedAt).toLocaleDateString() : ''}</p>
-                <button className="btn sm">{lang === 'en' ? 'Read' : 'पढ़ें'}</button>
+            <div key={n._id || i} className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-gray-100 flex flex-col h-full group transform hover:-translate-y-2 duration-300">
+              <div className="h-56 overflow-hidden relative">
+                {n.img && (
+                  <img 
+                    src={getOptimizedUrl(n.img, { width: 400, height: 300, fit: 'cover' })} 
+                    alt={n.title} 
+                    loading="lazy"
+                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm">
+                  NEWS
+                </div>
+              </div>
+              <div className="p-8 flex flex-col flex-1">
+                <h4 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-[#e43f6f] transition-colors">{n.title}</h4>
+                <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  {n.publishedAt ? new Date(n.publishedAt).toLocaleDateString() : 'Recent'}
+                </div>
+                <button className="mt-auto self-start text-[#e43f6f] font-bold text-sm uppercase tracking-wider flex items-center gap-2 group/btn">
+                  {lang === 'en' ? 'Read Article' : 'लेख पढ़ें'} 
+                  <span className="transform transition-transform group-hover/btn:translate-x-1">→</span>
+                </button>
               </div>
             </div>
           ))}
         </div>
       </AnimatedSection>
 
-      <AnimatedSection className="section" type="fade-down">
-        <h3>{t('subscribe.title')}</h3>
-        <form className="subscribe" style={{ flexWrap: 'wrap' }}>
-          <input placeholder={lang === 'en' ? 'Your email' : 'आपका ईमेल'} style={{ minWidth: '200px' }} />
-          <button className="btn" style={{ flex: '1 0 auto' }}>{t('subscribe.cta')}</button>
-        </form>
+      <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="fade-down">
+        <div className="bg-[#0c2f5f] rounded-[3rem] p-12 md:p-20 relative overflow-hidden text-center text-white shadow-2xl">
+          {/* Decorative Circles */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#e43f6f] opacity-10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+          
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <h3 className="text-3xl md:text-4xl font-bold mb-6">{t('subscribe.title')}</h3>
+            <p className="text-blue-100 mb-10 text-lg">Stay updated with our latest activities and announcements directly in your inbox.</p>
+            <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input 
+                placeholder={lang === 'en' ? 'Your email address' : 'आपका ईमेल'} 
+                className="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-blue-200 focus:outline-none focus:bg-white/20 backdrop-blur-sm transition-all"
+              />
+              <button className="px-8 py-4 bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold rounded-full shadow-lg hover:shadow-[#e43f6f]/50 transition-all duration-300 transform hover:scale-105">
+                {t('subscribe.cta')}
+              </button>
+            </form>
+          </div>
+        </div>
       </AnimatedSection>
+      
       {currentPopup && (
         <div className="member-modal" onClick={closePopup}>
           <div className={`notice-modal-content ${currentPopup.mediaUrl && currentPopup.text ? 'wide' : ''}`} onClick={e => e.stopPropagation()}>
@@ -434,19 +485,57 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         </div>
       )}
 
-      <AnimatedSection className="section" type="zoom-in" delay={100}>
-        <h3>{t('contact.title')}</h3>
-        <form className="form">
-          <div className="form-row">
-            <input placeholder={lang === 'en' ? 'Name' : 'नाम'} />
-            <input placeholder={lang === 'en' ? 'Mobile' : 'मोबाइल'} />
-            <input placeholder={lang === 'en' ? 'Email' : 'ईमेल'} />
+      <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12 mb-12" type="zoom-in" delay={100}>
+        <div className="bg-white rounded-[3rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+          <div className="md:w-5/12 bg-[#e43f6f] p-12 text-white flex flex-col justify-center relative overflow-hidden">
+             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/20"></div>
+             <div className="relative z-10">
+               <h3 className="text-3xl font-bold mb-6">{t('contact.title')}</h3>
+               <p className="mb-8 opacity-90">Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+               <div className="flex flex-col gap-4">
+                 <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">📍</div>
+                   <span>Rupandehi, Nepal</span>
+                 </div>
+                 <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">📞</div>
+                   <span>+977 1234567890</span>
+                 </div>
+                 <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">✉️</div>
+                   <span>info@scrc.org</span>
+                 </div>
+               </div>
+             </div>
           </div>
-          <textarea placeholder={lang === 'en' ? 'Message' : 'संदेश'} rows={5} />
-          <div className="center">
-            <button className="btn">{lang === 'en' ? 'Send' : 'भेजें'}</button>
+          <div className="md:w-7/12 p-12">
+            <form className="grid gap-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-bold text-gray-600 ml-2">Name</label>
+                  <input placeholder={lang === 'en' ? 'Your Name' : 'नाम'} className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-bold text-gray-600 ml-2">Mobile</label>
+                  <input placeholder={lang === 'en' ? 'Phone Number' : 'मोबाइल'} className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-gray-600 ml-2">Email</label>
+                <input placeholder={lang === 'en' ? 'Email Address' : 'ईमेल'} className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-gray-600 ml-2">Message</label>
+                <textarea placeholder={lang === 'en' ? 'How can we help?' : 'संदेश'} rows={4} className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors resize-none" />
+              </div>
+              <div className="mt-4">
+                <button className="btn w-full bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                  {lang === 'en' ? 'Send Message' : 'भेजें'}
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </AnimatedSection>
     </>
   )
