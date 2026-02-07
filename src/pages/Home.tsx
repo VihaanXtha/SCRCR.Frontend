@@ -170,8 +170,8 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           </div>
           <div className="carousel" ref={activitiesRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
             {activities.map((a, i) => (
-              <div key={`${a.title}-${i}`} className="card min-w-[320px]" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-                {a.img && <img src={a.img} alt={a.title} className="h-[240px] w-full object-cover" />}
+              <div key={`${a.title}-${i}`} className="card min-w-[420px]" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+                {a.img && <img src={a.img} alt={a.title} className="h-[312px] w-full object-cover" />}
                 <div className="card-title">{a.title}</div>
               </div>
             ))}
@@ -233,7 +233,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
               <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
                 {l.img && (
                   <img 
-                    src={getOptimizedUrl(l.img, { width: 200, height: 200, fit: 'cover' })} 
+                    src={getOptimizedUrl(l.img, { width: 260, height: 260, fit: 'cover' })} 
                     alt={l.name} 
                     loading="lazy"
                   />
