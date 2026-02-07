@@ -18,6 +18,15 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
   const { scroll: scrollActivities, onMouseEnter: onMouseEnterActivities, onMouseLeave: onMouseLeaveActivities } = useAutoScroll(activitiesRef)
   
   const [gallery, setGallery] = useState<string[]>([])
+  const [activeLeaderIndex, setActiveLeaderIndex] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveLeaderIndex((prev) => (prev + 1) % leaderQuotes.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
   const [latestNews, setLatestNews] = useState<NewsItem[]>([])
   const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([])
   const [currentPopup, setCurrentPopup] = useState<NoticeItem | null>(null)
@@ -180,63 +189,80 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       </AnimatedSection>
 
       <AnimatedSection className="section" type="zoom-in">
-        <div className="flex flex-col gap-24 py-12">
-          {leaderQuotes.map((q, i) => (
-            <div key={`${q.name}-${i}`} className="w-full max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-4 shadow-sm">
-                  WELCOME TO SCRC
-                </span>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-                  Message From <span className="text-[#e43f6f]">{q.role}</span>
-                </h2>
-              </div>
-
-              <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-center">
-                {/* Left Column: Photo */}
-                <div className="relative w-full md:w-5/12 flex justify-center group">
-                  {/* Decorative background shapes */}
-                  <div className="absolute inset-0 bg-[#e43f6f] opacity-5 rounded-[2.5rem] transform rotate-6 scale-90 translate-x-4 transition-transform duration-500 group-hover:rotate-3"></div>
-                  <div className="absolute inset-0 bg-[#c6285b] opacity-10 rounded-[2.5rem] transform -rotate-3 scale-95 -translate-x-2 transition-transform duration-500 group-hover:-rotate-1"></div>
-                  
-                  {/* Main Photo Frame */}
-                  <div className="relative z-10 bg-white p-3 rounded-[2.5rem] shadow-2xl transform transition-transform duration-500 group-hover:scale-[1.02]">
-                    <img 
-                      src={getOptimizedUrl(q.img, { width: 500, height: 600, fit: 'cover' })} 
-                      alt={q.name}
-                      className="w-full aspect-[3/4] object-cover rounded-[2rem]"
-                    />
-                    
-                    {/* Name Label Overlay */}
-                    <div className="absolute bottom-8 left-0 bg-gradient-to-r from-[#e43f6f] to-[#c6285b] text-white px-8 py-4 rounded-r-full shadow-lg max-w-[90%] transform transition-transform duration-500 group-hover:translate-x-2">
-                      <div className="font-bold text-lg md:text-xl uppercase tracking-wide leading-tight">{q.name}</div>
-                      <div className="text-xs md:text-sm font-medium opacity-90 mt-1 uppercase tracking-wider">{q.role}</div>
-                    </div>
-                  </div>
+        <div className="py-8">
+          <div className="w-full max-w-7xl mx-auto min-h-[600px] flex flex-col justify-center">
+             {leaderQuotes.map((q, i) => (
+               <div 
+                key={`${q.name}-${i}`} 
+                className={`transition-all duration-700 ease-in-out w-full max-w-7xl mx-auto left-0 right-0 ${i === activeLeaderIndex ? 'opacity-100 translate-x-0 relative z-10' : 'opacity-0 translate-x-8 absolute top-0 -z-10 pointer-events-none'}`}
+               >
+                 <div className="text-center mb-12">
+                  <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-4 shadow-sm">
+                    WELCOME TO SCRC
+                  </span>
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+                    Message From <span className="text-[#e43f6f]">{q.role}</span>
+                  </h2>
                 </div>
 
-                {/* Right Column: Message */}
-                <div className="w-full md:w-7/12">
-                  <div className="bg-gradient-to-br from-gray-50 to-white rounded-[2.5rem] p-8 md:p-12 shadow-lg border border-gray-100 relative h-full flex flex-col justify-center transform transition-all duration-500 hover:shadow-xl">
-                    {/* Quote Icon */}
-                    <div className="absolute top-8 left-8 text-[#e43f6f] opacity-10">
-                      <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21L14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017ZM14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017Z" /></svg>
-                    </div>
+                <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-center">
+                  {/* Left Column: Photo */}
+                  <div className="relative w-full md:w-1/2 flex justify-center group">
+                    {/* Decorative background shapes */}
+                    <div className="absolute inset-0 bg-[#e43f6f] opacity-5 rounded-[2.5rem] transform rotate-6 scale-90 translate-x-4 transition-transform duration-500 group-hover:rotate-3"></div>
+                    <div className="absolute inset-0 bg-[#c6285b] opacity-10 rounded-[2.5rem] transform -rotate-3 scale-95 -translate-x-2 transition-transform duration-500 group-hover:-rotate-1"></div>
                     
-                    <div className="relative z-10">
-                      <p className="text-gray-600 text-lg md:text-xl leading-relaxed italic font-light">
-                        "{q.quote}"
-                      </p>
-                      <div className="mt-8 flex items-center gap-3">
-                        <div className="h-1 w-12 bg-[#e43f6f] rounded-full"></div>
-                        <div className="text-sm font-bold text-gray-400 uppercase tracking-widest">SCRC Leader</div>
+                    {/* Main Photo Frame */}
+                    <div className="relative z-10 bg-white p-3 rounded-[2.5rem] shadow-2xl transform transition-transform duration-500 group-hover:scale-[1.02] w-full max-w-[500px]">
+                      <img 
+                        src={getOptimizedUrl(q.img, { width: 600, height: 750, fit: 'cover' })} 
+                        alt={q.name}
+                        className="w-full aspect-[3/4] object-cover rounded-[2rem]"
+                      />
+                      
+                      {/* Name Label Overlay */}
+                      <div className="absolute bottom-8 left-0 bg-gradient-to-r from-[#e43f6f] to-[#c6285b] text-white px-8 py-4 rounded-r-full shadow-lg max-w-[90%] transform transition-transform duration-500 group-hover:translate-x-2">
+                        <div className="font-bold text-lg md:text-xl uppercase tracking-wide leading-tight">{q.name}</div>
+                        <div className="text-xs md:text-sm font-medium opacity-90 mt-1 uppercase tracking-wider">{q.role}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Message */}
+                  <div className="w-full md:w-1/2">
+                    <div className="bg-gradient-to-br from-gray-50 to-white rounded-[2.5rem] p-8 md:p-12 shadow-lg border border-gray-100 relative h-full flex flex-col justify-center transform transition-all duration-500 hover:shadow-xl">
+                      {/* Quote Icon */}
+                      <div className="absolute top-8 left-8 text-[#e43f6f] opacity-10">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21L14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017ZM14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017Z" /></svg>
+                      </div>
+                      
+                      <div className="relative z-10">
+                        <p className="text-gray-600 text-lg md:text-xl leading-relaxed italic font-light">
+                          "{q.quote}"
+                        </p>
+                        <div className="mt-8 flex items-center gap-3">
+                          <div className="h-1 w-12 bg-[#e43f6f] rounded-full"></div>
+                          <div className="text-sm font-bold text-gray-400 uppercase tracking-widest">SCRC Leader</div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+             ))}
+          </div>
+          
+          {/* Navigation Dots */}
+          <div className="flex justify-center gap-3 mt-8">
+            {leaderQuotes.map((_, i) => (
+              <button 
+                key={i} 
+                onClick={() => setActiveLeaderIndex(i)}
+                className={`h-3 rounded-full transition-all duration-300 ${i === activeLeaderIndex ? 'bg-[#e43f6f] w-10' : 'bg-gray-300 w-3 hover:bg-[#f2b9c8]'}`}
+                aria-label={`View leader ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </AnimatedSection>
 
