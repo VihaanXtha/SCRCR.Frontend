@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import HeroSlider from '../components/HeroSlider'
 import StaffSection from '../components/StaffSection'
 import DPMT from '../components/DPMT'
-import { fetchNotices, fetchNews, fetchGallery } from '../services/content'
+import { fetchNotices, fetchNews, fetchGallery, fetchMemoryAlbums } from '../services/content'
 import { activities, dpmt, leaderQuotes, leaders, staff } from '../data/homeData'
-import type { NoticeItem, NewsItem } from '../types/content'
+import type { NoticeItem, NewsItem, GalleryItem, MemoryAlbum } from '../types/content'
 import Intro from '../components/Intro'
 import { getOptimizedUrl } from '../utils/image'
 import AnimatedSection from '../components/AnimatedSection'
@@ -17,8 +17,10 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
   const { scroll: scrollLeaders, onMouseEnter: onMouseEnterLeaders, onMouseLeave: onMouseLeaveLeaders } = useAutoScroll(carouselRef)
   const { scroll: scrollActivities, onMouseEnter: onMouseEnterActivities, onMouseLeave: onMouseLeaveActivities } = useAutoScroll(activitiesRef)
   
-  const [gallery, setGallery] = useState<string[]>([])
   const [activeLeaderIndex, setActiveLeaderIndex] = useState(0)
+  const [latestImage, setLatestImage] = useState<GalleryItem | null>(null)
+  const [latestVideo, setLatestVideo] = useState<GalleryItem | null>(null)
+  const [latestAlbum, setLatestAlbum] = useState<MemoryAlbum | null>(null)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -118,15 +120,20 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       })
       setLatestNews(sorted.slice(0, 3))
     }).catch(() => setLatestNews([]))
+
     fetchGallery().then(items => {
-      // Filter for images and take first 8
-      const images = items
-        .filter(i => i.type === 'image' && i.img)
-        .map(i => i.img!)
-        .slice(0, 8)
+      // Get latest image
+      const img = items.find(i => i.type === 'image' && i.img)
+      if (img) setLatestImage(img)
       
-      setGallery(images)
-    }).catch(() => setGallery([]))
+      // Get latest video
+      const vid = items.find(i => (i.type === 'video' || !i.type) && i.videoUrl)
+      if (vid) setLatestVideo(vid)
+    }).catch(() => {})
+
+    fetchMemoryAlbums().then(albums => {
+      if (albums.length > 0) setLatestAlbum(albums[0])
+    }).catch(() => {})
   }, [])
 
   return (
@@ -344,24 +351,91 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
            </span>
            <h3 className="text-3xl md:text-4xl font-bold text-gray-800">{t('gallery.title')}</h3>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {gallery.map((g, i) => (
-            <div key={i} className="relative group overflow-hidden rounded-[1.5rem] shadow-md hover:shadow-xl transition-all aspect-square cursor-pointer">
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Latest Image */}
+          {latestImage && (
+            <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px]">
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
+                LATEST PHOTO
+              </div>
               <img 
-                src={getOptimizedUrl(g, { width: 400, height: 400, fit: 'cover' })} 
-                alt={'img' + i} 
+                src={getOptimizedUrl(latestImage.img!, { width: 600, height: 600, fit: 'cover' })} 
+                alt={latestImage.title || 'Latest Photo'} 
                 loading="lazy"
                 className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                <span className="text-white text-sm font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">View Image</span>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <span className="text-white text-lg font-bold">{latestImage.title || 'Gallery Image'}</span>
               </div>
             </div>
-          ))}
+          )}
+
+          {/* Latest Video */}
+          {latestVideo && (
+            <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] bg-black">
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
+                LATEST VIDEO
+              </div>
+              {(() => {
+                 const embed = getEmbedUrl(latestVideo.videoUrl!)
+                 if (embed?.type === 'video') {
+                   return (
+                     <video 
+                       src={embed.src} 
+                       className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                       muted
+                       loop
+                       onMouseOver={e => e.currentTarget.play()}
+                       onMouseOut={e => e.currentTarget.pause()}
+                     />
+                   )
+                 }
+                 return (
+                   <iframe 
+                     src={embed?.src} 
+                     title={latestVideo.title || 'Video'} 
+                     className="w-full h-full border-0"
+                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                     allowFullScreen 
+                   />
+                 )
+              })()}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none flex items-end p-6">
+                 <span className="text-white text-lg font-bold">{latestVideo.title || 'Watch Video'}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Latest Album */}
+          {latestAlbum && (
+            <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] cursor-pointer" onClick={() => window.location.href = '/gallery'}>
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
+                LATEST ALBUM
+              </div>
+              <img 
+                src={getOptimizedUrl(latestAlbum.cover || '', { width: 600, height: 600, fit: 'cover' })} 
+                alt={latestAlbum.name} 
+                loading="lazy"
+                className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
+              
+              {/* Stack effect */}
+              <div className="absolute top-6 right-6 w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/30 transform rotate-6 group-hover:rotate-12 transition-transform">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+              </div>
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
+                <span className="text-white/80 text-sm font-medium mb-1">{latestAlbum.count} Items</span>
+                <span className="text-white text-xl font-bold">{latestAlbum.name}</span>
+              </div>
+            </div>
+          )}
         </div>
         <div className="center mt-10">
           <button className="btn rounded-full px-8 py-3 shadow-lg hover:shadow-pink-200/50 bg-white border-[#e43f6f] text-[#e43f6f] hover:bg-[#e43f6f] hover:text-white transition-all duration-300 font-bold tracking-wide">
-            {lang === 'en' ? 'View Gallery' : 'और देखें'}
+            {lang === 'en' ? 'View Full Gallery' : 'पूरी गैलरी देखें'}
           </button>
         </div>
       </AnimatedSection>
