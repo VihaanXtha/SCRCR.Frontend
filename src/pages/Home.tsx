@@ -170,8 +170,8 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           </div>
           <div className="carousel" ref={activitiesRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
             {activities.map((a, i) => (
-              <div key={`${a.title}-${i}`} className="card min-w-[300px]" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-                {a.img && <img src={a.img} alt={a.title} className="h-[200px] w-full object-cover" />}
+              <div key={`${a.title}-${i}`} className="card min-w-[320px]" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+                {a.img && <img src={a.img} alt={a.title} className="h-[240px] w-full object-cover" />}
                 <div className="card-title">{a.title}</div>
               </div>
             ))}
@@ -181,23 +181,41 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
       <AnimatedSection className="section" type="zoom-in">
         <h3>{t('leaders.title')}</h3>
-        <div className="quotes">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {leaderQuotes.map((q, i) => (
-            <div key={`${q.name}-${i}`} className="quote-card">
-              <div className="quote-top">
-                {q.img && (
-                  <img 
-                    src={getOptimizedUrl(q.img, { width: 100, height: 100, fit: 'cover' })} 
-                    alt={q.name} 
-                    loading="lazy"
-                  />
-                )}
-                <div>
-                  <div className="quote-name">{q.name}</div>
-                  <div className="quote-role">{q.role}</div>
+            <div key={`${q.name}-${i}`} className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0c2f5f] to-[#1e4a7f] rounded-3xl transform -rotate-2 group-hover:-rotate-4 transition-transform duration-300"></div>
+              <div className="relative bg-white rounded-3xl p-6 shadow-xl transform rotate-1 group-hover:rotate-0 transition-transform duration-300 border border-gray-100">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="relative">
+                    {q.img && (
+                      <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-blue-50 shadow-md">
+                        <img 
+                          src={getOptimizedUrl(q.img, { width: 150, height: 150, fit: 'cover' })} 
+                          alt={q.name} 
+                          loading="lazy"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="absolute -bottom-2 -right-2 bg-[#0c2f5f] text-white text-xs px-2 py-1 rounded-full shadow-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-white"><path d="M14.017 21L14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017ZM14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017Z" stroke="none" /></svg>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-gray-800">{q.name}</div>
+                    <div className="text-sm font-semibold text-[#e43f6f] uppercase tracking-wider">{q.role}</div>
+                  </div>
+                </div>
+                <div className="relative">
+                  <svg className="absolute -top-4 -left-2 text-gray-100 w-12 h-12 -z-10 transform -scale-x-100" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
+                  </svg>
+                  <p className="text-gray-600 italic leading-relaxed relative z-10 pl-2">
+                    "{q.quote}"
+                  </p>
                 </div>
               </div>
-              <p className="quote-text">“{q.quote}”</p>
             </div>
           ))}
         </div>
@@ -215,7 +233,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
               <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
                 {l.img && (
                   <img 
-                    src={getOptimizedUrl(l.img, { width: 150, height: 150, fit: 'cover' })} 
+                    src={getOptimizedUrl(l.img, { width: 200, height: 200, fit: 'cover' })} 
                     alt={l.name} 
                     loading="lazy"
                   />
