@@ -8,17 +8,15 @@ import type { NoticeItem, NewsItem } from '../types/content'
 import Intro from '../components/Intro'
 import { getOptimizedUrl } from '../utils/image'
 import AnimatedSection from '../components/AnimatedSection'
-import AutoActivities from '../components/AutoActivities'
+import { useAutoScroll } from '../hooks/useAutoScroll'
 
 
 export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en' | 'ne' }) {
-  const carouselRef = useRef<HTMLDivElement | null>(null)
-  const scrollCarousel = (dir: 'left' | 'right') => {
-    const el = carouselRef.current
-    if (!el) return
-    const amount = el.clientWidth * 0.8
-    el.scrollTo({ left: dir === 'left' ? el.scrollLeft - amount : el.scrollLeft + amount, behavior: 'smooth' })
-  }
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const activitiesRef = useRef<HTMLDivElement>(null)
+  const { scroll: scrollLeaders, onMouseEnter: onMouseEnterLeaders, onMouseLeave: onMouseLeaveLeaders } = useAutoScroll(carouselRef)
+  const { scroll: scrollActivities, onMouseEnter: onMouseEnterActivities, onMouseLeave: onMouseLeaveActivities } = useAutoScroll(activitiesRef)
+  
   const [gallery, setGallery] = useState<string[]>([])
   const [latestNews, setLatestNews] = useState<NewsItem[]>([])
   const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([])
@@ -165,7 +163,20 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
       <AnimatedSection className="section" type="fade-left">
         <h3>{t('activities.title')}</h3>
-        <AutoActivities activities={activities} />
+        <div className="relative group" onMouseEnter={onMouseEnterActivities} onMouseLeave={onMouseLeaveActivities}>
+          <div className="carousel-controls">
+            <button className="btn sm" onClick={() => scrollActivities('left')}>‹</button>
+            <button className="btn sm" onClick={() => scrollActivities('right')}>›</button>
+          </div>
+          <div className="carousel" ref={activitiesRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+            {activities.map((a, i) => (
+              <div key={`${a.title}-${i}`} className="card min-w-[300px]" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+                {a.img && <img src={a.img} alt={a.title} className="h-[200px] w-full object-cover" />}
+                <div className="card-title">{a.title}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </AnimatedSection>
 
       <AnimatedSection className="section" type="zoom-in">
@@ -194,24 +205,26 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
       <AnimatedSection className="section" type="fade-right">
         <h3>{t('core.title')}</h3>
-        <div className="carousel-controls">
-          <button className="btn sm" onClick={() => scrollCarousel('left')}>‹</button>
-          <button className="btn sm" onClick={() => scrollCarousel('right')}>›</button>
-        </div>
-        <div className="carousel" ref={carouselRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
-          {leaders.map((l, i) => (
-            <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-              {l.img && (
-                <img 
-                  src={getOptimizedUrl(l.img, { width: 150, height: 150, fit: 'cover' })} 
-                  alt={l.name} 
-                  loading="lazy"
-                />
-              )}
-              <div className="profile-name">{l.name}</div>
-              <div className="profile-role">{l.role}</div>
-            </div>
-          ))}
+        <div className="relative group" onMouseEnter={onMouseEnterLeaders} onMouseLeave={onMouseLeaveLeaders}>
+          <div className="carousel-controls">
+            <button className="btn sm" onClick={() => scrollLeaders('left')}>‹</button>
+            <button className="btn sm" onClick={() => scrollLeaders('right')}>›</button>
+          </div>
+          <div className="carousel" ref={carouselRef} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+            {leaders.map((l, i) => (
+              <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+                {l.img && (
+                  <img 
+                    src={getOptimizedUrl(l.img, { width: 150, height: 150, fit: 'cover' })} 
+                    alt={l.name} 
+                    loading="lazy"
+                  />
+                )}
+                <div className="profile-name">{l.name}</div>
+                <div className="profile-role">{l.role}</div>
+              </div>
+            ))}
+          </div>
         </div>
          <StaffSection staff={staff} t={t} />
           <DPMT staff={dpmt} t={t} />

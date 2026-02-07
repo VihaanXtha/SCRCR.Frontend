@@ -1,18 +1,15 @@
 import '../App.css'
 import { useRef } from 'react'
+import { useAutoScroll } from '../hooks/useAutoScroll'
 
 type Person = { name: string; role: string; img: string }
 
 export default function StaffSection({ staff, t }: { staff: Person[]; t: (k: string) => string }) {
-  const ref = useRef<HTMLDivElement | null>(null)
-  const scroll = (dir: 'left' | 'right') => {
-    const el = ref.current
-    if (!el) return
-    const amount = el.clientWidth * 0.8
-    el.scrollTo({ left: dir === 'left' ? el.scrollLeft - amount : el.scrollLeft + amount, behavior: 'smooth' })
-  }
+  const ref = useRef<HTMLDivElement>(null)
+  const { scroll, onMouseEnter, onMouseLeave } = useAutoScroll(ref)
+
   return (
-    <section className="section">
+    <section className="section" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <h3>{t('staff.title')}</h3>
       <div className="carousel-controls">
         <button className="btn sm" onClick={() => scroll('left')}>‹</button>
