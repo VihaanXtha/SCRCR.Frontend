@@ -166,7 +166,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           </div>
       </section>
 
-      <AnimatedSection type="fade-up" delay={200}>
+      <AnimatedSection type="zoom-in" delay={200}>
         <Intro t={t} lang={lang} />
       </AnimatedSection>
 
