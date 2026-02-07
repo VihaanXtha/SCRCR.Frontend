@@ -26,9 +26,9 @@ const dictionary: Record<string, Record<string, string>> = {
   "nav.contact": { en: "Contact", ne: "सम्पर्क" },
   "nav.admin": { en: "Admin", ne: "प्रशासन" },
   "nav.donate": { en: "Donate", ne: "दान" },
-  "hero.step1": { en: "Center", ne: "केंद्र" },
-  "hero.step2": { en: "Mandal", ne: "मंडल" },
-  "hero.step3": { en: "Branch", ne: "शाखा" },
+  "hero.step1": { en: "Respect", ne: "सम्मान" },
+  "hero.step2": { en: "Safe", ne: "सुरक्षित" },
+  "hero.step3": { en: "Helper", ne: "सहयोगी" },
   "intro.heading": { en: "Welcome Message", ne: "स्वागत संदेश" },
   "intro.p": {
     en: "The establishment of the Senior Citizens Recreation Center, Shringeshwardham, Rupandehi aims to address the challenges faced by senior citizens and provide them with a supportive environment for their physical, mental, and psychological well-being. In response to the growing sense of loneliness experienced by the elderly in modern society, the center seeks to bridge the generational gap and promote the exchange of knowledge, skills, and experiences.Recognizing the inherent rights of senior citizens to dignity, respect, and care in old age, this initiative strives to create a harmonious space that fosters mutual understanding between generations and encourages the preservation and promotion of cultural values. Through this compassionate vision, the center envisions a prosperous nation that values and celebrates the wisdom and legacy of its elderly citizens.",

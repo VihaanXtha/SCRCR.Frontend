@@ -7,6 +7,8 @@ import { activities, dpmt, leaderQuotes, leaders, staff } from '../data/homeData
 import type { NoticeItem, NewsItem } from '../types/content'
 import Intro from '../components/Intro'
 import { getOptimizedUrl } from '../utils/image'
+import AnimatedSection from '../components/AnimatedSection'
+import AutoActivities from '../components/AutoActivities'
 
 
 export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en' | 'ne' }) {
@@ -125,38 +127,48 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       <section className="hero">
         <HeroSlider />
         <div className="hero-steps">
-          <div className="step">
-            <div className="circle">01</div>
-            <div className="label">{t('hero.step1')}</div>
-          </div>
-          <div className="step">
-            <div className="circle">02</div>
-            <div className="label">{t('hero.step2')}</div>
-          </div>
-          <div className="step">
-            <div className="circle">03</div>
-            <div className="label">{t('hero.step3')}</div>
-          </div>
-        </div>
-      </section>
-
-      <Intro t={t} lang={lang} />
-
-      
-
-      <section className="section">
-        <h3>{t('activities.title')}</h3>
-        <div className="grid">
-          {activities.map((a, i) => (
-            <div key={`${a.title}-${i}`} className="card">
-              {a.img && <img src={a.img} alt={a.title} />}
-              <div className="card-title">{a.title}</div>
+            <div className="step">
+              <div className="circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div className="label">{t('hero.step1')}</div>
             </div>
-          ))}
-        </div>
+            <div className="step">
+              <div className="circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                   <path d="M6 3v9a5 5 0 0 0 5 5h3a5 5 0 0 0 5-5V3" />
+                   <path d="M12 17v1" />
+                   <circle cx="12" cy="20" r="2" />
+                </svg>
+              </div>
+              <div className="label">{t('hero.step2')}</div>
+            </div>
+            <div className="step">
+              <div className="circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </div>
+              <div className="label">{t('hero.step3')}</div>
+            </div>
+          </div>
       </section>
 
-      <section className="section">
+      <AnimatedSection type="fade-up" delay={200}>
+        <Intro t={t} lang={lang} />
+      </AnimatedSection>
+
+      <AnimatedSection className="section" type="fade-left">
+        <h3>{t('activities.title')}</h3>
+        <AutoActivities activities={activities} />
+      </AnimatedSection>
+
+      <AnimatedSection className="section" type="zoom-in">
         <h3>{t('leaders.title')}</h3>
         <div className="quotes">
           {leaderQuotes.map((q, i) => (
@@ -178,9 +190,9 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
             </div>
           ))}
         </div>
-      </section>
+      </AnimatedSection>
 
-      <section className="section">
+      <AnimatedSection className="section" type="fade-right">
         <h3>{t('core.title')}</h3>
         <div className="carousel-controls">
           <button className="btn sm" onClick={() => scrollCarousel('left')}>‹</button>
@@ -204,9 +216,9 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
          <StaffSection staff={staff} t={t} />
           <DPMT staff={dpmt} t={t} />
 
-      </section>
+      </AnimatedSection>
 
-      <section className="section">
+      <AnimatedSection className="section" type="fade-up">
         <h3>{t('gallery.title')}</h3>
         <div className="grid">
           {gallery.map((g, i) => (
@@ -222,9 +234,9 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <div className="center">
           <button className="btn">{lang === 'en' ? 'View more' : 'और देखें'}</button>
         </div>
-      </section>
+      </AnimatedSection>
 
-      <section className="section">
+      <AnimatedSection className="section" type="scale-up">
         <h3>{t('news.title')}</h3>
         <div className="news">
           {latestNews.map((n, i) => (
@@ -244,15 +256,15 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
             </div>
           ))}
         </div>
-      </section>
+      </AnimatedSection>
 
-      <section className="section">
+      <AnimatedSection className="section" type="fade-down">
         <h3>{t('subscribe.title')}</h3>
         <form className="subscribe" style={{ flexWrap: 'wrap' }}>
           <input placeholder={lang === 'en' ? 'Your email' : 'आपका ईमेल'} style={{ minWidth: '200px' }} />
           <button className="btn" style={{ flex: '1 0 auto' }}>{t('subscribe.cta')}</button>
         </form>
-      </section>
+      </AnimatedSection>
       {currentPopup && (
         <div className="member-modal" onClick={closePopup}>
           <div className={`notice-modal-content ${currentPopup.mediaUrl && currentPopup.text ? 'wide' : ''}`} onClick={e => e.stopPropagation()}>
@@ -311,7 +323,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         </div>
       )}
 
-      <section className="section">
+      <AnimatedSection className="section" type="zoom-in" delay={100}>
         <h3>{t('contact.title')}</h3>
         <form className="form">
           <div className="form-row">
@@ -324,7 +336,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
             <button className="btn">{lang === 'en' ? 'Send' : 'भेजें'}</button>
           </div>
         </form>
-      </section>
+      </AnimatedSection>
     </>
   )
 }
