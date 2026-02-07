@@ -189,7 +189,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                 <div className="flex items-center gap-4 mb-6">
                   <div className="relative">
                     {q.img && (
-                      <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-blue-50 shadow-md">
+                      <div className="w-20 h-20 rounded-xl overflow-hidden border-4 border-blue-50 shadow-md">
                         <img 
                           src={getOptimizedUrl(q.img, { width: 150, height: 150, fit: 'cover' })} 
                           alt={q.name} 
@@ -198,7 +198,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                         />
                       </div>
                     )}
-                    <div className="absolute -bottom-2 -right-2 bg-[#0c2f5f] text-white text-xs px-2 py-1 rounded-full shadow-sm">
+                    <div className="absolute -bottom-2 -right-2 bg-[#0c2f5f] text-white text-xs px-2 py-1 rounded-lg shadow-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-white"><path d="M14.017 21L14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017ZM14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01697C7.91243 16 7.01697 16.8954 7.01697 18L7.01697 21H14.017Z" stroke="none" /></svg>
                     </div>
                   </div>
@@ -233,7 +233,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
               <div key={`${l.name}-${i}`} className="profile" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
                 {l.img && (
                   <img 
-                    src={getOptimizedUrl(l.img, { width: 260, height: 260, fit: 'cover' })} 
+                    src={getOptimizedUrl(l.img, { width: 200, height: 200, fit: 'cover' })} 
                     alt={l.name} 
                     loading="lazy"
                   />
