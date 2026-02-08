@@ -1,5 +1,6 @@
 
 import SubHero from '../components/SubHero'
+import bannerImg from '../assets/images/hero-slider/scrc-slider-5-1.png'
 
 export default function Services({ t }: { t: (k: string) => string }) {
   const services = [
@@ -11,7 +12,7 @@ export default function Services({ t }: { t: (k: string) => string }) {
 
   return (
     <div className="page">
-      <SubHero title="Services & Support" img="https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?auto=format&fit=crop&w=1200&q=80" />
+      <SubHero title="Services & Support" img={bannerImg} />
       
       <div className="section">
         <div className="grid">

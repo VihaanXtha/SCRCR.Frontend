@@ -1,5 +1,6 @@
 
 import SubHero from '../components/SubHero'
+import bannerImg from '../assets/images/hero-slider/scrc-slider-4-1.jpeg'
 
 export default function Downloads({ t }: { t: (k: string) => string }) {
   const reports = [
@@ -22,7 +23,7 @@ export default function Downloads({ t }: { t: (k: string) => string }) {
 
   return (
     <div className="page">
-      <SubHero title={t('downloads.title')} img="https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=1200&q=80" />
+      <SubHero title={t('downloads.title')} img={bannerImg} />
       
       <div className="section">
         <div className="grid">

@@ -20,8 +20,8 @@ export default function DPMT({ staff, t }: { staff: { name: string; role: string
       </div>
       <div className="carousel flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide px-4" ref={ref} style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
         {staff.map((s, i) => (
-          <div key={`${s.name}-${i}`} className="min-w-[240px] snap-start bg-white rounded-[2rem] p-6 shadow-lg border border-pink-50 hover:shadow-xl transition-all text-center group/card">
-            <div className="relative w-32 h-32 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#e43f6f] to-[#c6285b]">
+          <div key={`${s.name}-${i}`} className="min-w-[280px] snap-start bg-white rounded-[2rem] p-6 shadow-lg border border-pink-50 hover:shadow-xl transition-all text-center group/card">
+            <div className="relative w-[200px] h-[200px] mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#e43f6f] to-[#c6285b]">
                <img src={s.img} alt={s.name} className="w-full h-full object-cover rounded-full border-4 border-white" />
             </div>
             <div className="font-bold text-lg text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">{s.name}</div>

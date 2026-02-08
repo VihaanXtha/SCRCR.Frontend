@@ -1,6 +1,7 @@
 
 import SubHero from '../components/SubHero'
 import { useState } from 'react'
+import bannerImg from '../assets/images/activites/scrc-gallery-13.jpg'
 
 export default function Membership({ t }: { t: (k: string) => string }) {
   const [loading, setLoading] = useState(false)
@@ -28,7 +29,7 @@ export default function Membership({ t }: { t: (k: string) => string }) {
 
   return (
     <div className="page">
-      <SubHero title={t('membership.title')} img="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80" />
+      <SubHero title={t('membership.title')} img={bannerImg} />
       
       <div className="section">
         <div className="contact-layout">
