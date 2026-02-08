@@ -1,11 +1,11 @@
 import pabitraImg from '../assets/images/dpmt-images/Pabitra.png';
-import firstImg from "../assets/images/Baristha-sadaya/balami buwa.png";
+import firstImg from "../assets/images/Baristha-sadaya/he.png";
 import secondImg from '../assets/images/Baristha-sadaya/yadunath pandey.png';
-import thirdImg from '../assets/images/Baristha-sadaya/khem.png';
-import fourthImg from '../assets/images/Baristha-sadaya/netra buwa.png';
-import fifthImg from '../assets/images/Baristha-sadaya/rishi bhanttari.png';
-import sixthImg from '../assets/images/Baristha-sadaya/ok.png';
-import seventhImg from '../assets/images/Baristha-sadaya/Untitled-1.png';
+import thirdImg from '../assets/images/Baristha-sadaya/hel.png';
+import fourthImg from '../assets/images/Baristha-sadaya/netra prashad.png';
+import fifthImg from '../assets/images/Baristha-sadaya/hello.png';
+import sixthImg from '../assets/images/Baristha-sadaya/hl.png';
+import seventhImg from '../assets/images/Baristha-sadaya/hlo.png';
 
 
 export const activities = [
