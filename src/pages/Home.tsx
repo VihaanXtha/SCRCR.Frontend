@@ -30,7 +30,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
     return () => clearInterval(timer)
   }, [])
 
-  const [latestNews, setLatestNews] = useState<NewsItem[]>([]) // Keeping for compatibility if needed, but we will use latestUpdates
+  const [latestNews] = useState<NewsItem[]>([]) // Keeping for compatibility if needed, but we will use latestUpdates
   const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([])
   const [currentPopup, setCurrentPopup] = useState<NoticeItem | null>(null)
 
@@ -472,9 +472,9 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           {latestUpdates.map((n, i) => (
             <div key={n._id || i} className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-gray-100 flex flex-col h-full group transform hover:-translate-y-2 duration-300">
               <div className="h-56 overflow-hidden relative">
-                {n.image ? (
+                {'image' in n && n.image ? (
                   <img 
-                    src={getOptimizedUrl(n.image, { width: 400, height: 300, fit: 'cover' })} 
+                    src={getOptimizedUrl('image' in n ? n.image : '', { width: 400, height: 300, fit: 'cover' })}
                     alt={n.title} 
                     loading="lazy"
                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
@@ -485,14 +485,14 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                   </div>
                 )}
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm uppercase">
-                  {n.type}
+                  {'type' in n && n.type}
                 </div>
               </div>
               <div className="p-8 flex flex-col flex-1">
                 <h4 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-[#e43f6f] transition-colors">{n.title}</h4>
                 <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  <span>Updated: {new Date(n.date).toLocaleDateString()}</span>
+                  <span>Updated: {'date' in n && n.date ? new Date(n.date).toLocaleDateString() : 'N/A'}</span>
                 </div>
                 <button className="mt-auto self-start text-[#e43f6f] font-bold text-sm uppercase tracking-wider flex items-center gap-2 group/btn">
                   {lang === 'en' ? 'Read More' : 'और पढ़ें'} 
