@@ -1,7 +1,7 @@
 
 import '../App.css'
 import SubHero from '../components/SubHero'
-import bannerImg from '../assets/images/hero-slider/scrc-slider-1.jpg'
+import bannerImg from '../assets/images/hero-slider/scrc-slider-1-1.jpg'
 import AnimatedSection from '../components/AnimatedSection'
 
 // Downloads Component: Provides downloadable resources like reports, policies, and forms

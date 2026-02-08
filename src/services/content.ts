@@ -1,11 +1,21 @@
 import type { NewsItem, GalleryItem, NoticeItem, MemoryAlbum, MemoryImage } from '../types/content'
 
+// Type definition for environment variables to access API base URL
 type EnvMeta = { env?: { VITE_API_BASE?: string } }
 const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'https://scrcr-backend.vercel.app'
 
+/**
+ * Retrieves the admin token from local storage.
+ * Used for authenticated API requests.
+ */
 function getToken(): string | undefined {
   try { return localStorage.getItem('adminToken') ?? undefined } catch { return undefined }
 }
+
+/**
+ * Helper to ensure URLs are absolute.
+ * If a URL starts with '/', it prepends the API base URL.
+ */
 function absolute(u: string): string {
   if (!u) return u
   if (/^https?:\/\//i.test(u)) return u
@@ -14,6 +24,14 @@ function absolute(u: string): string {
 }
 
 const TIMEOUT_MS = 8000
+
+/**
+ * Generic helper function to perform fetch requests with JSON parsing and timeout handling.
+ * 
+ * @param input - API endpoint URL
+ * @param init - Fetch options (method, headers, body)
+ * @param fallback - Optional fallback value to return in case of error
+ */
 async function requestJson<T>(input: string, init?: RequestInit, fallback?: T): Promise<T> {
   try {
     const controller = new AbortController()
@@ -31,12 +49,19 @@ async function requestJson<T>(input: string, init?: RequestInit, fallback?: T): 
   }
 }
 
+// --- NEWS API FUNCTIONS ---
+
+/**
+ * Fetches the list of news items.
+ * Can filter by active status or popup status.
+ */
 export async function fetchNews(params?: { active?: boolean; popup?: boolean }): Promise<NewsItem[]> {
   const qs = new URLSearchParams()
   if (params?.active) qs.set('active', 'true')
   if (params?.popup) qs.set('popup', 'true')
   return requestJson<NewsItem[]>(`${base}/api/news${qs.toString() ? `?${qs.toString()}` : ''}`, undefined, [])
 }
+
 export async function createNews(body: Omit<NewsItem, '_id'>): Promise<NewsItem> {
   const res = await fetch(`${base}/api/news`, {
     method: 'POST',

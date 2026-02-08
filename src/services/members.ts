@@ -3,12 +3,17 @@ import type { Member } from '../types/members'
 type EnvMeta = { env?: { VITE_API_BASE?: string } }
 const base = (import.meta as unknown as EnvMeta).env?.VITE_API_BASE || 'https://scrcr-backend.vercel.app'
 
+/**
+ * Fetches members of a specific type (e.g., Founding, Lifetime).
+ * @param type - The category of members to fetch.
+ */
 export async function fetchMembers(type: 'Founding' | 'Lifetime' | 'Senior-Citizen' | 'donation' | 'helper'): Promise<Member[]> {
   const res = await fetch(`${base}/api/members/${type}`)
   if (!res.ok) throw new Error('Failed to fetch members')
   return res.json()
 }
 
+// Helper to get admin token for authorized requests
 function getToken(): string | undefined {
   try {
     return localStorage.getItem('adminToken') ?? undefined
@@ -17,6 +22,10 @@ function getToken(): string | undefined {
   }
 }
 
+/**
+ * Updates an existing member's information.
+ * Requires admin authentication.
+ */
 export async function updateMember(id: string, body: Partial<Member>): Promise<Member> {
   const res = await fetch(`${base}/api/members/${id}`, {
     method: 'PUT',

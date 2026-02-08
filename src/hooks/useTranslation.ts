@@ -1,5 +1,11 @@
 import { useState } from 'react';
 
+/**
+ * Dictionary Object
+ * -----------------
+ * Contains all the text content for the application in both English and Nepali.
+ * The keys (e.g., "brand.title") are used in components to retrieve the correct string.
+ */
 const dictionary: Record<string, Record<string, string>> = {
   "brand.title": {
     en: "Senior Citizen Recreation Centre Rupandehi",
@@ -212,7 +218,7 @@ const dictionary: Record<string, Record<string, string>> = {
   "news.updated": { en: "Updated:", ne: "अपडेट गरिएको:" },
   "gallery.watch": { en: "WATCH", ne: "हेर्नुहोस्" },
   "gallery.untitled_video": { en: "Untitled Video", ne: "शीर्षक नभएको भिडियो" },
-  "gallery.collections": { en: "COLLECTIONS", ne: "संग्रहहरू" },
+  "gallerycollections": { en: "Collections", ne: "संग्रहहरू" },
   "donate.qr_text": { en: "QR CODE HERE", ne: "QR कोड यहाँ" },
   "donate.bank_name": { en: "ABC Bank Ltd", ne: "एबिसी बैंक लिमिटेड" },
   "donate.acc_name_val": { en: "Jestha Nagrik Milan Kendra", ne: "ज्येष्ठ नागरिक मिलन केन्द्र" },
@@ -230,9 +236,26 @@ const dictionary: Record<string, Record<string, string>> = {
   "membership.submitting": { en: "Submitting...", ne: "बुझाउँदै..." },
 };
 
+/**
+ * useTranslation Hook
+ * -------------------
+ * A custom hook to manage language state and provide translation functionality.
+ * 
+ * Returns:
+ * - t: Function to translate a key.
+ * - lang: Current language ('en' or 'ne').
+ * - setLang: Function to update the language.
+ */
 export function useTranslation() {
+  // State to hold the current language. Default is 'ne' (Nepali).
   const [lang, setLang] = useState<'en' | 'ne'>('ne');
 
+  /**
+   * Translation Function (t)
+   * ------------------------
+   * Looks up the key in the dictionary for the current language.
+   * If the key is not found or the language translation is missing, it returns the key itself as a fallback.
+   */
   const t = (k: string) => {
     return dictionary[k]?.[lang] ?? k;
   };

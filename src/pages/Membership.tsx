@@ -2,7 +2,7 @@
 import '../App.css'
 import { useState } from 'react'
 import SubHero from '../components/SubHero'
-import bannerImg from '../assets/images/hero-slider/scrc-slider-1.jpg'
+import bannerImg from '../assets/images/hero-slider/scrc-slider-8-1.jpg'
 
 // Membership Component: Handles membership application process and displays benefits
 export default function Membership({ t }: { t: (k: string) => string }) {

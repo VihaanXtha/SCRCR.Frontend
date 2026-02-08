@@ -1,10 +1,10 @@
 import pabitraImg from '../assets/images/dpmt-images/Pabitra.png';
-import firstImg from "../assets/images/Baristha-sadaya/Untitled-1.png";
-import secondImg from '../assets/images/Baristha-sadaya/Untitled-2.png';
-import thirdImg from '../assets/images/Baristha-sadaya/Untitled-3.png';
-import fourthImg from '../assets/images/Baristha-sadaya/Untitled-4.png';
-import fifthImg from '../assets/images/Baristha-sadaya/Untitled-5.png';
-import sixthImg from '../assets/images/Baristha-sadaya/Untitled-6.png';
+import firstImg from "../assets/images/Baristha-sadaya/Untitled-6.png";
+import secondImg from '../assets/images/Baristha-sadaya/Untitled-1.png';
+import thirdImg from '../assets/images/Baristha-sadaya/Untitled-5.png';
+import fourthImg from '../assets/images/Baristha-sadaya/Untitled-2.png';
+import fifthImg from '../assets/images/Baristha-sadaya/Untitled-4.png';
+import sixthImg from '../assets/images/Baristha-sadaya/Untitled-3.png';
 import seventhImg from '../assets/images/Baristha-sadaya/Untitled-7.png';
 
 import parbataImg from '../assets/images/dpmt-images/parbata belbase.png';

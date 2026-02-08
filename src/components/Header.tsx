@@ -3,8 +3,21 @@ import '../App.css'
 import { useState } from 'react'
 import logo from '../assets/images/logo.jpeg'
 
-type NavItem = { label: string; href?: string; children?: NavItem[] }
+// Define the structure of a navigation item
+type NavItem = { 
+  label: string; 
+  href?: string; 
+  children?: NavItem[] // Optional nested items for dropdown menus
+}
 
+// Header Component: Displays the top navigation bar with branding, links, and action buttons
+// Props:
+// - nav: Array of navigation items to display
+// - route: Current active route path
+// - t: Translation function
+// - lang: Current language ('en' or 'ne')
+// - setLang: Function to toggle language
+// - navigate: Function to handle navigation (e.g., useNavigate from react-router)
 export default function Header({ nav, route, t, lang, setLang, navigate }: {
   nav: NavItem[]
   route: string
@@ -13,8 +26,10 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
   setLang: (l: 'en' | 'ne') => void
   navigate: (path: string) => void
 }) {
+  // State to toggle the mobile navigation menu
   const [open, setOpen] = useState(false)
   
+  // Handle navigation clicks: prevents default browser reload, navigates, and closes mobile menu
   const handleNav = (e: React.MouseEvent, path: string) => {
     e.preventDefault()
     navigate(path)
@@ -23,6 +38,7 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
 
   return (
     <header className="topbar">
+      {/* Brand Logo and Title */}
       <a href="/" className="brand" onClick={(e) => handleNav(e, '/')}>
         <img src={logo} alt="logo" className="logo" />
         <div className="brand-text">
@@ -30,15 +46,22 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
           <div className="brand-sub">{t('brand.sub')}</div>
         </div>
       </a>
+
+      {/* Hamburger Button for Mobile Menu */}
       <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Menu">☰</button>
+
+      {/* Navigation Links - Responsive behavior handled via CSS classes */}
       <nav className={`nav ${open ? 'open' : ''}`}>
         {nav.map(n => (
           <div key={n.label} className="nav-item">
+            {/* If item has an href, it's a link; otherwise just a label (for dropdowns) */}
             {n.href ? (
               <a href={n.href} className={route === n.href ? 'active' : ''} onClick={(e) => handleNav(e, n.href!)}>{n.label}</a>
             ) : (
               <button className="nav-label" type="button">{n.label}</button>
             )}
+            
+            {/* Dropdown Menu for child items */}
             {n.children && (
               <div className="dropdown">
                 {n.children.map(c => (
@@ -48,6 +71,8 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
             )}
           </div>
         ))}
+
+        {/* Action Buttons: Donate & Language Toggle */}
         <div className="nav-actions">
           <a href="/donate" className="btn sm" onClick={(e) => handleNav(e, '/donate')}>{t('nav.donate')}</a>
           <button className="btn sm" onClick={() => { setLang(lang === 'en' ? 'ne' : 'en'); setOpen(false); }}>
