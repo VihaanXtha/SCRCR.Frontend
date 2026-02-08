@@ -4,7 +4,6 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import { useTranslation } from './hooks/useTranslation'
 import { fetchMembers } from './services/members'
-import type { Member } from './types/members'
 
 const LoadingFallback = () => <div className="loading">Loading...</div>
 
@@ -29,9 +28,11 @@ function App() {
     window.scrollTo(0, 0)
   }
 
-  // Pre-fetch some data or keep state here if needed across pages
-  const [Founding, setFounding] = useState<Member[]>([])
-  const [Lifetime, setLifetime] = useState<Member[]>([])
+  useEffect(() => {
+    // Only fetch for pre-loading purposes, ignore result
+    fetchMembers('Founding').catch(() => {})
+    fetchMembers('Lifetime').catch(() => {})
+  }, [])
 
   useEffect(() => {
     const onPopState = () => setRoute(window.location.pathname)

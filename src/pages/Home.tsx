@@ -30,7 +30,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
     return () => clearInterval(timer)
   }, [])
 
-  const [latestNews] = useState<NewsItem[]>([]) // Keeping for compatibility if needed, but we will use latestUpdates
+  // const [latestNews] = useState<NewsItem[]>([]) // Removed unused state
   const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([])
   const [currentPopup, setCurrentPopup] = useState<NoticeItem | null>(null)
 

@@ -1,7 +1,7 @@
-import { useRef, useEffect, RefObject } from 'react'
+import { useRef, useEffect, type RefObject } from 'react'
 
 export function useAutoScroll(ref: RefObject<HTMLDivElement | null>, interval = 3000) {
-  const timer = useRef<NodeJS.Timeout | null>(null)
+  const timer = useRef<number | null>(null)
 
   const scroll = (dir: 'left' | 'right') => {
     const el = ref.current
@@ -24,7 +24,7 @@ export function useAutoScroll(ref: RefObject<HTMLDivElement | null>, interval = 
 
   const startAutoScroll = () => {
     if (timer.current) clearInterval(timer.current)
-    timer.current = setInterval(() => {
+    timer.current = window.setInterval(() => {
       scroll('right')
     }, interval)
   }
