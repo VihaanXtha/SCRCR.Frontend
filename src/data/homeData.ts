@@ -1,23 +1,42 @@
 import pabitraImg from '../assets/images/dpmt-images/Pabitra.png';
-import firstImg from "../assets/images/Baristha-sadaya/he.png";
-import secondImg from '../assets/images/Baristha-sadaya/yadunath pandey.png';
-import thirdImg from '../assets/images/Baristha-sadaya/hel.png';
-import fourthImg from '../assets/images/Baristha-sadaya/netra prashad.png';
-import fifthImg from '../assets/images/Baristha-sadaya/hello.png';
-import sixthImg from '../assets/images/Baristha-sadaya/hl.png';
-import seventhImg from '../assets/images/Baristha-sadaya/hlo.png';
+import firstImg from "../assets/images/Baristha-sadaya/Untitled-1.png";
+import secondImg from '../assets/images/Baristha-sadaya/Untitled-2.png';
+import thirdImg from '../assets/images/Baristha-sadaya/Untitled-3.png';
+import fourthImg from '../assets/images/Baristha-sadaya/Untitled-4.png';
+import fifthImg from '../assets/images/Baristha-sadaya/Untitled-5.png';
+import sixthImg from '../assets/images/Baristha-sadaya/Untitled-6.png';
+import seventhImg from '../assets/images/Baristha-sadaya/Untitled-7.png';
 
+import parbataImg from '../assets/images/dpmt-images/parbata belbase.png';
+import arjunImg from '../assets/images/dpmt-images/arjun ghimire.png';
+import meenaImg from '../assets/images/dpmt-images/meena.png';
+import savitraImg from '../assets/images/dpmt-images/savitra kahtri.png';
+import img1 from '../assets/images/dpmt-images/IMG-20250124-WA0060.jpg';
+import img2 from '../assets/images/dpmt-images/IMG-20251210-WA0160.jpg';
+import untitled1 from '../assets/images/dpmt-images/Untitled-1.png';
+import untitled2 from '../assets/images/dpmt-images/Untitled-2.png';
+
+
+import act1 from '../assets/images/activites/scrc-gallery-1.jpg';
+import act2 from '../assets/images/activites/scrc-gallery-13.jpg';
+import act3 from '../assets/images/activites/scrc-gallery-3.jpg';
+import act4 from '../assets/images/activites/scrc-gallery-30.jpg';
+import act5 from '../assets/images/activites/scrc-gallery-32.jpg';
+import act6 from '../assets/images/activites/scrc-gallery-35.jpg';
+import act7 from '../assets/images/activites/scrc-gallery-5.jpg';
+import act8 from '../assets/images/activites/scrc-gallery-8.jpg';
+import act9 from '../assets/images/activites/3.jpg';
 
 export const activities = [
-  { title: 'सामाजिक कार्यक्रम', img: 'https://placehold.co/400x260' },
-  { title: 'सांस्कृतिक आयोजन', img: 'https://placehold.co/400x260' },
-  { title: 'स्वास्थ्य सेवा', img: 'https://placehold.co/400x260' },
-  { title: 'युवाओं के लिए', img: 'https://placehold.co/400x260' },
-  { title: 'महिला मंच', img: 'https://placehold.co/400x260' },
-  { title: 'शैक्षणिक सहयोग', img: 'https://placehold.co/400x260' },
-  { title: 'रक्तदान शिविर', img: 'https://placehold.co/400x260' },
-  { title: 'अन्न वितरण', img: 'https://placehold.co/400x260' },
-  { title: 'आवास सहायता', img: 'https://placehold.co/400x260' }
+  { title: 'सामाजिक कार्यक्रम', img: act1 },
+  { title: 'सांस्कृतिक आयोजन', img: act2 },
+  { title: 'स्वास्थ्य सेवा', img: act3 },
+  { title: 'युवाओं के लिए', img: act4 },
+  { title: 'महिला मंच', img: act5 },
+  { title: 'शैक्षणिक सहयोग', img: act6 },
+  { title: 'रक्तदान शिविर', img: act7 },
+  { title: 'अन्न वितरण', img: act8 },
+  { title: 'आवास सहायता', img: act9 }
 ]
 
 export const leaderQuotes = [
@@ -36,89 +55,71 @@ export const leaders = [
 ]
 
 export const staff = [
-  { name: 'ऑफिस 1', role: 'स्टाफ', img: firstImg },
-  { name: 'ऑफिस 2', role: 'स्टाफ', img: secondImg },
-  { name: 'ऑफिस 3', role: 'स्टाफ', img: thirdImg },
-  { name: 'ऑफिस 4', role: 'स्टाफ', img: fourthImg },
-  { name: 'ऑफिस 5', role: 'स्टाफ', img: fifthImg },
-  { name: 'ऑफिस 6', role: 'स्टाफ', img: sixthImg },
-  { name: 'ऑफिस 7', role: 'स्टाफ', img: seventhImg }
+  { 
+    name: 'श्री बालाराम भट्टराई', 
+    nameEn: 'Shree Balaram Bhattarai',
+    role: 'बरिष्ठ सदस्य', 
+    roleEn: 'Baristha Sadasya',
+    img: firstImg 
+  },
+  { 
+    name: 'श्री यदुनाथ पाण्डेय', 
+    nameEn: 'Shree Yadunath Pandey',
+    role: 'बरिष्ठ सदस्य', 
+    roleEn: 'Baristha Sadasya',
+    img: secondImg 
+  },
+  { 
+    name: 'श्री खेमराज पोखरेल', 
+    nameEn: 'Shree Khemraj Pokhrel',
+    role: 'बरिष्ठ सदस्य', 
+    roleEn: 'Baristha Sadasya',
+    img: thirdImg 
+  },
+  { 
+    name: 'श्री नेत्र प्रसाद बस्याल', 
+    nameEn: 'Shree Netra Prasad Basyal',
+    role: 'बरिष्ठ सदस्य', 
+    roleEn: 'Baristha Sadasya',
+    img: fourthImg 
+  },
+  { 
+    name: 'श्री ऋषिराम भण्डारी', 
+    nameEn: 'Shree Rishiram Bhandari',
+    role: 'बरिष्ठ सदस्य', 
+    roleEn: 'Baristha Sadasya',
+    img: fifthImg 
+  },
+  { 
+    name: 'श्री लोक बहादुर खत्री', 
+    nameEn: 'Shree Lok Bahadur Khatri',
+    role: 'बरिष्ठ सदस्य', 
+    roleEn: 'Baristha Sadasya',
+    img: sixthImg 
+  },
+  { 
+    name: 'श्री जीवकला थापा', 
+    nameEn: 'Shree Jivakala Thapa',
+    role: 'बरिष्ठ सदस्य', 
+    roleEn: 'Baristha Sadasya',
+    img: seventhImg 
+  }
 ]
 
 export const dpmt = [
-  {
-    name: "श्री पार्वता बेल्वासे",
-    role: "संयोजक",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री पावित्रा पराजुली",
-    role: "सह संयोजक",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री सुजता भण्डारी ",
-    role: "सचिव",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री रेनु क्षेत्री",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री मिना पाण्डे",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री सरस्वती पाण्डे",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री विष्णुदेवी खराल",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री मन्दिरा शर्मा",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री रमा ज्ञवाली",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री अर्जुनराज धीमीरे",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री गंगाधर अधिकारी",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री लक्ष्मी थापा",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री यमुना अधिकारी ",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री संगीता भुसाल",
-    role: "सदस्य",
-    img: pabitraImg,
-  },
-  {
-    name: "श्री सावित्रा खत्री",
-    role: "स्सदस्य",
-    img: pabitraImg,
-  },
+  { name: 'श्री पार्वता बेल्वासे', nameEn: 'Shree Parbata Belbase', role: 'संयोजक', roleEn: 'Coordinator', img: parbataImg },
+  { name: 'श्री पावित्रा पराजुली', nameEn: 'Shree Pabitra Parajuli', role: 'सह संयोजक', roleEn: 'Co-Coordinator', img: pabitraImg },
+  { name: 'श्री सुजता भण्डारी ', nameEn: 'Shree Sujata Bhandari', role: 'सचिव', roleEn: 'Secretary', img: untitled1 },
+  { name: 'श्री रेनु क्षेत्री', nameEn: 'Shree Renu Kshetri', role: 'सदस्य', roleEn: 'Member', img: img1 },
+  { name: 'श्री मिना पाण्डे', nameEn: 'Shree Mina Pandey', role: 'सदस्य', roleEn: 'Member', img: meenaImg },
+  { name: 'श्री सरस्वती पाण्डे', nameEn: 'Shree Saraswati Pandey', role: 'सदस्य', roleEn: 'Member', img: img2 },
+  { name: 'श्री विष्णुदेवी खराल', nameEn: 'Shree Bishnudevi Kharal', role: 'सदस्य', roleEn: 'Member', img: untitled2 },
+  { name: 'श्री मन्दिरा शर्मा', nameEn: 'Shree Mandira Sharma', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'श्री रमा ज्ञवाली', nameEn: 'Shree Rama Gyawali', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'श्री अर्जुनराज धीमीरे', nameEn: 'Shree Arjunraj Dhimire', role: 'सदस्य', roleEn: 'Member', img: arjunImg },
+  { name: 'श्री गंगाधर अधिकारी', nameEn: 'Shree Gangadhar Adhikari', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'श्री लक्ष्मी थापा', nameEn: 'Shree Laxmi Thapa', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'श्री यमुना अधिकारी ', nameEn: 'Shree Yamuna Adhikari', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'श्री संगीता भुसाल', nameEn: 'Shree Sangita Bhusal', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'श्री सावित्रा खत्री', nameEn: 'Shree Sabitra Khatri', role: 'स्सदस्य', roleEn: 'Member', img: savitraImg },
 ];

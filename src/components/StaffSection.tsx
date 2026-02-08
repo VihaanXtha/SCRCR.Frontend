@@ -2,11 +2,12 @@ import '../App.css'
 import { useRef } from 'react'
 import { useAutoScroll } from '../hooks/useAutoScroll'
 
-type Person = { name: string; role: string; img: string }
+type Person = { name: string; nameEn?: string; role: string; roleEn?: string; img: string }
 
 export default function StaffSection({ staff, t }: { staff: Person[]; t: (k: string) => string }) {
   const ref = useRef<HTMLDivElement>(null)
   const { scroll, onMouseEnter, onMouseLeave } = useAutoScroll(ref)
+  const isNe = t('nav.home') === 'गृहपृष्ठ' // Hacky check for language, or pass lang prop
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -26,8 +27,12 @@ export default function StaffSection({ staff, t }: { staff: Person[]; t: (k: str
             <div className="relative w-[200px] h-[200px] mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#e43f6f] to-[#c6285b]">
                <img src={s.img} alt={s.name} className="w-full h-full object-cover rounded-full border-4 border-white" />
             </div>
-            <div className="font-bold text-lg text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">{s.name}</div>
-            <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">{s.role}</div>
+            <div className="font-bold text-lg text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">
+              {isNe ? s.name : (s.nameEn || s.name)}
+            </div>
+            <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">
+              {isNe ? s.role : (s.roleEn || s.role)}
+            </div>
           </div>
         ))}
       </div>
