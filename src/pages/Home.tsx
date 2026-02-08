@@ -11,64 +11,79 @@ import AnimatedSection from '../components/AnimatedSection'
 import { useAutoScroll } from '../hooks/useAutoScroll'
 
 
+// Home Component: The main landing page of the application
+// Props:
+// - t: Translation function to translate text based on key
+// - lang: Current language ('en' or 'ne') to handle bilingual data
 export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en' | 'ne' }) {
+  // useRef hooks to get references to DOM elements for auto-scrolling
   const carouselRef = useRef<HTMLDivElement>(null)
   const activitiesRef = useRef<HTMLDivElement>(null)
+  
+  // Custom hook to handle auto-scrolling logic for carousels
   const { scroll: scrollLeaders, onMouseEnter: onMouseEnterLeaders, onMouseLeave: onMouseLeaveLeaders } = useAutoScroll(carouselRef)
   const { scroll: scrollActivities, onMouseEnter: onMouseEnterActivities, onMouseLeave: onMouseLeaveActivities } = useAutoScroll(activitiesRef)
   
-  const [activeLeaderIndex, setActiveLeaderIndex] = useState(0)
-  const [latestImage, setLatestImage] = useState<GalleryItem | null>(null)
-  const [latestVideo, setLatestVideo] = useState<GalleryItem | null>(null)
-  const [latestAlbum, setLatestAlbum] = useState<MemoryAlbum | null>(null)
+  // State variables to manage dynamic data and UI state
+  const [activeLeaderIndex, setActiveLeaderIndex] = useState(0) // Tracks which leader quote is currently displayed
+  const [latestImage, setLatestImage] = useState<GalleryItem | null>(null) // Stores the latest image for the gallery section
+  const [latestVideo, setLatestVideo] = useState<GalleryItem | null>(null) // Stores the latest video for the gallery section
+  const [latestAlbum, setLatestAlbum] = useState<MemoryAlbum | null>(null) // Stores the latest album
+  // Stores combined list of news and notices, sorted by date
   const [latestUpdates, setLatestUpdates] = useState<(NewsItem | NoticeItem & { type: 'news' | 'notice', date: string, image?: string })[]>([])
 
+  // Effect to cycle through leader quotes automatically every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveLeaderIndex((prev) => (prev + 1) % leaderQuotes.length)
     }, 5000)
-    return () => clearInterval(timer)
+    return () => clearInterval(timer) // Cleanup timer on component unmount
   }, [])
 
-  // const [latestNews] = useState<NewsItem[]>([]) // Removed unused state
-  const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([])
-  const [currentPopup, setCurrentPopup] = useState<NoticeItem | null>(null)
+  // State for popup notices
+  const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([]) // Queue of notices to show as popups
+  const [currentPopup, setCurrentPopup] = useState<NoticeItem | null>(null) // The currently visible popup
 
+  // Effect to manage popup queue: shows the next popup when current one is closed
   useEffect(() => {
     // If no popup is showing but we have items in queue, show the next one
     if (!currentPopup && popupQueue.length > 0) {
       setCurrentPopup(popupQueue[0])
-      setPopupQueue(prev => prev.slice(1))
+      setPopupQueue(prev => prev.slice(1)) // Remove the shown item from queue
     }
   }, [popupQueue, currentPopup])
 
+  // Function to close the current popup
   const closePopup = () => {
     setCurrentPopup(null)
-    // Effect will trigger next one automatically
+    // The useEffect above will trigger next one automatically
   }
 
+  // Helper function to process video URLs and return embeddable format
   const getEmbedUrl = (url: string) => {
     // Check for Cloudinary or direct video files
     if (url.includes('cloudinary') || url.match(/\.(mp4|webm|mov)$/i)) {
       return { type: 'video', src: getOptimizedUrl(url, { quality: 'auto' }) }
     }
     
+    // Extract YouTube video ID and create embed URL
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i)
     return match ? { type: 'iframe', src: `https://www.youtube.com/embed/${match[1]}` } : null
   }
 
+  // Main data fetching effect: loads content when component mounts
   useEffect(() => {
-    // 1. Fetch Popup Notices
+    // 1. Fetch Popup Notices (active and marked as popup, less than 24 hours old)
     const p1 = fetchNotices({ active: true, popup: true })
       .then(items => items.filter(i => {
         const dateStr = i.created_at || i.updated_at
         if (!dateStr) return false
         const date = new Date(dateStr)
         const age = Date.now() - date.getTime()
-        return age < 24 * 60 * 60 * 1000
+        return age < 24 * 60 * 60 * 1000 // 24 hours in milliseconds
       }))
 
-    // 2. Fetch Popup News
+    // 2. Fetch Popup News (similar logic to notices)
     const p2 = fetchNews({ active: true, popup: true })
       .then(items => items.filter(i => {
         // Use updated_at if available (for recently toggled items), else published/created
@@ -89,6 +104,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         type: 'news' // Marker to identify news
       } as NoticeItem & { type?: string })))
 
+    // Combine and sort popups
     Promise.all([p1, p2]).then(([notices, news]) => {
       // Sort: News first, then Notices. Within category, sort by date (newest first).
       
@@ -112,11 +128,12 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       }
     }).catch(() => setPopupQueue([]))
 
-    // Fetch Latest News & Notices for Section
+    // Fetch Latest News & Notices for Updates Section
     Promise.all([
       fetchNews({ active: true }),
       fetchNotices({ active: true })
     ]).then(([news, notices]) => {
+      // Normalize news items
       const newsItems = news.map(n => ({
         ...n,
         type: 'news' as const,
@@ -124,6 +141,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         image: n.img
       }))
       
+      // Normalize notice items
       const noticeItems = notices.map(n => ({
         ...n,
         type: 'notice' as const,
@@ -131,6 +149,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         image: n.mediaUrl
       }))
 
+      // Combine and sort by date
       const combined = [...newsItems, ...noticeItems]
       
       const sorted = combined.sort((a, b) => {
@@ -139,9 +158,10 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         return db - da
       })
       
-      setLatestUpdates(sorted.slice(0, 3))
+      setLatestUpdates(sorted.slice(0, 3)) // Keep only top 3 items
     }).catch(() => setLatestUpdates([]))
 
+    // Fetch Gallery items for Moments section
     fetchGallery().then(items => {
       // Get latest image
       const img = items.find(i => i.type === 'image' && i.img)
@@ -152,6 +172,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       if (vid) setLatestVideo(vid)
     }).catch(() => {})
 
+    // Fetch latest album
     fetchMemoryAlbums().then(albums => {
       if (albums.length > 0) setLatestAlbum(albums[0])
     }).catch(() => {})
@@ -159,8 +180,10 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
   return (
     <>
+      {/* Hero Section: The big slider at the top */}
       <section className="hero">
         <HeroSlider />
+        {/* Step indicators overlay on the hero slider */}
         <div className="hero-steps">
             <div className="step">
               <div className="circle">
@@ -194,26 +217,30 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           </div>
       </section>
 
+      {/* Intro Section: Animated introduction text */}
       <AnimatedSection type="zoom-in" delay={200}>
         <Intro t={t} lang={lang} />
       </AnimatedSection>
 
 
 
+      {/* Leader Quotes Section: Carousel of quotes from leaders */}
       <AnimatedSection className="section" type="zoom-in">
         <div className="py-8">
           <div className="w-full max-w-7xl mx-auto min-h-[600px] flex flex-col justify-center">
              {leaderQuotes.map((q, i) => (
                <div 
                 key={`${q.name}-${i}`} 
+                // Conditionally render active quote with animation
                 className={`transition-all duration-700 ease-in-out w-full max-w-7xl mx-auto left-0 right-0 ${i === activeLeaderIndex ? 'opacity-100 translate-x-0 relative z-10' : 'opacity-0 translate-x-8 absolute top-0 -z-10 pointer-events-none'}`}
                >
                  <div className="text-center mb-12">
                   <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-4 shadow-sm">
-                    WELCOME TO SCRC
+                    {t('home.welcome')}
                   </span>
                   <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-                    Message From <span className="text-[#e43f6f]">{q.role}</span>
+                    {/* Dynamic text based on language */}
+                    {t('home.message_from')} <span className="text-[#e43f6f]">{lang === 'en' ? (q.roleEn || q.role) : q.role}</span>
                   </h2>
                 </div>
 
@@ -228,14 +255,14 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                     <div className="relative z-10 bg-white p-3 rounded-[2.5rem] shadow-2xl transform transition-transform duration-500 group-hover:scale-[1.02] w-full max-w-[500px]">
                       <img 
                         src={getOptimizedUrl(q.img, { width: 600, height: 750, fit: 'cover' })} 
-                        alt={q.name}
+                        alt={lang === 'en' ? (q.nameEn || q.name) : q.name}
                         className="w-full aspect-[3/4] object-cover rounded-[2rem]"
                       />
                       
                       {/* Name Label Overlay */}
                       <div className="absolute bottom-8 left-0 bg-gradient-to-r from-[#e43f6f] to-[#c6285b] text-white px-8 py-4 rounded-r-full shadow-lg max-w-[90%] transform transition-transform duration-500 group-hover:translate-x-2">
-                        <div className="font-bold text-lg md:text-xl uppercase tracking-wide leading-tight">{q.name}</div>
-                        <div className="text-xs md:text-sm font-medium opacity-90 mt-1 uppercase tracking-wider">{q.role}</div>
+                        <div className="font-bold text-lg md:text-xl uppercase tracking-wide leading-tight">{lang === 'en' ? (q.nameEn || q.name) : q.name}</div>
+                        <div className="text-xs md:text-sm font-medium opacity-90 mt-1 uppercase tracking-wider">{lang === 'en' ? (q.roleEn || q.role) : q.role}</div>
                       </div>
                     </div>
                   </div>
@@ -250,11 +277,11 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                       
                       <div className="relative z-10">
                         <p className="text-gray-600 text-lg md:text-xl leading-relaxed italic font-light">
-                          "{q.quote}"
+                          "{lang === 'en' ? (q.quoteEn || q.quote) : q.quote}"
                         </p>
                         <div className="mt-8 flex items-center gap-3">
                           <div className="h-1 w-12 bg-[#e43f6f] rounded-full"></div>
-                          <div className="text-sm font-bold text-gray-400 uppercase tracking-widest">SCRC Leader</div>
+                          <div className="text-sm font-bold text-gray-400 uppercase tracking-widest">{t('home.scrc_leader')}</div>
                         </div>
                       </div>
                     </div>
@@ -288,7 +315,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
             <div className="flex justify-between items-end mb-8">
               <div>
                 <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-                  WHAT WE DO
+                  {t('home.what_we_do')}
                 </span>
                 <h3 className="text-3xl font-bold text-gray-800">{t('activities.title')}</h3>
               </div>
@@ -308,16 +335,16 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                         {a.img && (
                           <img 
                             src={a.img} 
-                            alt={a.title} 
+                            alt={lang === 'en' ? (a.titleEn || a.title) : a.title} 
                             className="w-full h-full object-cover transform transition-transform duration-700 hover:scale-110" 
                           />
                         )}
                          <div className="absolute bottom-4 left-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-                           <span className="px-3 py-1 bg-[#e43f6f] text-white text-xs font-bold rounded-full">SCRC Activity</span>
+                           <span className="px-3 py-1 bg-[#e43f6f] text-white text-xs font-bold rounded-full">{t('home.scrc_activity')}</span>
                          </div>
                       </div>
                       <div className="p-6">
-                        <div className="text-xl font-bold text-gray-800 mb-2">{a.title}</div>
+                        <div className="text-xl font-bold text-gray-800 mb-2">{lang === 'en' ? (a.titleEn || a.title) : a.title}</div>
                         <div className="h-1 w-12 bg-pink-200 rounded-full"></div>
                       </div>
                     </div>
@@ -332,7 +359,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="fade-right">
         <div className="text-center mb-12">
            <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-             LEADERSHIP
+             {t('home.leadership')}
            </span>
            <h3 className="text-3xl md:text-4xl font-bold text-gray-800">{t('core.title')}</h3>
         </div>
@@ -348,27 +375,27 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                   {l.img && (
                     <img 
                       src={getOptimizedUrl(l.img, { width: 200, height: 200, fit: 'cover' })} 
-                      alt={l.name} 
+                      alt={lang === 'en' ? (l.nameEn || l.name) : l.name}
                       loading="lazy"
                       className="w-full h-full object-cover rounded-full border-4 border-white"
                     />
                   )}
                 </div>
-                <div className="font-bold text-xl text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">{l.name}</div>
-                <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">{l.role}</div>
+                <div className="font-bold text-xl text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">{lang === 'en' ? (l.nameEn || l.name) : l.name}</div>
+                <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">{lang === 'en' ? (l.roleEn || l.role) : l.role}</div>
               </div>
             ))}
           </div>
         </div>
-         <StaffSection staff={staff} t={t} />
-          <DPMT staff={dpmt} t={t} />
+         <StaffSection staff={staff} t={t} lang={lang} />
+          <DPMT staff={dpmt} t={t} lang={lang} />
 
       </AnimatedSection>
 
       <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="fade-up">
         <div className="text-center mb-12">
            <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-             MOMENTS
+             {t('home.moments')}
            </span>
            <h3 className="text-3xl md:text-4xl font-bold text-gray-800">{t('gallery.title')}</h3>
         </div>
@@ -378,7 +405,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           {latestImage && (
             <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px]">
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
-                LATEST PHOTO
+                {t('home.latest_photo')}
               </div>
               <img 
                 src={getOptimizedUrl(latestImage.img!, { width: 600, height: 600, fit: 'cover' })} 
@@ -396,7 +423,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           {latestVideo && (
             <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] bg-black">
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
-                LATEST VIDEO
+                {t('home.latest_video')}
               </div>
               {(() => {
                  const embed = getEmbedUrl(latestVideo.videoUrl!)
@@ -432,7 +459,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           {latestAlbum && (
             <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] cursor-pointer" onClick={() => window.location.href = '/gallery'}>
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
-                LATEST ALBUM
+                {t('home.latest_album')}
               </div>
               <img 
                 src={getOptimizedUrl(latestAlbum.cover || '', { width: 600, height: 600, fit: 'cover' })} 
@@ -448,7 +475,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
               </div>
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                <span className="text-white/80 text-sm font-medium mb-1">{latestAlbum.count} Items</span>
+                <span className="text-white/80 text-sm font-medium mb-1">{latestAlbum.count} {t('common.items')}</span>
                 <span className="text-white text-xl font-bold">{latestAlbum.name}</span>
               </div>
             </div>
@@ -456,7 +483,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         </div>
         <div className="center mt-10">
           <button className="btn rounded-full px-8 py-3 shadow-lg hover:shadow-pink-200/50 bg-white border-[#e43f6f] text-[#e43f6f] hover:bg-[#e43f6f] hover:text-white transition-all duration-300 font-bold tracking-wide">
-            {lang === 'en' ? 'View Full Gallery' : 'पूरी गैलरी देखें'}
+            {t('common.view_full_gallery')}
           </button>
         </div>
       </AnimatedSection>
@@ -464,7 +491,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
       <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="scale-up">
         <div className="text-center mb-12">
            <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-             UPDATES
+             {t('home.updates')}
            </span>
            <h3 className="text-3xl md:text-4xl font-bold text-gray-800">{t('news.title')} & {t('nav.notices')}</h3>
         </div>
@@ -495,7 +522,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                   <span>Updated: {'date' in n && n.date ? new Date(n.date).toLocaleDateString() : 'N/A'}</span>
                 </div>
                 <button className="mt-auto self-start text-[#e43f6f] font-bold text-sm uppercase tracking-wider flex items-center gap-2 group/btn">
-                  {lang === 'en' ? 'Read More' : 'और पढ़ें'} 
+                  {t('common.read_more')} 
                   <span className="transform transition-transform group-hover/btn:translate-x-1">→</span>
                 </button>
               </div>
@@ -512,7 +539,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
           
           <div className="relative z-10 max-w-2xl mx-auto">
             <h3 className="text-3xl md:text-4xl font-bold mb-6">{t('subscribe.title')}</h3>
-            <p className="text-blue-100 mb-8 text-lg">Stay updated with our latest activities and announcements directly in your inbox.</p>
+            <p className="text-blue-100 mb-8 text-lg">{t('home.subscribe_desc')}</p>
             
             {/* Social Links */}
             <div className="flex justify-center gap-6 mb-10">
@@ -532,7 +559,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
             <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input 
-                placeholder={lang === 'en' ? 'Your email address' : 'आपका ईमेल'} 
+                placeholder={t('common.your_email')}
                 className="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-blue-200 focus:outline-none focus:bg-white/20 backdrop-blur-sm transition-all"
               />
               <button className="px-8 py-4 bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold rounded-full shadow-lg hover:shadow-[#e43f6f]/50 transition-all duration-300 transform hover:scale-105">
@@ -607,19 +634,19 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/20"></div>
              <div className="relative z-10">
                <h3 className="text-3xl font-bold mb-6">{t('contact.title')}</h3>
-               <p className="mb-8 opacity-90">Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+               <p className="mb-8 opacity-90">{t('home.contact_desc')}</p>
                <div className="flex flex-col gap-4">
                  <div className="flex items-center gap-3">
                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">📍</div>
-                   <span>Rupandehi, Nepal</span>
+                   <span>{t('band.addr')}</span>
                  </div>
                  <div className="flex items-center gap-3">
                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">📞</div>
-                   <span>+977 1234567890</span>
+                   <span>{t('band.phone')}</span>
                  </div>
                  <div className="flex items-center gap-3">
                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">✉️</div>
-                   <span>info@scrc.org</span>
+                   <span>{t('band.email')}</span>
                  </div>
                </div>
              </div>
@@ -628,25 +655,25 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
             <form className="grid gap-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-gray-600 ml-2">Name</label>
-                  <input placeholder={lang === 'en' ? 'Your Name' : 'नाम'} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                  <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.name')}</label>
+                  <input placeholder={t('common.name_placeholder')} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-gray-600 ml-2">Mobile</label>
-                  <input placeholder={lang === 'en' ? 'Phone Number' : 'मोबाइल'} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                  <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.phone')}</label>
+                  <input placeholder={t('common.phone_placeholder')} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-gray-600 ml-2">Email</label>
-                <input placeholder={lang === 'en' ? 'Email Address' : 'ईमेल'} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.email')}</label>
+                <input placeholder={t('common.email_placeholder')} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-gray-600 ml-2">Message</label>
-                <textarea placeholder={lang === 'en' ? 'How can we help?' : 'संदेश'} rows={4} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors resize-none" />
+                <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.message')}</label>
+                <textarea placeholder={t('common.message_placeholder')} rows={4} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors resize-none" />
               </div>
               <div className="mt-4">
                 <button className="btn w-full bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
-                  {lang === 'en' ? 'Send Message' : 'भेजें'}
+                  {t('common.send_message')}
                 </button>
               </div>
             </form>

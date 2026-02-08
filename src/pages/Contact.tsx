@@ -5,27 +5,37 @@ import bannerImg from '../assets/images/hero-slider/scrc-slider-8-1.jpg'
 import donateBanner from '../assets/images/activites/3.jpg'
 import AnimatedSection from '../components/AnimatedSection'
 
+// Define the available tabs for this page
 type TabType = 'contact' | 'donate'
 
+// Contact Component: Handles general inquiries and donation information
 export default function Contact({ t }: { t: (k: string) => string }) {
+  // State to toggle between 'Contact' and 'Donate' views
   const [activeTab, setActiveTab] = useState<TabType>('contact')
+  
+  // State to manage form input values
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     message: ''
   })
+  
+  // State to track form submission status ('idle', 'submitting', 'success', 'error')
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
 
+  // Handle input changes for form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('submitting')
     
     try {
+      // Send form data to the backend API
       const res = await fetch('https://scrcr-backend.vercel.app/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,6 +44,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
       
       if (!res.ok) throw new Error('Failed to send')
       
+      // On success, reset form and show success message
       setStatus('success')
       setFormData({ name: '', email: '', phone: '', message: '' })
     } catch (error) {
@@ -42,6 +53,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
     }
   }
 
+  // Dynamic banner image and title based on active tab
   const getBanner = () => activeTab === 'donate' ? donateBanner : bannerImg
   const getTitle = () => activeTab === 'donate' ? t('nav.donate') : t('nav.contact')
 
@@ -50,6 +62,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
       <SubHero title={getTitle()} img={getBanner()} />
       
       <div className="w-full max-w-7xl mx-auto px-4 py-8">
+        {/* Tab Navigation Buttons */}
         <div className="flex justify-center gap-4 mb-12">
           <button 
             className={`px-8 py-3 rounded-full font-bold transition-all ${
@@ -73,9 +86,11 @@ export default function Contact({ t }: { t: (k: string) => string }) {
           </button>
         </div>
 
+        {/* CONTACT VIEW */}
         {activeTab === 'contact' && (
           <AnimatedSection className="w-full" type="fade-up">
             <div className="bg-white rounded-[3rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+              {/* Contact Info Column (Left) */}
               <div className="md:w-5/12 bg-[#e43f6f] p-12 text-white flex flex-col justify-center relative overflow-hidden">
                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/20"></div>
                  <div className="relative z-10">
@@ -98,6 +113,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
                  </div>
               </div>
               
+              {/* Contact Form Column (Right) */}
               <div className="md:w-7/12 p-12">
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.formTitle')}</h3>
                 <form className="grid gap-6" onSubmit={handleSubmit}>
@@ -159,6 +175,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
                     </button>
                   </div>
                   
+                  {/* Status Messages */}
                   {status === 'success' && <p className="text-green-600 font-bold mt-2 text-center bg-green-50 p-3 rounded-xl">{t('contact.success')}</p>}
                   {status === 'error' && <p className="text-red-600 font-bold mt-2 text-center bg-red-50 p-3 rounded-xl">{t('contact.error')}</p>}
                 </form>
@@ -167,26 +184,30 @@ export default function Contact({ t }: { t: (k: string) => string }) {
           </AnimatedSection>
         )}
 
+        {/* DONATE VIEW */}
         {activeTab === 'donate' && (
           <AnimatedSection className="w-full" type="fade-up">
             <div className="grid md:grid-cols-2 gap-12 items-start">
+              {/* Donation Info Card */}
               <div className="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border border-gray-100">
                 <h3 className="text-3xl font-bold text-gray-800 mb-8">{t('donate.support')}</h3>
+                {/* QR Code */}
                 <div className="bg-gray-100 rounded-2xl p-6 mb-8 flex items-center justify-center">
                   <div className="w-64 h-64 bg-white rounded-xl shadow-inner flex items-center justify-center border-2 border-dashed border-gray-300">
-                    <span className="text-gray-400 font-bold text-xl">QR CODE HERE</span>
+                    <span className="text-gray-400 font-bold text-xl">{t('donate.qr_text')}</span>
                   </div>
                 </div>
+                {/* Bank Details */}
                 <div className="bg-gradient-to-r from-[#e43f6f] to-[#c6285b] text-white p-8 rounded-[2rem] shadow-lg">
                   <div className="font-bold text-xl mb-6 opacity-90 border-b border-white/20 pb-4">{t('donate.accTitle')}</div>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="opacity-80 text-sm">{t('donate.bank')}</span>
-                      <span className="font-bold text-lg">ABC Bank Ltd</span>
+                      <span className="font-bold text-lg">{t('donate.bank_name')}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="opacity-80 text-sm">{t('donate.accountName')}</span>
-                      <span className="font-bold text-lg text-right">Jestha Nagrik Milan Kendra</span>
+                      <span className="font-bold text-lg text-right">{t('donate.acc_name_val')}</span>
                     </div>
                     <div className="flex justify-between items-center pt-2">
                       <span className="opacity-80 text-sm">{t('donate.accountNo')}</span>
@@ -196,6 +217,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
                 </div>
               </div>
 
+              {/* Donation Form */}
               <div className="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border border-gray-100">
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('donate.formTitle')}</h3>
                 <form className="grid gap-6">

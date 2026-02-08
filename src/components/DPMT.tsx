@@ -2,7 +2,9 @@ import '../App.css'
 import { useRef } from 'react'
 import { useAutoScroll } from '../hooks/useAutoScroll'
 
-export default function DPMT({ staff, t }: { staff: { name: string; role: string; img: string }[]; t: (k: string) => string }) {
+type Person = { name: string; nameEn?: string; role: string; roleEn?: string; img: string }
+
+export default function DPMT({ staff, t, lang }: { staff: Person[]; t: (k: string) => string; lang: 'en' | 'ne' }) {
   const ref = useRef<HTMLDivElement>(null)
   const { scroll, onMouseEnter, onMouseLeave } = useAutoScroll(ref)
 
@@ -10,7 +12,7 @@ export default function DPMT({ staff, t }: { staff: { name: string; role: string
     <div className="w-full max-w-7xl mx-auto px-4 py-8" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
        <div className="text-center mb-8">
            <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-             MANAGEMENT
+             OUR COMMITTEE
            </span>
            <h3 className="text-3xl font-bold text-gray-800">{t('dpmt.title')}</h3>
         </div>
@@ -24,8 +26,12 @@ export default function DPMT({ staff, t }: { staff: { name: string; role: string
             <div className="relative w-[200px] h-[200px] mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-[#e43f6f] to-[#c6285b]">
                <img src={s.img} alt={s.name} className="w-full h-full object-cover rounded-full border-4 border-white" />
             </div>
-            <div className="font-bold text-lg text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">{s.name}</div>
-            <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">{s.role}</div>
+            <div className="font-bold text-lg text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">
+              {lang === 'en' ? (s.nameEn || s.name) : s.name}
+            </div>
+            <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">
+              {lang === 'en' ? (s.roleEn || s.role) : s.role}
+            </div>
           </div>
         ))}
       </div>

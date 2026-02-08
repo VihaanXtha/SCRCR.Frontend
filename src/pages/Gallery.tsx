@@ -8,61 +8,74 @@ import { getOptimizedUrl } from '../utils/image'
 import bannerImg from '../assets/images/hero-slider/scrc-slider-9-1.png'
 import AnimatedSection from '../components/AnimatedSection'
 
+// Define filter types for the gallery view
 type FilterType = 'all' | 'photo' | 'video' | 'album'
 
+// Gallery Component: Displays a collection of photos, videos, and albums
 export default function Gallery({ t }: { t: (k: string) => string }) {
+  // State variables to store fetched content
   const [videos, setVideos] = useState<GalleryItem[]>([])
   const [photos, setPhotos] = useState<GalleryItem[]>([])
   const [albums, setAlbums] = useState<MemoryAlbum[]>([])
+  // State to track the active filter
   const [filter, setFilter] = useState<FilterType>('all')
   
-  // Album view state
+  // Album view state: tracks which album is currently open and its images
   const [activeAlbum, setActiveAlbum] = useState<string>('')
   const [albumImages, setAlbumImages] = useState<string[]>([])
 
+  // Fetch all gallery data when component mounts
   useEffect(() => {
     Promise.all([
       fetchGallery(),
       fetchMemoryAlbums()
     ]).then(([items, albumData]) => {
+      // Filter items into photos and videos
       setVideos(items.filter(i => (i.type ?? 'video') === 'video'))
       setPhotos(items.filter(i => i.type === 'image'))
       setAlbums(albumData)
     }).catch(() => {
+      // Handle errors by clearing state
       setVideos([])
       setPhotos([])
       setAlbums([])
     })
   }, [])
 
+  // Helper function to convert video URLs into embeddable format
   const toEmbed = (url: string) => {
     try {
-      // Cloudinary / Direct Video
+      // Check for Cloudinary or direct video files
       if (url.includes('cloudinary') || url.match(/\.(mp4|webm|mov)$/i)) {
         return { type: 'video', src: getOptimizedUrl(url, { quality: 'auto' }) }
       }
 
+      // Handle YouTube URLs
       const u = new URL(url)
       if (u.hostname.includes('youtu.be')) return { type: 'iframe', src: `https://www.youtube.com/embed/${u.pathname.slice(1)}` }
       if (u.hostname.includes('youtube.com')) {
         const id = u.searchParams.get('v')
         if (id) return { type: 'iframe', src: `https://www.youtube.com/embed/${id}` }
+        // Handle YouTube Shorts
         const parts = u.pathname.split('/')
         const idx = parts.findIndex(p => p === 'shorts')
         if (idx !== -1 && parts[idx + 1]) return { type: 'iframe', src: `https://www.youtube.com/embed/${parts[idx + 1]}` }
       }
+      // Default fallback
       return { type: 'iframe', src: url }
     } catch {
       return { type: 'iframe', src: url }
     }
   }
 
+  // Render function for the Photos section
   const renderPhotos = () => (
     <div className="mb-16">
+      {/* Show header only when viewing 'all' to avoid redundancy */}
       {(filter === 'all') && (
         <div className="text-center mb-8">
            <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-             MOMENTS
+             {t('home.moments')}
            </span>
            <h3 className="text-3xl font-bold text-gray-800">{t('gallery.filter.photo')}</h3>
         </div>
@@ -78,6 +91,7 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
                 className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
               />
             )}
+            {/* Overlay title on hover */}
             {p.title && (
                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                  <span className="text-white text-sm font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">{p.title}</span>
@@ -89,12 +103,13 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
     </div>
   )
 
+  // Render function for the Videos section
   const renderVideos = () => (
     <div className="mb-16">
       {(filter === 'all') && (
         <div className="text-center mb-8">
            <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-             WATCH
+             {t('gallery.watch')}
            </span>
            <h3 className="text-3xl font-bold text-gray-800">{t('gallery.filter.video')}</h3>
         </div>
@@ -123,7 +138,7 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
                 )}
               </div>
               <div className="p-6">
-                <div className="font-bold text-lg text-gray-800 line-clamp-2">{v.title || 'Untitled Video'}</div>
+                <div className="font-bold text-lg text-gray-800 line-clamp-2">{v.title || t('gallery.untitled_video')}</div>
               </div>
             </div>
           )
@@ -132,16 +147,18 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
     </div>
   )
 
+  // Render function for the Albums section
   const renderAlbums = () => (
     <div className="mb-16">
       {(filter === 'all') && (
         <div className="text-center mb-8">
            <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-             COLLECTIONS
+             {t('gallery.collections')}
            </span>
            <h3 className="text-3xl font-bold text-gray-800">{t('gallery.filter.album')}</h3>
         </div>
       )}
+      {/* Grid of Album Folders */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {albums.map(a => (
           <div key={a.name} className="transform transition-transform hover:-translate-y-1">
@@ -151,6 +168,7 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
               cover={getOptimizedUrl(a.cover || '', { width: 300, height: 300, fit: 'cover' })}
               active={activeAlbum === a.name}
               onClick={async () => {
+                // Toggle album: close if open, else open and fetch images
                 if (activeAlbum === a.name) {
                   setActiveAlbum('')
                   setAlbumImages([])
@@ -164,6 +182,8 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
           </div>
         ))}
       </div>
+      
+      {/* Display images of the currently active album */}
       {activeAlbum && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 animate-fade-in">
           {albumImages.map((u, i) => (
@@ -186,7 +206,7 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
       <SubHero title={t('nav.gallery')} img={bannerImg} />
       
       <div className="w-full max-w-7xl mx-auto px-4 py-8">
-        {/* Filter Tabs */}
+        {/* Filter Navigation Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           <button 
             className={`px-6 py-2 rounded-full font-bold transition-all ${filter === 'all' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
@@ -214,6 +234,7 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
           </button>
         </div>
 
+        {/* Animated container for gallery content */}
         <AnimatedSection className="w-full" type="fade-up">
           {(filter === 'all' || filter === 'photo') && renderPhotos()}
           {(filter === 'all' || filter === 'video') && renderVideos()}

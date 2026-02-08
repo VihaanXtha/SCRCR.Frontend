@@ -1,27 +1,36 @@
 
-import SubHero from '../components/SubHero'
+import '../App.css'
 import { useState } from 'react'
-import bannerImg from '../assets/images/activites/scrc-gallery-13.jpg'
+import SubHero from '../components/SubHero'
+import bannerImg from '../assets/images/hero-slider/scrc-slider-1.jpg'
 
+// Membership Component: Handles membership application process and displays benefits
 export default function Membership({ t }: { t: (k: string) => string }) {
+  // State to manage loading status during form submission
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
-    const form = e.target as HTMLFormElement
+    const form = e.currentTarget
     const formData = new FormData(form)
-
+    
     try {
+      // Send form data (including files) to backend
       const res = await fetch('https://scrcr-backend.vercel.app/api/membership', {
         method: 'POST',
         body: formData
       })
+      
       if (!res.ok) throw new Error('Failed to submit')
-      alert('Application submitted successfully! We will contact you soon.')
+      
+      // Show success message and reset form
+      alert(t('membership.submit_success'))
       form.reset()
     } catch (error) {
-      alert('Failed to submit application. Please try again.')
+      // Show error message
+      alert(t('membership.submit_error'))
     } finally {
       setLoading(false)
     }
@@ -33,7 +42,9 @@ export default function Membership({ t }: { t: (k: string) => string }) {
       
       <div className="section">
         <div className="contact-layout">
+          {/* Information Column */}
           <div>
+            {/* Membership Process Steps */}
             <h3>{t('membership.process.title')}</h3>
             <ul style={{ lineHeight: '1.8', color: '#555', paddingLeft: '20px' }}>
               <li>{t('membership.process.step1')}</li>
@@ -43,6 +54,7 @@ export default function Membership({ t }: { t: (k: string) => string }) {
               <li>{t('membership.process.step5')}</li>
             </ul>
 
+            {/* Membership Benefits */}
             <h3 style={{ marginTop: '24px' }}>{t('membership.benefits.title')}</h3>
             <ul style={{ lineHeight: '1.8', color: '#555', paddingLeft: '20px' }}>
               <li>{t('membership.benefit1')}</li>
@@ -52,6 +64,7 @@ export default function Membership({ t }: { t: (k: string) => string }) {
             </ul>
           </div>
 
+          {/* Application Form */}
           <form className="contact-form" onSubmit={handleSubmit}>
             <h3 style={{ margin: 0 }}>{t('membership.form.title')}</h3>
             <div className="form-row">
@@ -78,7 +91,7 @@ export default function Membership({ t }: { t: (k: string) => string }) {
             <label style={{ fontSize: '14px', color: '#666', marginTop: '10px', display: 'block' }}>{t('membership.form.citizenship_copy')}</label>
             <input name="citizenship" type="file" accept="image/*,application/pdf" required />
 
-            <button className="btn" style={{ marginTop: '16px' }} disabled={loading}>{loading ? 'Submitting...' : t('membership.form.submit')}</button>
+            <button className="btn" style={{ marginTop: '16px' }} disabled={loading}>{loading ? t('membership.submitting') : t('membership.form.submit')}</button>
           </form>
         </div>
       </div>

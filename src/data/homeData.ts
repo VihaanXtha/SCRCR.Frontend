@@ -28,30 +28,30 @@ import act8 from '../assets/images/activites/scrc-gallery-8.jpg';
 import act9 from '../assets/images/activites/3.jpg';
 
 export const activities = [
-  { title: 'सामाजिक कार्यक्रम', img: act1 },
-  { title: 'सांस्कृतिक आयोजन', img: act2 },
-  { title: 'स्वास्थ्य सेवा', img: act3 },
-  { title: 'युवाओं के लिए', img: act4 },
-  { title: 'महिला मंच', img: act5 },
-  { title: 'शैक्षणिक सहयोग', img: act6 },
-  { title: 'रक्तदान शिविर', img: act7 },
-  { title: 'अन्न वितरण', img: act8 },
-  { title: 'आवास सहायता', img: act9 }
+  { title: 'सामाजिक कार्यक्रम', titleEn: 'Social Programs', img: act1 },
+  { title: 'सांस्कृतिक आयोजन', titleEn: 'Cultural Events', img: act2 },
+  { title: 'स्वास्थ्य सेवा', titleEn: 'Health Services', img: act3 },
+  { title: 'युवाओं के लिए', titleEn: 'For Youth', img: act4 },
+  { title: 'महिला मंच', titleEn: "Women's Forum", img: act5 },
+  { title: 'शैक्षणिक सहयोग', titleEn: 'Educational Support', img: act6 },
+  { title: 'रक्तदान शिविर', titleEn: 'Blood Donation Camp', img: act7 },
+  { title: 'अन्न वितरण', titleEn: 'Food Distribution', img: act8 },
+  { title: 'आवास सहायता', titleEn: 'Housing Assistance', img: act9 }
 ]
 
 export const leaderQuotes = [
-  { name: 'Kewal Das', role: 'President', img: 'https://placehold.co/160x160', quote: 'समाज सेवा हमारा धर्म है।' },
-  { name: 'Hari Om', role: 'Vice President', img: 'https://placehold.co/160x160', quote: 'एकता में शक्ति है।' },
-  { name: 'Vikas Patel', role: 'Secretary', img: 'https://placehold.co/160x160', quote: 'युवा ही भविष्य हैं।' }
+  { name: 'Kewal Das', nameEn: 'Kewal Das', role: 'President', roleEn: 'President', img: 'https://placehold.co/160x160', quote: 'समाज सेवा हमारा धर्म है।', quoteEn: 'Social service is our religion.' },
+  { name: 'Hari Om', nameEn: 'Hari Om', role: 'Vice President', roleEn: 'Vice President', img: 'https://placehold.co/160x160', quote: 'एकता में शक्ति है।', quoteEn: 'Unity is strength.' },
+  { name: 'Vikas Patel', nameEn: 'Vikas Patel', role: 'Secretary', roleEn: 'Secretary', img: 'https://placehold.co/160x160', quote: 'युवा ही भविष्य हैं।', quoteEn: 'Youth are the future.' }
 ]
 
 export const leaders = [
-  { name: 'गौरव पटेल', role: 'अध्यक्ष', img: 'https://placehold.co/160x160' },
-  { name: 'हितेश सोनी', role: 'उपाध्यक्ष', img: 'https://placehold.co/160x160' },
-  { name: 'नरेश जैन', role: 'महामंत्री', img: 'https://placehold.co/160x160' },
-  { name: 'राजेश गुप्ता', role: 'कोषाध्यक्ष', img: 'https://placehold.co/160x160' },
-  { name: 'विनोद शर्मा', role: 'सदस्य', img: 'https://placehold.co/160x160' },
-  { name: 'राहुल अग्रवाल', role: 'सदस्य', img: 'https://placehold.co/160x160' }
+  { name: 'गौरव पटेल', nameEn: 'Gaurav Patel', role: 'अध्यक्ष', roleEn: 'President', img: 'https://placehold.co/160x160' },
+  { name: 'हितेश सोनी', nameEn: 'Hitesh Soni', role: 'उपाध्यक्ष', roleEn: 'Vice President', img: 'https://placehold.co/160x160' },
+  { name: 'नरेश जैन', nameEn: 'Naresh Jain', role: 'महामंत्री', roleEn: 'General Secretary', img: 'https://placehold.co/160x160' },
+  { name: 'राजेश गुप्ता', nameEn: 'Rajesh Gupta', role: 'कोषाध्यक्ष', roleEn: 'Treasurer', img: 'https://placehold.co/160x160' },
+  { name: 'विनोद शर्मा', nameEn: 'Vinod Sharma', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'राहुल अग्रवाल', nameEn: 'Rahul Agrawal', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' }
 ]
 
 export const staff = [

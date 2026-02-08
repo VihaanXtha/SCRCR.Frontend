@@ -4,10 +4,9 @@ import { useAutoScroll } from '../hooks/useAutoScroll'
 
 type Person = { name: string; nameEn?: string; role: string; roleEn?: string; img: string }
 
-export default function StaffSection({ staff, t }: { staff: Person[]; t: (k: string) => string }) {
+export default function StaffSection({ staff, t, lang }: { staff: Person[]; t: (k: string) => string; lang: 'en' | 'ne' }) {
   const ref = useRef<HTMLDivElement>(null)
   const { scroll, onMouseEnter, onMouseLeave } = useAutoScroll(ref)
-  const isNe = t('nav.home') === 'गृहपृष्ठ' // Hacky check for language, or pass lang prop
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -28,10 +27,10 @@ export default function StaffSection({ staff, t }: { staff: Person[]; t: (k: str
                <img src={s.img} alt={s.name} className="w-full h-full object-cover rounded-full border-4 border-white" />
             </div>
             <div className="font-bold text-lg text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">
-              {isNe ? s.name : (s.nameEn || s.name)}
+              {lang === 'en' ? (s.nameEn || s.name) : s.name}
             </div>
             <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">
-              {isNe ? s.role : (s.roleEn || s.role)}
+              {lang === 'en' ? (s.roleEn || s.role) : s.role}
             </div>
           </div>
         ))}
