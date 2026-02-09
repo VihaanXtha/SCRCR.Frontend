@@ -786,11 +786,13 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
              </div>
           </div>
           <div className="md:w-7/12 p-6 md:p-12">
-            <form className="grid gap-6" onSubmit={handleContactSubmit}>
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.formTitle')}</h3>
+            <form className="space-y-6" onSubmit={handleContactSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.name')}</label>
                   <input 
+                    name="name"
                     required
                     value={contactForm.name}
                     onChange={e => setContactForm({...contactForm, name: e.target.value})}
@@ -801,6 +803,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.phone')}</label>
                   <input 
+                    name="phone"
                     required
                     value={contactForm.phone}
                     onChange={e => setContactForm({...contactForm, phone: e.target.value})}
@@ -812,6 +815,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.email')}</label>
                 <input 
+                  name="email"
                   type="email"
                   required
                   value={contactForm.email}
@@ -823,6 +827,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.message')}</label>
                 <textarea 
+                  name="message"
                   required
                   value={contactForm.message}
                   onChange={e => setContactForm({...contactForm, message: e.target.value})}
@@ -831,9 +836,9 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
                   className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors resize-none" 
                 />
               </div>
-              <div className="mt-4">
+              <div className="mt-8">
                 <button type="submit" className="btn w-full bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
-                  {t('common.send_message')}
+                  {t('contact.send')}
                 </button>
               </div>
             </form>

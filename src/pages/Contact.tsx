@@ -116,7 +116,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
               {/* Contact Form Column (Right) */}
               <div className="md:w-7/12 p-6 md:p-12">
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.formTitle')}</h3>
-                <form className="grid gap-6" onSubmit={handleSubmit}>
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.name')}</label>
@@ -166,7 +166,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
                     />
                   </div>
                   
-                  <div className="mt-4">
+                  <div className="mt-8">
                     <button 
                       className="btn w-full bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
                     >
