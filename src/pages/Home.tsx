@@ -363,7 +363,18 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
               <div className="carousel flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide" ref={activitiesRef}>
                 {activities.map((a, i) => (
                   <div key={`${a.title}-${i}`} className="min-w-[380px] snap-start">
-                    <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 h-full">
+                    <div 
+                      className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 h-full cursor-pointer group"
+                      onClick={() => setCurrentPopup({
+                        title: lang === 'en' ? (a.titleEn || a.title) : a.title,
+                        mediaUrl: a.img,
+                        text: '',
+                        active: true,
+                        popup: true,
+                        created_at: '',
+                        updated_at: ''
+                      })}
+                    >
                       <div className="relative h-[280px] overflow-hidden">
                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         {a.img && (
@@ -437,7 +448,18 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Latest Image */}
           {latestImage && (
-            <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px]">
+            <div 
+              className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] cursor-pointer"
+              onClick={() => setCurrentPopup({
+                title: latestImage.title || t('home.latest_photo'),
+                mediaUrl: latestImage.img,
+                text: '',
+                active: true,
+                popup: true,
+                created_at: latestImage.created_at || '',
+                updated_at: ''
+              })}
+            >
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
                 {t('home.latest_photo')}
               </div>
@@ -455,10 +477,24 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
           {/* Latest Video */}
           {latestVideo && (
-            <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] bg-black">
+            <div 
+              className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] bg-black cursor-pointer"
+              onClick={() => setCurrentPopup({
+                title: latestVideo.title || t('home.latest_video'),
+                mediaUrl: latestVideo.videoUrl,
+                text: '',
+                active: true,
+                popup: true,
+                created_at: latestVideo.created_at || '',
+                updated_at: ''
+              })}
+              onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if(v) v.play(); }}
+              onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if(v) v.pause(); }}
+            >
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
                 {t('home.latest_video')}
               </div>
+              <div className="absolute inset-0 z-10 bg-transparent"></div>
               {(() => {
                  const embed = getEmbedUrl(latestVideo.videoUrl!)
                  if (embed?.type === 'video') {
@@ -468,8 +504,6 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                        className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                        muted
                        loop
-                       onMouseOver={e => e.currentTarget.play()}
-                       onMouseOut={e => e.currentTarget.pause()}
                      />
                    )
                  }
@@ -483,7 +517,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                    />
                  )
               })()}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none flex items-end p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none flex items-end p-6 z-20">
                  <span className="text-white text-lg font-bold">{latestVideo.title || 'Watch Video'}</span>
               </div>
             </div>
@@ -531,7 +565,17 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {latestUpdates.map((n, i) => (
-            <div key={n._id || i} className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-gray-100 flex flex-col h-full group transform hover:-translate-y-2 duration-300">
+            <div 
+              key={n._id || i} 
+              className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-gray-100 flex flex-col h-full group transform hover:-translate-y-2 duration-300 cursor-pointer"
+              onClick={() => setCurrentPopup({
+                ...n,
+                mediaUrl: 'image' in n ? n.image : undefined,
+                text: 'text' in n ? n.text : '',
+                active: true,
+                popup: true
+              } as any)}
+            >
               <div className="h-56 overflow-hidden relative">
                 {'image' in n && n.image ? (
                   <img 
