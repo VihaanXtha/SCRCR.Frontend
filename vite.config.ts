@@ -15,12 +15,12 @@ export default defineConfig({
         theme_color: '#1e3a8a',
         icons: [
           {
-            src: 'https://placehold.co/192x192/1e3a8a/ffffff?text=SCRC',
+            src: '/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'https://placehold.co/512x512/1e3a8a/ffffff?text=SCRC',
+            src: '/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
