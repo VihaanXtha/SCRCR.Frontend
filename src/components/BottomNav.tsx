@@ -1,6 +1,4 @@
 
-import { useNavigate } from 'react-router-dom' // We might not have react-router-dom installed, checking App.tsx uses window.history. Let's stick to the props pattern used in Header.
-
 export default function BottomNav({ route, navigate, t }: { route: string, navigate: (path: string) => void, t: (k: string) => string }) {
   const navItems = [
     { label: t('nav.home') || 'Home', path: '/', icon: (
