@@ -226,27 +226,27 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
       
       <div className="w-full max-w-7xl mx-auto px-4 py-6 md:py-8">
         {/* Filter Navigation Buttons */}
-        <div className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center gap-2 md:gap-3 mb-6 pb-2 scrollbar-hide px-1">
+        <div className="flex w-full md:w-auto overflow-x-auto md:flex-wrap justify-start md:justify-center gap-2 md:gap-3 mb-6 pb-2 scrollbar-hide px-1">
           <button 
-            className={`whitespace-nowrap shrink-0 px-4 py-1.5 md:px-6 md:py-2 rounded-full font-bold transition-all text-sm md:text-base ${filter === 'all' ? 'bg-[#e43f6f] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap md:flex-none shrink-0 px-6 py-2 md:px-6 md:py-2 rounded-full font-bold transition-all text-sm md:text-base ${filter === 'all' ? 'bg-[#e43f6f] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('all')}
           >
             {t('gallery.filter.all')}
           </button>
           <button 
-            className={`whitespace-nowrap shrink-0 px-4 py-1.5 md:px-6 md:py-2 rounded-full font-bold transition-all text-sm md:text-base ${filter === 'photo' ? 'bg-[#e43f6f] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap md:flex-none shrink-0 px-6 py-2 md:px-6 md:py-2 rounded-full font-bold transition-all text-sm md:text-base ${filter === 'photo' ? 'bg-[#e43f6f] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('photo')}
           >
             {t('gallery.filter.photo')}
           </button>
           <button 
-            className={`whitespace-nowrap shrink-0 px-4 py-1.5 md:px-6 md:py-2 rounded-full font-bold transition-all text-sm md:text-base ${filter === 'video' ? 'bg-[#e43f6f] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap md:flex-none shrink-0 px-6 py-2 md:px-6 md:py-2 rounded-full font-bold transition-all text-sm md:text-base ${filter === 'video' ? 'bg-[#e43f6f] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('video')}
           >
             {t('gallery.filter.video')}
           </button>
           <button 
-            className={`whitespace-nowrap shrink-0 px-4 py-1.5 md:px-6 md:py-2 rounded-full font-bold transition-all text-sm md:text-base ${filter === 'album' ? 'bg-[#e43f6f] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap md:flex-none shrink-0 px-6 py-2 md:px-6 md:py-2 rounded-full font-bold transition-all text-sm md:text-base ${filter === 'album' ? 'bg-[#e43f6f] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('album')}
           >
             {t('gallery.filter.album')}
