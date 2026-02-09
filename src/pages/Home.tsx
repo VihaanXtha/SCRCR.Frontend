@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import HeroSlider from '../components/HeroSlider'
 import StaffSection from '../components/StaffSection'
 import DPMT from '../components/DPMT'
-import { fetchNotices, fetchNews, fetchGallery, fetchMemoryAlbums } from '../services/content'
+import { fetchNotices, fetchNews, fetchGallery, fetchMemoryAlbums, fetchAlbumImages } from '../services/content'
 import { activities, dpmt, leaderQuotes, leaders, staff } from '../data/homeData'
 import type { NoticeItem, NewsItem, GalleryItem, MemoryAlbum } from '../types/content'
 import Intro from '../components/Intro'
@@ -43,6 +43,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
   // State for popup notices
   const [popupQueue, setPopupQueue] = useState<NoticeItem[]>([]) // Queue of notices to show as popups
   const [currentPopup, setCurrentPopup] = useState<NoticeItem | null>(null) // The currently visible popup
+  const [albumImages, setAlbumImages] = useState<string[]>([]) // Store album images for popup
 
   // Effect to manage popup queue: shows the next popup when current one is closed
   useEffect(() => {
@@ -525,7 +526,23 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
           {/* Latest Album */}
           {latestAlbum && (
-            <div className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] cursor-pointer" onClick={() => window.location.href = '/gallery'}>
+            <div 
+              className="relative group overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all h-[300px] md:h-[400px] cursor-pointer" 
+              onClick={async () => {
+                const imgs = await fetchAlbumImages(latestAlbum.name)
+                setAlbumImages(imgs.map(i => i.url))
+                setCurrentPopup({
+                  type: 'album',
+                  title: latestAlbum.name,
+                  mediaUrl: '',
+                  text: '',
+                  active: true,
+                  popup: true,
+                  created_at: '',
+                  updated_at: ''
+                } as any)
+              }}
+            >
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm z-20">
                 {t('home.latest_album')}
               </div>
@@ -656,6 +673,29 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
               <button className="notice-close" onClick={closePopup}>×</button>
             </div>
             <div className={currentPopup.mediaUrl && currentPopup.text ? "notice-body-grid" : "notice-body-single"}>
+              {(currentPopup as any).type === 'album' ? (
+                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                   {albumImages.map((img, idx) => (
+                     <div 
+                       key={idx} 
+                       className="aspect-square rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                       onClick={() => setCurrentPopup({
+                         type: 'image',
+                         title: (currentPopup as any).title,
+                         mediaUrl: img,
+                         text: '',
+                         active: true,
+                         popup: true,
+                         created_at: '',
+                         updated_at: ''
+                       } as any)}
+                     >
+                       <img src={getOptimizedUrl(img, { width: 300, height: 300, fit: 'cover' })} className="w-full h-full object-cover" loading="lazy" />
+                     </div>
+                   ))}
+                 </div>
+              ) : (
+              <>
               {currentPopup.mediaUrl && (
                 <div className={currentPopup.text ? "notice-media-col" : "notice-media-full"}>
                   {(() => {
@@ -700,6 +740,8 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                 <div className={currentPopup.mediaUrl ? "notice-text-col" : "notice-text-full"}>
                   <div style={{ whiteSpace: 'pre-wrap' }}>{currentPopup.text}</div>
                 </div>
+              )}
+              </>
               )}
             </div>
           </div>

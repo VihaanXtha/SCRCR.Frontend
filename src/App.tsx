@@ -46,7 +46,6 @@ function App() {
     { label: t('nav.news_notices'), href: '/news' },
     { label: t('nav.membership'), href: '/membership' },
     { label: t('nav.gallery'), href: '/gallery' },
-    { label: t('nav.downloads'), href: '/downloads' },
     { label: t('nav.contact'), href: '/contact' },
   ]
 
