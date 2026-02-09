@@ -75,16 +75,16 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
       {/* SubHero displays the banner image and title */}
       <SubHero title={getTitle()} img={getBanner()} />
       
-      <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full max-w-7xl mx-auto px-4 py-6 md:py-8">
         {/* Tab Navigation Buttons */}
-        <div className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center gap-4 mb-12 pb-2">
+        <div className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center gap-2 md:gap-3 mb-6 pb-2 scrollbar-hide px-1">
           {tabs.map(tab => (
             <button 
               key={tab.id}
               // Apply active styling if this tab is selected
-              className={`whitespace-nowrap shrink-0 px-8 py-3 rounded-full font-bold transition-all text-sm md:text-base ${
+              className={`whitespace-nowrap shrink-0 px-4 py-1.5 md:px-8 md:py-3 rounded-full font-bold transition-all text-sm md:text-base ${
                 activeTab === tab.id 
-                  ? 'bg-[#e43f6f] text-white shadow-lg transform scale-105' 
+                  ? 'bg-[#e43f6f] text-white shadow-md transform scale-105' 
                   : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
               }`}
               onClick={() => setActiveTab(tab.id)}
@@ -97,7 +97,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
         {/* Content for 'About Us' Tab */}
         {activeTab === 'about' && (
           <AnimatedSection className="w-full" type="fade-up">
-            <div className="flex flex-col md:flex-row gap-12 lg:gap-20 items-center">
+            <div className="flex flex-col md:flex-row gap-8 lg:gap-20 items-center">
               {/* Photo Column with decorative elements */}
               <div className="w-full md:w-1/2 relative group">
                 <div className="absolute inset-0 bg-[#e43f6f] opacity-5 rounded-[3rem] transform rotate-3 scale-95 transition-transform duration-500 group-hover:rotate-6"></div>

@@ -61,13 +61,13 @@ export default function Contact({ t }: { t: (k: string) => string }) {
     <div className="page pb-20">
       <SubHero title={getTitle()} img={getBanner()} />
       
-      <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full max-w-7xl mx-auto px-4 py-6 md:py-8">
         {/* Tab Navigation Buttons */}
-        <div className="flex justify-center gap-4 mb-12">
+        <div className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center gap-2 md:gap-3 mb-6 pb-2 scrollbar-hide px-1">
           <button 
-            className={`whitespace-nowrap shrink-0 px-8 py-3 rounded-full font-bold transition-all ${
+            className={`whitespace-nowrap shrink-0 px-4 py-1.5 md:px-8 md:py-3 rounded-full font-bold transition-all text-sm md:text-base ${
               activeTab === 'contact' 
-                ? 'bg-[#e43f6f] text-white shadow-lg transform scale-105' 
+                ? 'bg-[#e43f6f] text-white shadow-md transform scale-105' 
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
             }`}
             onClick={() => setActiveTab('contact')}
@@ -75,9 +75,9 @@ export default function Contact({ t }: { t: (k: string) => string }) {
             {t('nav.contact')}
           </button>
           <button 
-            className={`px-8 py-3 rounded-full font-bold transition-all ${
+            className={`whitespace-nowrap shrink-0 px-4 py-1.5 md:px-8 md:py-3 rounded-full font-bold transition-all text-sm md:text-base ${
               activeTab === 'donate' 
-                ? 'bg-[#e43f6f] text-white shadow-lg transform scale-105' 
+                ? 'bg-[#e43f6f] text-white shadow-md transform scale-105' 
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
             }`}
             onClick={() => setActiveTab('donate')}
@@ -89,25 +89,25 @@ export default function Contact({ t }: { t: (k: string) => string }) {
         {/* CONTACT VIEW */}
         {activeTab === 'contact' && (
           <AnimatedSection className="w-full" type="fade-up">
-            <div className="bg-white rounded-[3rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+            <div className="bg-white rounded-[2rem] md:rounded-[3rem] shadow-xl border border-gray-100 overflow-hidden flex flex-col md:flex-row">
               {/* Contact Info Column (Left) */}
-              <div className="md:w-5/12 bg-[#e43f6f] p-12 text-white flex flex-col justify-center relative overflow-hidden">
+              <div className="md:w-5/12 bg-[#e43f6f] p-8 md:p-12 text-white flex flex-col justify-center relative overflow-hidden">
                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/20"></div>
                  <div className="relative z-10">
-                   <h3 className="text-3xl font-bold mb-6">{t('contact.title')}</h3>
-                   <p className="mb-8 opacity-90">{t('contact.details')}</p>
+                   <h3 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">{t('contact.title')}</h3>
+                   <p className="mb-6 md:mb-8 opacity-90 text-sm md:text-base">{t('contact.details')}</p>
                    <div className="flex flex-col gap-4">
                      <div className="flex items-center gap-3">
-                       <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl">📍</div>
-                       <span className="text-lg">{t('band.addr')}</span>
+                       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center text-lg md:text-xl">📍</div>
+                       <span className="text-base md:text-lg">{t('band.addr')}</span>
                      </div>
                      <div className="flex items-center gap-3">
-                       <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl">✉️</div>
-                       <span className="text-lg">{t('band.email')}</span>
+                       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center text-lg md:text-xl">✉️</div>
+                       <span className="text-base md:text-lg">{t('band.email')}</span>
                      </div>
                      <div className="flex items-center gap-3">
-                       <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl">📞</div>
-                       <span className="text-lg">{t('band.phone')}</span>
+                       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center text-lg md:text-xl">📞</div>
+                       <span className="text-base md:text-lg">{t('band.phone')}</span>
                      </div>
                    </div>
                  </div>
