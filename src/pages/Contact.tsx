@@ -21,36 +21,18 @@ export default function Contact({ t }: { t: (k: string) => string }) {
     message: ''
   })
   
-  // State to track form submission status ('idle', 'submitting', 'success', 'error')
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
-
   // Handle input changes for form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setStatus('submitting')
-    
-    try {
-      // Send form data to the backend API
-      const res = await fetch('https://scrcr-backend.vercel.app/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      })
-      
-      if (!res.ok) throw new Error('Failed to send')
-      
-      // On success, reset form and show success message
-      setStatus('success')
-      setFormData({ name: '', email: '', phone: '', message: '' })
-    } catch (error) {
-      console.error(error)
-      setStatus('error')
-    }
+    const { name, phone, email, message } = formData
+    const subject = `New Contact Request from ${name}`
+    const body = `Name: ${name}%0APhone: ${phone}%0AEmail: ${email}%0AMessage: ${message}`
+    window.location.href = `mailto:${t('band.email')}?subject=${subject}&body=${body}`
   }
 
   // Dynamic banner image and title based on active tab
@@ -168,16 +150,11 @@ export default function Contact({ t }: { t: (k: string) => string }) {
                   
                   <div className="mt-4">
                     <button 
-                      className="btn w-full bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 disabled:opacity-70 disabled:cursor-not-allowed"
-                      disabled={status === 'submitting'}
+                      className="btn w-full bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
                     >
-                      {status === 'submitting' ? t('contact.sending') : t('contact.send')}
+                      {t('contact.send')}
                     </button>
                   </div>
-                  
-                  {/* Status Messages */}
-                  {status === 'success' && <p className="text-green-600 font-bold mt-2 text-center bg-green-50 p-3 rounded-xl">{t('contact.success')}</p>}
-                  {status === 'error' && <p className="text-red-600 font-bold mt-2 text-center bg-red-50 p-3 rounded-xl">{t('contact.error')}</p>}
                 </form>
               </div>
             </div>
