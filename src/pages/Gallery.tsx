@@ -24,6 +24,9 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
   const [activeAlbum, setActiveAlbum] = useState<string>('')
   const [albumImages, setAlbumImages] = useState<string[]>([])
 
+  // State to track the currently active item for the popup modal
+  const [activePopup, setActivePopup] = useState<{ type: 'image' | 'video' | 'iframe', src: string, title?: string } | null>(null)
+
   // Fetch all gallery data when component mounts
   useEffect(() => {
     Promise.all([
@@ -82,7 +85,11 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
       )}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {photos.map((p, i) => (
-          <div key={p._id ?? i} className="relative group overflow-hidden rounded-[1.5rem] shadow-md hover:shadow-xl transition-all aspect-square cursor-pointer bg-white">
+          <div 
+            key={p._id ?? i} 
+            className="relative group overflow-hidden rounded-[1.5rem] shadow-md hover:shadow-xl transition-all aspect-square cursor-pointer bg-white"
+            onClick={() => setActivePopup({ type: 'image', src: p.img || '', title: p.title })}
+          >
             {p.img && (
               <img 
                 src={getOptimizedUrl(p.img, { width: 400, height: 400, fit: 'cover' })} 
@@ -118,13 +125,17 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
         {videos.map((v, i) => {
            const embed = toEmbed(v.videoUrl ?? '')
            return (
-            <div key={v._id ?? i} className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-gray-100">
-              <div className="aspect-video w-full">
+            <div 
+              key={v._id ?? i} 
+              className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-gray-100 group cursor-pointer relative"
+              onClick={() => setActivePopup({ type: embed.type as any, src: embed.src, title: v.title })}
+            >
+              <div className="aspect-video w-full relative">
+                {/* Overlay to intercept clicks */}
+                <div className="absolute inset-0 z-10 bg-transparent"></div>
                 {embed.type === 'video' ? (
                   <video 
                     src={embed.src} 
-                    controls 
-                    preload="metadata" 
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -132,13 +143,17 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
                     src={embed.src} 
                     title={v.title ?? 'video'} 
                     className="w-full h-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen 
                   />
                 )}
+                {/* Play Icon Overlay */}
+                <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-colors pointer-events-none">
+                   <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center text-[#e43f6f] shadow-lg transform group-hover:scale-110 transition-transform">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="ml-1"><path d="M8 5v14l11-7z"/></svg>
+                   </div>
+                </div>
               </div>
               <div className="p-6">
-                <div className="font-bold text-lg text-gray-800 line-clamp-2">{v.title || t('gallery.untitled_video')}</div>
+                <div className="font-bold text-lg text-gray-800 line-clamp-2 group-hover:text-[#e43f6f] transition-colors">{v.title || t('gallery.untitled_video')}</div>
               </div>
             </div>
           )
@@ -187,7 +202,11 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
       {activeAlbum && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 animate-fade-in">
           {albumImages.map((u, i) => (
-            <div key={i} className="relative group overflow-hidden rounded-[1.5rem] shadow-md hover:shadow-xl transition-all aspect-square bg-white">
+            <div 
+              key={i} 
+              className="relative group overflow-hidden rounded-[1.5rem] shadow-md hover:shadow-xl transition-all aspect-square bg-white cursor-pointer"
+              onClick={() => setActivePopup({ type: 'image', src: u, title: activeAlbum })}
+            >
               <img 
                 src={getOptimizedUrl(u, { width: 400, height: 400, fit: 'cover' })} 
                 alt={'a' + i} 
@@ -241,6 +260,44 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
           {(filter === 'all' || filter === 'album') && renderAlbums()}
         </AnimatedSection>
       </div>
+
+      {/* Media Detail Popup Modal */}
+      {activePopup && (
+        <div className="member-modal" onClick={() => setActivePopup(null)}>
+          <div className="notice-modal-content wide" onClick={e => e.stopPropagation()}>
+            <div className="notice-header">
+              <div className="notice-title line-clamp-1">{activePopup.title || t('gallery.filter.photo')}</div>
+              <button className="notice-close" onClick={() => setActivePopup(null)}>×</button>
+            </div>
+            <div className="notice-body-single">
+              <div className="notice-media-full bg-black/5 rounded-xl overflow-hidden flex items-center justify-center">
+                {activePopup.type === 'video' ? (
+                   <video 
+                     src={activePopup.src} 
+                     controls 
+                     autoPlay 
+                     className="w-full max-h-[70vh] object-contain"
+                   />
+                ) : activePopup.type === 'iframe' ? (
+                   <iframe 
+                     src={activePopup.src} 
+                     title={activePopup.title || 'video'} 
+                     className="w-full aspect-video border-0"
+                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                     allowFullScreen 
+                   />
+                ) : (
+                   <img 
+                     src={getOptimizedUrl(activePopup.src, { width: 1200 })} 
+                     alt={activePopup.title || 'gallery-image'} 
+                     className="w-full max-h-[70vh] object-contain"
+                   />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
