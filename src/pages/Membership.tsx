@@ -22,7 +22,7 @@ export default function Membership({ t }: { t: (k: string) => string }) {
     <div className="page">
       <SubHero title={t('membership.title')} img={bannerImg} />
       
-      <div className="section">
+      <div className="w-full max-w-7xl mx-auto px-4 py-12">
         <div className="contact-layout">
           {/* Information Column */}
           <div>

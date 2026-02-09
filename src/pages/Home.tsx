@@ -274,7 +274,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
 
 
       {/* Leader Quotes Section: Carousel of quotes from leaders */}
-      <AnimatedSection className="section" type="zoom-in">
+      <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="zoom-in">
         <div className="py-8">
           <div className="w-full max-w-7xl mx-auto min-h-[600px] flex flex-col justify-center">
              {leaderQuotes.map((q, i) => (
@@ -787,7 +787,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
           </div>
           <div className="md:w-7/12 p-6 md:p-12">
             <form className="grid gap-6" onSubmit={handleContactSubmit}>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.name')}</label>
                   <input 
