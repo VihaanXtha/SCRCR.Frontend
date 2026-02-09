@@ -6,34 +6,16 @@ import bannerImg from '../assets/images/hero-slider/scrc-slider-8-1.jpg'
 
 // Membership Component: Handles membership application process and displays benefits
 export default function Membership({ t }: { t: (k: string) => string }) {
-  // State to manage loading status during form submission
-  const [loading, setLoading] = useState(false)
-
   // Handle form submission
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setLoading(true)
-    const form = e.currentTarget
-    const formData = new FormData(form)
+    const formData = new FormData(e.currentTarget)
+    const data = Object.fromEntries(formData.entries()) as Record<string, string>
     
-    try {
-      // Send form data (including files) to backend
-      const res = await fetch('https://scrcr-backend.vercel.app/api/membership', {
-        method: 'POST',
-        body: formData
-      })
-      
-      if (!res.ok) throw new Error('Failed to submit')
-      
-      // Show success message and reset form
-      alert(t('membership.submit_success'))
-      form.reset()
-    } catch (error) {
-      // Show error message
-      alert(t('membership.submit_error'))
-    } finally {
-      setLoading(false)
-    }
+    const subject = `Membership Application - ${data.fname} ${data.lname}`
+    const body = `Name: ${data.fname} ${data.mname || ''} ${data.lname}%0ADOB: ${data.dob}%0ACitizenship No: ${data.citizenship_no}%0AGender: ${data.gender}%0AAddress: ${data.address}%0APhone: ${data.phone}%0AEmail: ${data.email}%0A%0ANOTE: Please attach your Photo and Citizenship Copy to this email.`
+    
+    window.location.href = `mailto:${t('band.email')}?subject=${subject}&body=${body}`
   }
 
   return (
@@ -85,13 +67,13 @@ export default function Membership({ t }: { t: (k: string) => string }) {
             <input name="phone" type="tel" placeholder={t('membership.form.phone')} required />
             <input name="email" type="email" placeholder={t('membership.form.email')} />
             
-            <label style={{ fontSize: '14px', color: '#666', marginTop: '10px', display: 'block' }}>{t('membership.form.photo')}</label>
-            <input name="photo" type="file" accept="image/*" required />
-            
-            <label style={{ fontSize: '14px', color: '#666', marginTop: '10px', display: 'block' }}>{t('membership.form.citizenship_copy')}</label>
-            <input name="citizenship" type="file" accept="image/*,application/pdf" required />
+            <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#fff8e1', borderRadius: '8px', border: '1px solid #ffe0b2' }}>
+              <p style={{ margin: 0, fontSize: '14px', color: '#d84315', fontWeight: 'bold' }}>
+                ⚠️ Important: Please attach your Photo and Citizenship Copy to the email that will open after clicking Submit.
+              </p>
+            </div>
 
-            <button className="btn" style={{ marginTop: '16px' }} disabled={loading}>{loading ? t('membership.submitting') : t('membership.form.submit')}</button>
+            <button className="btn" style={{ marginTop: '16px' }}>{t('membership.form.submit')}</button>
           </form>
         </div>
       </div>

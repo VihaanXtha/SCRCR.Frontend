@@ -21,6 +21,24 @@ export default function Contact({ t }: { t: (k: string) => string }) {
     message: ''
   })
   
+  // State to manage donate form
+  const [donateForm, setDonateForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    amount: ''
+  })
+
+  // Handle donate form submission
+  const handleDonateSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const { name, email, phone, address, amount } = donateForm
+    const subject = `Donation Pledge from ${name}`
+    const body = `Name: ${name}%0AEmail: ${email}%0APhone: ${phone}%0AAddress: ${address}%0AAmount: Rs. ${amount}`
+    window.location.href = `mailto:${t('band.email')}?subject=${subject}&body=${body}`
+  }
+
   // Handle input changes for form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -96,17 +114,17 @@ export default function Contact({ t }: { t: (k: string) => string }) {
               </div>
               
               {/* Contact Form Column (Right) */}
-              <div className="md:w-7/12 p-12">
+              <div className="md:w-7/12 p-6 md:p-12">
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.formTitle')}</h3>
                 <form className="grid gap-6" onSubmit={handleSubmit}>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 gap-6">
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.name')}</label>
                       <input 
                         name="name" 
                         value={formData.name} 
                         onChange={handleChange} 
-                        placeholder={t('contact.name')} 
+                        placeholder={t('common.name_placeholder')} 
                         required 
                         className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" 
                       />
@@ -117,7 +135,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
                         name="phone" 
                         value={formData.phone} 
                         onChange={handleChange} 
-                        placeholder={t('contact.phone')} 
+                        placeholder={t('common.phone_placeholder')} 
                         required 
                         className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" 
                       />
@@ -129,7 +147,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
                       name="email" 
                       value={formData.email} 
                       onChange={handleChange} 
-                      placeholder={t('contact.email')} 
+                      placeholder={t('common.email_placeholder')} 
                       type="email" 
                       required 
                       className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" 
@@ -141,7 +159,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
                       name="message" 
                       value={formData.message} 
                       onChange={handleChange} 
-                      placeholder={t('contact.message')} 
+                      placeholder={t('common.message_placeholder')} 
                       rows={4} 
                       required 
                       className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors resize-none" 
@@ -197,30 +215,62 @@ export default function Contact({ t }: { t: (k: string) => string }) {
               {/* Donation Form */}
               <div className="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border border-gray-100">
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('donate.formTitle')}</h3>
-                <form className="grid gap-6">
+                <form className="grid gap-6" onSubmit={handleDonateSubmit}>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.name')}</label>
-                    <input placeholder={t('contact.name')} className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                    <input 
+                      value={donateForm.name}
+                      onChange={e => setDonateForm({...donateForm, name: e.target.value})}
+                      placeholder={t('contact.name')} 
+                      required
+                      className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" 
+                    />
                   </div>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.email')}</label>
-                      <input placeholder={t('contact.email')} className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                      <input 
+                        value={donateForm.email}
+                        onChange={e => setDonateForm({...donateForm, email: e.target.value})}
+                        placeholder={t('contact.email')} 
+                        type="email"
+                        required
+                        className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" 
+                      />
                     </div>
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-bold text-gray-600 ml-2">{t('contact.phone')}</label>
-                      <input placeholder={t('contact.phone')} className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                      <input 
+                        value={donateForm.phone}
+                        onChange={e => setDonateForm({...donateForm, phone: e.target.value})}
+                        placeholder={t('contact.phone')} 
+                        required
+                        className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" 
+                      />
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-gray-600 ml-2">{t('donate.address')}</label>
-                    <input placeholder={t('donate.address')} className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+                    <input 
+                      value={donateForm.address}
+                      onChange={e => setDonateForm({...donateForm, address: e.target.value})}
+                      placeholder={t('donate.address')} 
+                      required
+                      className="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors" 
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-gray-600 ml-2">{t('donate.amount')}</label>
                     <div className="relative">
                       <span className="absolute left-6 top-1/2 -translate-y-1/2 font-bold text-gray-400">Rs.</span>
-                      <input placeholder="1000" className="bg-gray-50 border border-gray-200 rounded-2xl pl-16 pr-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors w-full font-bold text-lg" />
+                      <input 
+                        value={donateForm.amount}
+                        onChange={e => setDonateForm({...donateForm, amount: e.target.value})}
+                        placeholder="1000" 
+                        required
+                        type="number"
+                        className="bg-gray-50 border border-gray-200 rounded-2xl pl-16 pr-6 py-4 focus:outline-none focus:border-[#e43f6f] transition-colors w-full font-bold text-lg" 
+                      />
                     </div>
                   </div>
                   <button className="btn w-full bg-[#e43f6f] hover:bg-[#c6285b] text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 mt-4">
