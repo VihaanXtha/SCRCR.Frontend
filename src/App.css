@@ -1083,73 +1083,7 @@ h3 {
   overflow: hidden;
 }
 
-/* Bottom Navigation for Mobile */
-.bottom-nav {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  border-top: 1px solid #eee;
-  padding: 8px 16px 24px 16px; /* Extra padding at bottom for safe area */
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
-}
 
-.bottom-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: #888;
-  text-decoration: none;
-  font-size: 10px;
-  font-weight: 600;
-  width: 20%;
-}
-
-.bottom-nav-item.active {
-  color: #e43f6f;
-}
-
-.bottom-nav-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-@media (max-width: 768px) {
-  .bottom-nav {
-    display: flex;
-  }
-  
-  /* Hide standard mobile menu trigger since we have bottom nav */
-  .hamburger {
-    display: none;
-  }
-  
-  /* Add padding to body so content isn't hidden behind bottom nav */
-  body {
-    padding-bottom: 80px;
-  }
-  
-  /* Simplify Header for Mobile App look */
-  .topbar {
-    justify-content: center;
-    padding: 12px;
-  }
-  
-  .brand {
-    justify-content: center;
-  }
-  
-  /* Hide Nav completely on mobile as we use Bottom Nav */
-  .nav {
-    display: none !important;
-  }
-}
 
 @media (max-width: 480px) {
   .member-modal-content {
