@@ -48,11 +48,11 @@ export default function Members({ t }: { t: (k: string) => string }) {
       
       <div className="w-full max-w-7xl mx-auto px-4 py-6 md:py-12">
         {/* Filter Tabs */}
-        <div className="flex w-full md:w-auto overflow-x-auto md:flex-wrap justify-start md:justify-center gap-2 md:gap-3 mb-6 pb-2 scrollbar-hide px-1">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 px-1">
           {tabs.map(tab => (
             <button 
               key={tab.id}
-              className={`whitespace-nowrap md:flex-none shrink-0 px-6 py-2 md:px-6 md:py-3 rounded-full font-bold transition-all text-sm md:text-base ${
+              className={`flex-1 md:flex-none shrink-0 px-4 py-3 md:px-6 md:py-3 rounded-full font-bold transition-all text-sm md:text-base ${
                 activeTab === tab.id 
                   ? 'bg-[#e43f6f] text-white shadow-md transform scale-105' 
                   : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'

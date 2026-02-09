@@ -1244,23 +1244,23 @@ h3 {
   /* Make cards smaller on mobile */
   .card img, .news-card img, .member-card img { height: 140px; }
   
-  /* Horizontal Scroll Snap for Tabs */
-  .overflow-x-auto {
-    scroll-snap-type: x mandatory;
-    padding-left: 16px;
-    padding-right: 16px;
-    margin-left: -16px;
-    margin-right: -16px;
-  }
-  .overflow-x-auto > * {
-    scroll-snap-align: start;
-  }
-
   .hero img, .hero-slider { height: 50vh; min-height: 300px; }
-  .hamburger { display: inline-block; }
-  .nav { display: none; width: 100%; grid-template-columns: 1fr; margin-top: 8px; margin-left: 0; }
-  .nav.open { display: grid; }
-  .nav-item .dropdown { display: grid; position: static; box-shadow: none; border: 0; padding: 0; }
+  .hamburger { display: block; position: absolute; right: 16px; top: 20px; font-size: 1.5rem; background: none; border: none; cursor: pointer; z-index: 100; }
+  .nav { 
+    display: none; 
+    position: absolute; 
+    top: 60px; 
+    left: 0; 
+    width: 100%; 
+    background: white; 
+    flex-direction: column; 
+    padding: 16px; 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+    z-index: 99;
+  }
+  .nav.open { display: flex; }
+  .nav-item { margin-bottom: 12px; }
+  .nav-item .dropdown { position: static; box-shadow: none; border: none; padding-left: 16px; margin-top: 8px; }
   .nav-actions { margin-left: 0; justify-content: flex-start; }
   .grid { grid-template-columns: 1fr; }
   .quotes { grid-template-columns: 1fr; }
