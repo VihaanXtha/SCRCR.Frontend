@@ -141,7 +141,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
                 {/* Program Card 1 */}
                 <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
                   <div className="h-48 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1544367563-12123d8965cd?auto=format&fit=crop&w=800&q=80" alt="Yoga" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
+                    <img src="https://placehold.co/800x600/e43f6f/ffffff?text=Daily+Yoga" alt="Yoga" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="p-6">
                     <h4 className="text-xl font-bold mb-2 text-gray-800">{t('programs.daily_yoga')}</h4>
@@ -151,7 +151,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
                 {/* Program Card 2 */}
                 <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
                   <div className="h-48 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1576267423048-15c0040fec78?auto=format&fit=crop&w=800&q=80" alt="Health Checkup" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
+                    <img src="https://placehold.co/800x600/e43f6f/ffffff?text=Health+Checkup" alt="Health Checkup" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="p-6">
                     <h4 className="text-xl font-bold mb-2 text-gray-800">{t('programs.health_checkup')}</h4>
@@ -161,7 +161,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
                 {/* Program Card 3 */}
                 <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
                   <div className="h-48 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80" alt="Bhajan" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
+                    <img src="https://placehold.co/800x600/e43f6f/ffffff?text=Bhajan+Kirtan" alt="Bhajan" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="p-6">
                     <h4 className="text-xl font-bold mb-2 text-gray-800">{t('programs.bhajan')}</h4>
@@ -176,7 +176,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
                  <h3 className="text-3xl font-bold text-gray-800 mb-4">{t('programs.ongoing')}</h3>
               </div>
               <div className="bg-white rounded-[2rem] p-6 md:p-8 shadow-lg border border-gray-100 flex flex-col md:flex-row gap-8 items-center">
-                <img src="https://images.unsplash.com/photo-1526976668912-1a811878dd37?auto=format&fit=crop&w=600&q=80" alt="Winter Relief" className="w-full md:w-1/3 h-64 object-cover rounded-2xl shadow-md" />
+                <img src="https://placehold.co/600x400/e43f6f/ffffff?text=Winter+Relief" alt="Winter Relief" className="w-full md:w-1/3 h-64 object-cover rounded-2xl shadow-md" />
                 <div className="flex-1">
                   <h4 className="text-2xl font-bold text-gray-800 mb-4">{t('programs.winter_relief')}</h4>
                   <p className="text-gray-600 mb-6 text-lg leading-relaxed">{t('programs.winter_relief_desc')}</p>
