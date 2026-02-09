@@ -1,6 +1,7 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
 import './App.css'
 import Header from './components/Header'
+import BottomNav from './components/BottomNav'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import { useTranslation } from './hooks/useTranslation'
@@ -82,6 +83,7 @@ function App() {
       </Suspense>
 
       {route !== '/admin' && <Footer t={t} />}
+      {route !== '/admin' && <BottomNav route={route} navigate={navigate} t={t} />}
       <ScrollToTop />
     </div>
   )
