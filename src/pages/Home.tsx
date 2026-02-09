@@ -222,6 +222,40 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
         <Intro t={t} lang={lang} />
       </AnimatedSection>
 
+      {/* Experience / Stats Section */}
+      <div className="w-full bg-gradient-to-r from-blue-900 to-slate-900 py-16 px-4 md:px-12 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="text-left space-y-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">{t('home.stats.exp_prefix')} <span className="text-orange-400">{t('home.stats.exp_years')}</span> <br/>{t('home.stats.exp_suffix')}</h2>
+            <p className="text-gray-300 text-lg max-w-xl">{t('home.stats.desc')}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-purple-900/40 backdrop-blur-sm border border-purple-500/30 rounded-2xl p-6 flex flex-col items-center text-center hover:bg-purple-900/60 transition-colors duration-300 shadow-lg shadow-purple-900/20">
+              <div className="mb-4 p-3 bg-white/10 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white w-8 h-8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-1">१,०००+</h3>
+              <p className="text-sm text-gray-200">{t('home.stats.graduates')}</p>
+            </div>
+            <div className="bg-purple-900/40 backdrop-blur-sm border border-purple-500/30 rounded-2xl p-6 flex flex-col items-center text-center hover:bg-purple-900/60 transition-colors duration-300 shadow-lg shadow-purple-900/20">
+              <div className="mb-4 p-3 bg-white/10 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white w-8 h-8"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-1">१००+</h3>
+              <p className="text-sm text-gray-200">{t('home.stats.employers')}</p>
+            </div>
+            <div className="bg-purple-900/40 backdrop-blur-sm border border-purple-500/30 rounded-2xl p-6 flex flex-col items-center text-center hover:bg-purple-900/60 transition-colors duration-300 shadow-lg shadow-purple-900/20">
+              <div className="mb-4 p-3 bg-white/10 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white w-8 h-8"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-1">#१</h3>
+              <p className="text-sm text-gray-200">{t('home.stats.ranking')}</p>
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-700/50"></div>
+      </div>
+
 
 
       {/* Leader Quotes Section: Carousel of quotes from leaders */}
@@ -512,14 +546,14 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
                   </div>
                 )}
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-[#e43f6f] shadow-sm uppercase">
-                  {'type' in n && n.type}
+                  {'type' in n && t('nav.' + n.type)}
                 </div>
               </div>
               <div className="p-8 flex flex-col flex-1">
                 <h4 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-[#e43f6f] transition-colors">{n.title}</h4>
                 <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  <span>Updated: {'date' in n && n.date ? new Date(n.date).toLocaleDateString() : 'N/A'}</span>
+                  <span>{t('news.updated')} {'date' in n && n.date ? new Date(n.date).toLocaleDateString() : t('common.na')}</span>
                 </div>
                 <button className="mt-auto self-start text-[#e43f6f] font-bold text-sm uppercase tracking-wider flex items-center gap-2 group/btn">
                   {t('common.read_more')} 

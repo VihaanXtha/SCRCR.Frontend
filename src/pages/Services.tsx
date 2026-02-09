@@ -4,15 +4,15 @@ import bannerImg from '../assets/images/hero-slider/scrc-slider-5-1.png'
 
 export default function Services({ t }: { t: (k: string) => string }) {
   const services = [
-    { title: 'Health Support', icon: '🏥', desc: 'Regular health camps, medicine distribution, and emergency medical assistance for seniors.' },
-    { title: 'Legal Aid', icon: '⚖️', desc: 'Free legal counseling and support for senior citizens regarding property and rights.' },
-    { title: 'Day Care Center', icon: '🏠', desc: 'A safe and engaging environment for seniors to spend their day with peers.' },
-    { title: 'Emergency Response', icon: '🚑', desc: '24/7 emergency contact and ambulance coordination for members.' },
+    { title: t('services.health.title'), icon: '🏥', desc: t('services.health.desc') },
+    { title: t('services.legal.title'), icon: '⚖️', desc: t('services.legal.desc') },
+    { title: t('services.daycare.title'), icon: '🏠', desc: t('services.daycare.desc') },
+    { title: t('services.emergency.title'), icon: '🚑', desc: t('services.emergency.desc') },
   ]
 
   return (
     <div className="page">
-      <SubHero title="Services & Support" img={bannerImg} />
+      <SubHero title={t('services.title')} img={bannerImg} />
       
       <div className="section">
         <div className="grid">
@@ -28,8 +28,8 @@ export default function Services({ t }: { t: (k: string) => string }) {
 
       <div className="section band" style={{ flexWrap: 'wrap' }}>
         <div className="band-left" style={{ flex: '1 1 300px' }}>
-          <h3 className="band-title">{t('services.emergency.title') || 'Emergency Contact'}</h3>
-          <p>{t('services.emergency.desc') || 'For immediate assistance, please contact our emergency hotline.'}</p>
+          <h3 className="band-title">{t('services.emergency.contact.title')}</h3>
+          <p>{t('services.emergency.contact.desc')}</p>
         </div>
         <div style={{ display: 'grid', placeItems: 'center', flex: '1 1 auto' }}>
           <a href="tel:+9779800000000" className="btn" style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)', whiteSpace: 'nowrap' }}>📞 +977 9800000000</a>

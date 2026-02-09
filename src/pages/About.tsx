@@ -1,26 +1,34 @@
 import '../App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SubHero from '../components/SubHero'
 import img1 from '../assets/images/scrc-aboutus-1-1.jpg'
 import programsBanner from '../assets/images/activites/scrc-gallery-32.jpg'
 import healthBanner from '../assets/images/hero-slider/scrc-slider-3-1.png'
+import downloadsBanner from '../assets/images/hero-slider/scrc-slider-1-1.jpg'
 import AnimatedSection from '../components/AnimatedSection'
 
 // Define possible values for the active tab to ensure type safety
-type TabType = 'about' | 'programs' | 'health'
+type TabType = 'about' | 'programs' | 'health' | 'downloads'
 
-// About Component: Displays information about the organization, programs, and health tips
+// About Component: Displays information about the organization, programs, health tips, and downloads
 // Props:
 // - t: Translation function
-export default function About({ t }: { t: (k: string) => string }) {
-  // State to track which tab is currently active (default: 'about')
-  const [activeTab, setActiveTab] = useState<TabType>('about')
+// - initialTab: Optional initial tab to show
+export default function About({ t, initialTab }: { t: (k: string) => string; initialTab?: TabType }) {
+  // State to track which tab is currently active
+  const [activeTab, setActiveTab] = useState<TabType>(initialTab || 'about')
+
+  // Update active tab when initialTab prop changes
+  useEffect(() => {
+    if (initialTab) setActiveTab(initialTab)
+  }, [initialTab])
 
   // Helper function to get the correct banner image based on the active tab
   const getBanner = () => {
     switch(activeTab) {
       case 'programs': return programsBanner
       case 'health': return healthBanner
+      case 'downloads': return downloadsBanner
       default: return img1
     }
   }
@@ -30,6 +38,7 @@ export default function About({ t }: { t: (k: string) => string }) {
     switch(activeTab) {
       case 'programs': return t('programs.title')
       case 'health': return t('health.title')
+      case 'downloads': return t('nav.downloads')
       default: return t('about.title')
     }
   }
@@ -38,7 +47,27 @@ export default function About({ t }: { t: (k: string) => string }) {
   const tabs: { id: TabType; label: string }[] = [
     { id: 'about', label: t('nav.about') },
     { id: 'programs', label: t('nav.programs') },
-    { id: 'health', label: t('nav.health') }
+    { id: 'health', label: t('nav.health') },
+    { id: 'downloads', label: t('nav.downloads') }
+  ]
+
+  // Data for Downloads
+  const reports = [
+    { title: t('downloads.report_annual_8081'), date: "2081-04-01" },
+    { title: t('downloads.report_audit_80'), date: "2081-03-15" },
+    { title: t('downloads.report_annual_7980'), date: "2080-04-01" },
+  ]
+
+  const policies = [
+    { title: t('downloads.policy_constitution'), date: "2075-01-01" },
+    { title: t('downloads.policy_membership'), date: "2076-05-12" },
+    { title: t('downloads.policy_conduct'), date: "2076-05-12" },
+  ]
+
+  const forms = [
+    { title: t('downloads.form_membership'), type: "PDF" },
+    { title: t('downloads.form_donation'), type: "PDF" },
+    { title: t('downloads.form_event'), type: "PDF" },
   ]
 
   return (
@@ -202,6 +231,78 @@ export default function About({ t }: { t: (k: string) => string }) {
                   <p className="text-gray-600">{t('health.gov3.desc')}</p>
                 </div>
               </div>
+            </div>
+          </AnimatedSection>
+        )}
+
+        {/* Content for 'Downloads' Tab */}
+        {activeTab === 'downloads' && (
+          <AnimatedSection className="w-full" type="fade-up">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              
+              {/* Annual Reports Card */}
+              <div className="bg-white rounded-[2rem] p-8 shadow-lg border border-gray-100 h-full hover:shadow-xl transition-shadow">
+                <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3 pb-4 border-b border-gray-100">
+                  <span className="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center">📊</span>
+                  {t('downloads.reports')}
+                </h3>
+                <div className="space-y-4">
+                  {reports.map((r, i) => (
+                    <div key={i} className="flex justify-between items-center group cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                      <div>
+                        <div className="font-medium text-gray-700 group-hover:text-blue-500 transition-colors">{r.title}</div>
+                        <div className="text-xs text-gray-400">{r.date}</div>
+                      </div>
+                      <button className="btn sm bg-white border border-gray-200 text-gray-500 hover:bg-blue-500 hover:text-white hover:border-blue-500 shadow-sm">
+                        ↓
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Policies Card */}
+              <div className="bg-white rounded-[2rem] p-8 shadow-lg border border-gray-100 h-full hover:shadow-xl transition-shadow">
+                <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3 pb-4 border-b border-gray-100">
+                  <span className="w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center">📜</span>
+                  {t('downloads.policies')}
+                </h3>
+                <div className="space-y-4">
+                  {policies.map((p, i) => (
+                    <div key={i} className="flex justify-between items-center group cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                      <div>
+                        <div className="font-medium text-gray-700 group-hover:text-purple-500 transition-colors">{p.title}</div>
+                        <div className="text-xs text-gray-400">{p.date}</div>
+                      </div>
+                      <button className="btn sm bg-white border border-gray-200 text-gray-500 hover:bg-purple-500 hover:text-white hover:border-purple-500 shadow-sm">
+                        ↓
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Forms Card */}
+              <div className="bg-white rounded-[2rem] p-8 shadow-lg border border-gray-100 h-full hover:shadow-xl transition-shadow">
+                <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3 pb-4 border-b border-gray-100">
+                  <span className="w-10 h-10 rounded-full bg-pink-50 text-[#e43f6f] flex items-center justify-center">📝</span>
+                  {t('downloads.forms')}
+                </h3>
+                <div className="space-y-4">
+                  {forms.map((f, i) => (
+                    <div key={i} className="flex justify-between items-center group cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                      <div>
+                        <div className="font-medium text-gray-700 group-hover:text-[#e43f6f] transition-colors">{f.title}</div>
+                        <div className="text-xs text-gray-400">{f.type}</div>
+                      </div>
+                      <button className="btn sm bg-white border border-gray-200 text-gray-500 hover:bg-[#e43f6f] hover:text-white hover:border-[#e43f6f] shadow-sm">
+                        {t('downloads.download_btn')}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
             </div>
           </AnimatedSection>
         )}

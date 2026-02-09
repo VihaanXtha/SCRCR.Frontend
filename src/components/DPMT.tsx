@@ -24,7 +24,7 @@ export default function DPMT({ staff, t, lang }: { staff: Person[]; t: (k: strin
     <div className="w-full max-w-7xl mx-auto px-4 py-8" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
        <div className="text-center mb-8">
            <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-2 shadow-sm">
-             OUR COMMITTEE
+             {t('dpmt.our_committee')}
            </span>
            <h3 className="text-3xl font-bold text-gray-800">{t('dpmt.title')}</h3>
         </div>

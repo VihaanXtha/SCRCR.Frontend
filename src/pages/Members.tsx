@@ -72,7 +72,7 @@ export default function Members({ t }: { t: (k: string) => string }) {
         ) : (
           <>
              {membersCache[activeTab].length === 0 ? (
-                <div className="text-center py-20 text-gray-500">No members found in this category.</div>
+                <div className="text-center py-20 text-gray-500">{t('members.no_found')}</div>
              ) : (
                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
                  {membersCache[activeTab].map((m, i) => (
@@ -95,7 +95,7 @@ export default function Members({ t }: { t: (k: string) => string }) {
                          </div>
                        )}
                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                         <span className="text-white font-bold tracking-wider text-sm uppercase">View Details</span>
+                         <span className="text-white font-bold tracking-wider text-sm uppercase">{t('members.view_details')}</span>
                        </div>
                      </div>
                      <div className="p-4 text-center">
