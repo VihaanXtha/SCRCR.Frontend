@@ -77,12 +77,12 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
       
       <div className="w-full max-w-7xl mx-auto px-4 py-8">
         {/* Tab Navigation Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center gap-4 mb-12 pb-2">
           {tabs.map(tab => (
             <button 
               key={tab.id}
               // Apply active styling if this tab is selected
-              className={`px-8 py-3 rounded-full font-bold transition-all text-sm md:text-base ${
+              className={`whitespace-nowrap shrink-0 px-8 py-3 rounded-full font-bold transition-all text-sm md:text-base ${
                 activeTab === tab.id 
                   ? 'bg-[#e43f6f] text-white shadow-lg transform scale-105' 
                   : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'

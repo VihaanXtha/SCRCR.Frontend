@@ -8,8 +8,8 @@ import { useState } from 'react';
  */
 const dictionary: Record<string, Record<string, string>> = {
   "brand.title": {
-    en: "Senior Citizen Recreation Centre Rupandehi",
-    ne: "ज्येष्ठ नागरिक मिलन केन्द्र रुपन्देही",
+    en: "Senior Citizen Recreation Centre Rupandehi (SCRCR)",
+    ne: "ज्येष्ठ नागरिक मिलन केन्द्र रुपन्देही (SCRCR)",
   },
   "brand.sub": {
     en: "Shri Ramkrishna Namdev Samaj Sansthan",
@@ -102,9 +102,9 @@ const dictionary: Record<string, Record<string, string>> = {
     en: "Give Your Loved Ones Quality Care You Can Trust",
     ne: "आफ्नो प्रियजनलाई विश्वासिलो गुणस्तरको हेरचाह दिनुहोस्",
   },
-  "band.org": {
-    en: "Senior-Citizen Citizen Recreation Centre (SCRC)",
-    ne: "ज्येष्ठ नागरिक मिलन केन्द्र (SCRC)",
+  "brand.org": {
+    en: "Senior Citizen Recreation Centre Rupandehi (SCRCR)",
+    ne: "ज्येष्ठ नागरिक मिलन केन्द्र (SCRCR)",
   },
   "band.tag": {
     en: "Honoring Elders in a Civilized Society",
@@ -239,7 +239,7 @@ const dictionary: Record<string, Record<string, string>> = {
   "downloads.report_annual_8081": { en: "Annual Report 2080/81", ne: "वार्षिक प्रतिवेदन २०८०/८१" },
   "downloads.report_audit_80": { en: "Financial Audit 2080", ne: "आर्थिक लेखापरीक्षण २०८०" },
   "downloads.report_annual_7980": { en: "Annual Report 2079/80", ne: "वार्षिक प्रतिवेदन २०७९/८०" },
-  "downloads.policy_constitution": { en: "SCRC Constitution 2075", ne: "SCRC विधान २०७५" },
+  "downloads.policy_constitution": { en: "SCRCR Constitution 2075", ne: "SCRCR विधान २०७५" },
   "downloads.policy_membership": { en: "Membership Guidelines", ne: "सदस्यता निर्देशिका" },
   "downloads.policy_conduct": { en: "Code of Conduct", ne: "आचार संहिता" },
   "downloads.form_membership": { en: "Membership Application Form", ne: "सदस्यता आवेदन फारम" },

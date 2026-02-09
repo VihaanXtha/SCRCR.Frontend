@@ -78,7 +78,7 @@ export default function Footer({ t }: { t: (k: string) => string }) {
           scrolling="no" 
           marginHeight={0} 
           marginWidth={0}
-          title="SCRC Location"
+          title="SCRCR Location"
           className="w-full h-full"
         ></iframe>
       </div>

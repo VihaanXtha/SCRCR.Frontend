@@ -65,7 +65,7 @@ export default function Contact({ t }: { t: (k: string) => string }) {
         {/* Tab Navigation Buttons */}
         <div className="flex justify-center gap-4 mb-12">
           <button 
-            className={`px-8 py-3 rounded-full font-bold transition-all ${
+            className={`whitespace-nowrap shrink-0 px-8 py-3 rounded-full font-bold transition-all ${
               activeTab === 'contact' 
                 ? 'bg-[#e43f6f] text-white shadow-lg transform scale-105' 
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'

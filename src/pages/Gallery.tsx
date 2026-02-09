@@ -226,27 +226,27 @@ export default function Gallery({ t }: { t: (k: string) => string }) {
       
       <div className="w-full max-w-7xl mx-auto px-4 py-8">
         {/* Filter Navigation Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center gap-3 mb-12 pb-2">
           <button 
-            className={`px-6 py-2 rounded-full font-bold transition-all ${filter === 'all' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap shrink-0 px-6 py-2 rounded-full font-bold transition-all ${filter === 'all' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('all')}
           >
             {t('gallery.filter.all')}
           </button>
           <button 
-            className={`px-6 py-2 rounded-full font-bold transition-all ${filter === 'photo' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap shrink-0 px-6 py-2 rounded-full font-bold transition-all ${filter === 'photo' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('photo')}
           >
             {t('gallery.filter.photo')}
           </button>
           <button 
-            className={`px-6 py-2 rounded-full font-bold transition-all ${filter === 'video' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap shrink-0 px-6 py-2 rounded-full font-bold transition-all ${filter === 'video' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('video')}
           >
             {t('gallery.filter.video')}
           </button>
           <button 
-            className={`px-6 py-2 rounded-full font-bold transition-all ${filter === 'album' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap shrink-0 px-6 py-2 rounded-full font-bold transition-all ${filter === 'album' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('album')}
           >
             {t('gallery.filter.album')}

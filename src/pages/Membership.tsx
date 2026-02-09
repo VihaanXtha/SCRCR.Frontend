@@ -1,6 +1,6 @@
 
 import '../App.css'
-import { useState } from 'react'
+import React from 'react'
 import SubHero from '../components/SubHero'
 import bannerImg from '../assets/images/hero-slider/scrc-slider-8-1.jpg'
 
@@ -27,8 +27,8 @@ export default function Membership({ t }: { t: (k: string) => string }) {
           {/* Information Column */}
           <div>
             {/* Membership Process Steps */}
-            <h3>{t('membership.process.title')}</h3>
-            <ul style={{ lineHeight: '1.8', color: '#555', paddingLeft: '20px' }}>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{t('membership.process.title')}</h3>
+            <ul className="list-disc pl-5 space-y-2 text-gray-600 leading-relaxed">
               <li>{t('membership.process.step1')}</li>
               <li>{t('membership.process.step2')}</li>
               <li>{t('membership.process.step3')}</li>
@@ -37,8 +37,8 @@ export default function Membership({ t }: { t: (k: string) => string }) {
             </ul>
 
             {/* Membership Benefits */}
-            <h3 style={{ marginTop: '24px' }}>{t('membership.benefits.title')}</h3>
-            <ul style={{ lineHeight: '1.8', color: '#555', paddingLeft: '20px' }}>
+            <h3 className="text-xl font-bold text-gray-800 mt-8 mb-4">{t('membership.benefits.title')}</h3>
+            <ul className="list-disc pl-5 space-y-2 text-gray-600 leading-relaxed">
               <li>{t('membership.benefit1')}</li>
               <li>{t('membership.benefit2')}</li>
               <li>{t('membership.benefit3')}</li>
@@ -47,33 +47,36 @@ export default function Membership({ t }: { t: (k: string) => string }) {
           </div>
 
           {/* Application Form */}
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <h3 style={{ margin: 0 }}>{t('membership.form.title')}</h3>
-            <div className="form-row">
-              <input name="fname" type="text" placeholder={t('membership.form.fname')} required />
-              <input name="mname" type="text" placeholder={t('membership.form.mname')} />
-              <input name="lname" type="text" placeholder={t('membership.form.lname')} required />
+          <form className="contact-form bg-white p-6 rounded-2xl shadow-lg border border-gray-100" onSubmit={handleSubmit}>
+            <h3 className="text-xl font-bold text-gray-800 mb-6">{t('membership.form.title')}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <input name="fname" type="text" placeholder={t('membership.form.fname')} required className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+              <input name="mname" type="text" placeholder={t('membership.form.mname')} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+              <input name="lname" type="text" placeholder={t('membership.form.lname')} required className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors" />
             </div>
-            <div className="form-row">
-              <input name="dob" type="date" placeholder={t('membership.form.dob')} required />
-              <input name="citizenship_no" type="text" placeholder={t('membership.form.citizenship')} required />
-              <select name="gender" style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <input name="dob" type="date" placeholder={t('membership.form.dob')} required className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+              <input name="citizenship_no" type="text" placeholder={t('membership.form.citizenship')} required className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+              <select name="gender" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors">
                 <option value="Male">{t('membership.form.male')}</option>
                 <option value="Female">{t('membership.form.female')}</option>
                 <option value="Other">{t('membership.form.other')}</option>
               </select>
             </div>
-            <input name="address" type="text" placeholder={t('membership.form.address')} required />
-            <input name="phone" type="tel" placeholder={t('membership.form.phone')} required />
-            <input name="email" type="email" placeholder={t('membership.form.email')} />
+            <div className="flex flex-col gap-4 mb-4">
+              <input name="address" type="text" placeholder={t('membership.form.address')} required className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+              <input name="phone" type="tel" placeholder={t('membership.form.phone')} required className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+              <input name="email" type="email" placeholder={t('membership.form.email')} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#e43f6f] transition-colors" />
+            </div>
             
-            <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#fff8e1', borderRadius: '8px', border: '1px solid #ffe0b2' }}>
-              <p style={{ margin: 0, fontSize: '14px', color: '#d84315', fontWeight: 'bold' }}>
-                ⚠️ Important: Please attach your Photo and Citizenship Copy to the email that will open after clicking Submit.
+            <div className="mt-6 p-4 bg-orange-50 rounded-xl border border-orange-200">
+              <p className="m-0 text-sm text-orange-800 font-bold flex items-start gap-2">
+                <span>⚠️</span>
+                <span>Important: Please attach your Photo and Citizenship Copy to the email that will open after clicking Submit.</span>
               </p>
             </div>
 
-            <button className="btn" style={{ marginTop: '16px' }}>{t('membership.form.submit')}</button>
+            <button className="btn w-full mt-6 py-4 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">{t('membership.form.submit')}</button>
           </form>
         </div>
       </div>

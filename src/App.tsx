@@ -2,6 +2,7 @@ import { useEffect, useState, lazy, Suspense } from 'react'
 import './App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ScrollToTop from './components/ScrollToTop'
 import { useTranslation } from './hooks/useTranslation'
 import { fetchMembers } from './services/members'
 
@@ -54,7 +55,7 @@ function App() {
       {route !== '/admin' && <Header nav={nav} route={route} t={t} lang={lang} setLang={setLang} navigate={navigate} />}
 
       <Suspense fallback={<LoadingFallback />}>
-        {route === '/' && <Home t={t} lang={lang} />}
+        {route === '/' && <Home t={t} lang={lang} navigate={navigate} />}
         {route === '/about' && <About t={t} />}
         {route === '/programs' && <About t={t} initialTab="programs" />} {/* Redirect to About (programs tab) */}
         {route === '/health-info' && <About t={t} initialTab="health" />} {/* Redirect to About (health tab) */}
@@ -81,6 +82,7 @@ function App() {
       </Suspense>
 
       {route !== '/admin' && <Footer t={t} />}
+      <ScrollToTop />
     </div>
   )
 }

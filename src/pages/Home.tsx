@@ -16,7 +16,8 @@ import { useAutoScroll } from '../hooks/useAutoScroll'
 // Props:
 // - t: Translation function to translate text based on key
 // - lang: Current language ('en' or 'ne') to handle bilingual data
-export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en' | 'ne' }) {
+// - navigate: Function to handle navigation
+export default function Home({ t, lang, navigate }: { t: (k: string) => string; lang: 'en' | 'ne'; navigate: (path: string) => void }) {
   // useRef hooks to get references to DOM elements for auto-scrolling
   const carouselRef = useRef<HTMLDivElement>(null)
   const activitiesRef = useRef<HTMLDivElement>(null)
@@ -231,7 +232,7 @@ export default function Home({ t, lang }: { t: (k: string) => string; lang: 'en'
 
       {/* Intro Section: Animated introduction text */}
       <AnimatedSection type="zoom-in" delay={200}>
-        <Intro t={t} lang={lang} />
+        <Intro t={t} lang={lang} navigate={navigate} />
       </AnimatedSection>
 
       {/* Experience / Stats Section */}

@@ -86,21 +86,21 @@ export default function News({ t }: { t: (k: string) => string }) {
       
       <div className="w-full max-w-7xl mx-auto px-4 py-8">
         {/* Filter Controls */}
-        <div className="flex justify-center gap-4 mb-8">
+        <div className="flex overflow-x-auto justify-start md:justify-center gap-4 mb-8 pb-2">
           <button 
-            className={`px-6 py-2 rounded-full font-bold transition-all ${filter === 'all' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap shrink-0 px-6 py-2 rounded-full font-bold transition-all ${filter === 'all' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('all')}
           >
             {t('news.filter.all')}
           </button>
           <button 
-            className={`px-6 py-2 rounded-full font-bold transition-all ${filter === 'news' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap shrink-0 px-6 py-2 rounded-full font-bold transition-all ${filter === 'news' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('news')}
           >
             {t('news.filter.news')}
           </button>
           <button 
-            className={`px-6 py-2 rounded-full font-bold transition-all ${filter === 'notice' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+            className={`whitespace-nowrap shrink-0 px-6 py-2 rounded-full font-bold transition-all ${filter === 'notice' ? 'bg-[#e43f6f] text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             onClick={() => setFilter('notice')}
           >
             {t('news.filter.notice')}
