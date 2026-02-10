@@ -4,6 +4,7 @@ import Header from './components/Header' // Navigation header component
 import Footer from './components/Footer' // Page footer component
 import ScrollToTop from './components/ScrollToTop' // Component to scroll to top on route change
 import InstallPrompt from './components/InstallPrompt' // PWA Install Prompt component
+import PushNotificationManager from './components/PushNotificationManager' // Push Notification Manager
 import { useTranslation } from './hooks/useTranslation' // Custom hook for i18n
 import { fetchMembers } from './services/members' // Service to fetch member data
 
@@ -110,6 +111,9 @@ function App() {
       
       {/* PWA Install Prompt - Appears when the app is installable */}
       <InstallPrompt />
+      
+      {/* Push Notification Manager - Handles subscriptions */}
+      <PushNotificationManager />
     </div>
   )
 }
