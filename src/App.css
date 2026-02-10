@@ -1212,13 +1212,61 @@ h3 {
     right: 16px; 
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.5rem; 
     background: none; 
     border: none; 
     cursor: pointer; 
     z-index: 100;
-    color: #333;
-    padding: 8px;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hamburger-box {
+    width: 24px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .hamburger-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .hamburger-line.top {
+    top: 0;
+  }
+  
+  .hamburger-line.middle {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .hamburger-line.bottom {
+    bottom: 0;
+  }
+  
+  /* Hamburger Animation State: Open */
+  .hamburger-box.open .hamburger-line.top {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+  
+  .hamburger-box.open .hamburger-line.middle {
+    opacity: 0;
+  }
+  
+  .hamburger-box.open .hamburger-line.bottom {
+    bottom: 50%;
+    transform: translateY(50%) rotate(-45deg);
   }
   
   /* Mobile Menu Styles */
