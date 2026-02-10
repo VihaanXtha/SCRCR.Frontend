@@ -1,29 +1,29 @@
 import '../App.css'
-import { useState, useEffect } from 'react'
-import SubHero from '../components/SubHero'
-import img1 from '../assets/images/scrc-aboutus-1-1.jpg'
-import programsBanner from '../assets/images/activites/scrc-gallery-32.jpg'
-import healthBanner from '../assets/images/hero-slider/scrc-slider-3-1.png'
-import downloadsBanner from '../assets/images/hero-slider/scrc-slider-1-1.jpg'
-import AnimatedSection from '../components/AnimatedSection'
+import { useState, useEffect } from 'react' // React hooks for managing state and side effects
+import SubHero from '../components/SubHero' // Component for the page sub-header/banner
+import img1 from '../assets/images/scrc-aboutus-1-1.jpg' // Default banner image
+import programsBanner from '../assets/images/activites/scrc-gallery-32.jpg' // Banner for Programs tab
+import healthBanner from '../assets/images/hero-slider/scrc-slider-3-1.png' // Banner for Health tab
+import downloadsBanner from '../assets/images/hero-slider/scrc-slider-1-1.jpg' // Banner for Downloads tab
+import AnimatedSection from '../components/AnimatedSection' // Wrapper for scroll animations
 
-// Define possible values for the active tab to ensure type safety
+// Define strict types for the available tabs to prevent invalid states
 type TabType = 'about' | 'programs' | 'health' | 'downloads'
 
-// About Component: Displays information about the organization, programs, health tips, and downloads
+// About Component: Central hub for organization info, programs, health tips, and downloads
 // Props:
-// - t: Translation function
-// - initialTab: Optional initial tab to show
+// - t: Translation function for internationalization
+// - initialTab: Optional prop to deep-link directly to a specific tab (e.g. from footer links)
 export default function About({ t, initialTab }: { t: (k: string) => string; initialTab?: TabType }) {
-  // State to track which tab is currently active
+  // State to track the currently active tab view
   const [activeTab, setActiveTab] = useState<TabType>(initialTab || 'about')
 
-  // Update active tab when initialTab prop changes
+  // Effect to update the active tab if the parent passes a new initialTab prop (e.g. navigation change)
   useEffect(() => {
     if (initialTab) setActiveTab(initialTab)
   }, [initialTab])
 
-  // Helper function to get the correct banner image based on the active tab
+  // Helper function to determine which banner image to display based on the active tab
   const getBanner = () => {
     switch(activeTab) {
       case 'programs': return programsBanner
@@ -33,7 +33,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
     }
   }
 
-  // Helper function to get the correct page title based on the active tab
+  // Helper function to set the page title dynamically based on the active tab
   const getTitle = () => {
     switch(activeTab) {
       case 'programs': return t('programs.title')
@@ -43,7 +43,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
     }
   }
 
-  // Configuration for the tabs
+  // Configuration array for the tab navigation buttons
   const tabs: { id: TabType; label: string }[] = [
     { id: 'about', label: t('nav.about') },
     { id: 'programs', label: t('nav.programs') },
@@ -51,19 +51,21 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
     { id: 'downloads', label: t('nav.downloads') }
   ]
 
-  // Data for Downloads
+  // Static data for the 'Downloads' section (Reports)
   const reports = [
     { title: t('downloads.report_annual_8081'), date: "2081-04-01" },
     { title: t('downloads.report_audit_80'), date: "2081-03-15" },
     { title: t('downloads.report_annual_7980'), date: "2080-04-01" },
   ]
 
+  // Static data for the 'Downloads' section (Policies)
   const policies = [
     { title: t('downloads.policy_constitution'), date: "2075-01-01" },
     { title: t('downloads.policy_membership'), date: "2076-05-12" },
     { title: t('downloads.policy_conduct'), date: "2076-05-12" },
   ]
 
+  // Static data for the 'Downloads' section (Forms)
   const forms = [
     { title: t('downloads.form_membership'), type: "PDF" },
     { title: t('downloads.form_donation'), type: "PDF" },
@@ -72,16 +74,16 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
 
   return (
     <div className="page pb-20">
-      {/* SubHero displays the banner image and title */}
+      {/* SubHero displays the dynamic banner image and title */}
       <SubHero title={getTitle()} img={getBanner()} />
       
       <div className="w-full max-w-7xl mx-auto px-4 py-6 md:py-8">
-        {/* Tab Navigation Buttons */}
+        {/* Tab Navigation Buttons - Responsive layout (wrapping on mobile) */}
         <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 px-1">
           {tabs.map(tab => (
             <button 
               key={tab.id}
-              // Apply active styling if this tab is selected
+              // Conditional styling: Highlight active tab with brand color, gray for inactive
               className={`flex-1 md:flex-none shrink-0 px-4 py-3 md:px-8 md:py-3 rounded-full font-bold transition-all text-sm md:text-base ${
                 activeTab === tab.id 
                   ? 'bg-[#e43f6f] text-white shadow-md transform scale-105' 
@@ -94,24 +96,26 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
           ))}
         </div>
 
-        {/* Content for 'About Us' Tab */}
+        {/* Content Section: 'About Us' Tab */}
         {activeTab === 'about' && (
           <AnimatedSection className="w-full" type="fade-up">
             <div className="flex flex-col md:flex-row gap-8 lg:gap-20 items-center">
-              {/* Photo Column with decorative elements */}
+              {/* Left Column: Image with decorative background shapes */}
               <div className="w-full md:w-1/2 relative group">
+                {/* Decorative rotated background layers */}
                 <div className="absolute inset-0 bg-[#e43f6f] opacity-5 rounded-[3rem] transform rotate-3 scale-95 transition-transform duration-500 group-hover:rotate-6"></div>
                 <div className="absolute inset-0 bg-[#c6285b] opacity-10 rounded-[3rem] transform -rotate-3 scale-95 transition-transform duration-500 group-hover:-rotate-6"></div>
+                {/* Main About Image */}
                 <img 
                   src="https://placehold.co/600x520" 
                   alt="about" 
                   className="relative z-10 w-full h-auto rounded-[2.5rem] shadow-2xl border-4 border-white transform transition-transform duration-500 group-hover:scale-[1.01]" 
                 />
-                {/* Accent Bar */}
+                {/* Decorative Accent Bar */}
                 <div className="absolute -right-4 top-12 bottom-12 w-2 bg-gradient-to-b from-[#e43f6f] to-[#c6285b] rounded-full opacity-80"></div>
               </div>
 
-              {/* Text Column */}
+              {/* Right Column: Text Content */}
               <div className="w-full md:w-1/2">
                  <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-6 shadow-sm">
                     {t('about.our_story')}
@@ -128,9 +132,10 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
           </AnimatedSection>
         )}
 
-        {/* Content for 'Programs' Tab */}
+        {/* Content Section: 'Programs' Tab */}
         {activeTab === 'programs' && (
           <AnimatedSection className="w-full" type="fade-up">
+            {/* Regular Programs Grid */}
             <div className="section mb-16">
               <div className="text-center mb-12">
                 <h3 className="text-3xl font-bold text-gray-800 mb-4">{t('programs.regular')}</h3>
@@ -138,7 +143,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
               </div>
               
               <div className="grid md:grid-cols-3 gap-8">
-                {/* Program Card 1 */}
+                {/* Program Card 1: Daily Yoga */}
                 <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
                   <div className="h-48 overflow-hidden">
                     <img src="https://placehold.co/800x600/e43f6f/ffffff?text=Daily+Yoga" alt="Yoga" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
@@ -148,7 +153,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
                     <p className="text-sm text-[#e43f6f] font-bold uppercase tracking-wider">{t('programs.daily_yoga_time')}</p>
                   </div>
                 </div>
-                {/* Program Card 2 */}
+                {/* Program Card 2: Health Checkup */}
                 <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
                   <div className="h-48 overflow-hidden">
                     <img src="https://placehold.co/800x600/e43f6f/ffffff?text=Health+Checkup" alt="Health Checkup" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
@@ -158,7 +163,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
                     <p className="text-sm text-[#e43f6f] font-bold uppercase tracking-wider">{t('programs.health_checkup_time')}</p>
                   </div>
                 </div>
-                {/* Program Card 3 */}
+                {/* Program Card 3: Bhajan */}
                 <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
                   <div className="h-48 overflow-hidden">
                     <img src="https://placehold.co/800x600/e43f6f/ffffff?text=Bhajan+Kirtan" alt="Bhajan" className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" />
@@ -171,6 +176,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
               </div>
             </div>
 
+            {/* Featured Ongoing Program Section */}
             <div className="section">
               <div className="text-center mb-12">
                  <h3 className="text-3xl font-bold text-gray-800 mb-4">{t('programs.ongoing')}</h3>
@@ -187,24 +193,28 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
           </AnimatedSection>
         )}
 
-        {/* Content for 'Health' Tab */}
+        {/* Content Section: 'Health' Tab */}
         {activeTab === 'health' && (
           <AnimatedSection className="w-full" type="fade-up">
+            {/* Health Tips Grid */}
             <div className="section mb-16">
               <div className="text-center mb-12">
                 <h3 className="text-3xl font-bold text-gray-800">{t('health.tips.title')}</h3>
               </div>
               <div className="grid md:grid-cols-3 gap-8">
+                {/* Tip Card 1 */}
                 <div className="bg-green-50 rounded-[2rem] p-8 border border-green-100 hover:shadow-lg transition-all">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-3xl mb-6">🏃‍♂️</div>
                   <h4 className="text-xl font-bold text-gray-800 mb-4">{t('health.tip1.title')}</h4>
                   <p className="text-gray-600 leading-relaxed">{t('health.tip1.desc')}</p>
                 </div>
+                {/* Tip Card 2 */}
                 <div className="bg-orange-50 rounded-[2rem] p-8 border border-orange-100 hover:shadow-lg transition-all">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-3xl mb-6">🥗</div>
                   <h4 className="text-xl font-bold text-gray-800 mb-4">{t('health.tip2.title')}</h4>
                   <p className="text-gray-600 leading-relaxed">{t('health.tip2.desc')}</p>
                 </div>
+                {/* Tip Card 3 */}
                 <div className="bg-blue-50 rounded-[2rem] p-8 border border-blue-100 hover:shadow-lg transition-all">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-3xl mb-6">💧</div>
                   <h4 className="text-xl font-bold text-gray-800 mb-4">{t('health.tip3.title')}</h4>
@@ -213,6 +223,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
               </div>
             </div>
 
+            {/* Government Facilities Section */}
             <div className="section">
               <div className="text-center mb-12">
                 <h3 className="text-3xl font-bold text-gray-800">{t('health.gov.title')}</h3>
@@ -235,7 +246,7 @@ export default function About({ t, initialTab }: { t: (k: string) => string; ini
           </AnimatedSection>
         )}
 
-        {/* Content for 'Downloads' Tab */}
+        {/* Content Section: 'Downloads' Tab */}
         {activeTab === 'downloads' && (
           <AnimatedSection className="w-full" type="fade-up">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -1,14 +1,16 @@
-import { useEffect, useState, lazy, Suspense } from 'react'
-import './App.css'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import ScrollToTop from './components/ScrollToTop'
-import { useTranslation } from './hooks/useTranslation'
-import { fetchMembers } from './services/members'
+import { useEffect, useState, lazy, Suspense } from 'react' // React hooks for state, side effects, and lazy loading
+import './App.css' // Main application styles
+import Header from './components/Header' // Navigation header component
+import Footer from './components/Footer' // Page footer component
+import ScrollToTop from './components/ScrollToTop' // Component to scroll to top on route change
+import InstallPrompt from './components/InstallPrompt' // PWA Install Prompt component
+import { useTranslation } from './hooks/useTranslation' // Custom hook for i18n
+import { fetchMembers } from './services/members' // Service to fetch member data
 
+// Fallback component displayed while lazy-loaded components are being fetched
 const LoadingFallback = () => <div className="loading">Loading...</div>
 
-// Lazy load pages
+// Lazy load pages to improve initial load performance (Code Splitting)
 const Home = lazy(() => import('./pages/Home'))
 const About = lazy(() => import('./pages/About'))
 const Members = lazy(() => import('./pages/Members'))
@@ -19,28 +21,40 @@ const Contact = lazy(() => import('./pages/Contact'))
 const Membership = lazy(() => import('./pages/Membership'))
 
 function App() {
+  // Destructure translation utilities and language state
   const { t, lang, setLang } = useTranslation()
+  
+  // State to manage the current route/path locally (SPA routing)
   const [route, setRoute] = useState<string>(window.location.pathname)
 
+  // Function to handle client-side navigation without full page reload
   const navigate = (path: string) => {
-    window.history.pushState({}, '', path)
-    setRoute(path)
-    window.scrollTo(0, 0)
+    window.history.pushState({}, '', path) // Update browser URL
+    setRoute(path) // Update local route state
+    window.scrollTo(0, 0) // Reset scroll position
   }
 
+  // Effect to pre-fetch member data for smoother experience later
   useEffect(() => {
-    // Only fetch for pre-loading purposes, ignore result
+    // Fire and forget fetch requests for 'Founding' and 'Lifetime' members
+    // We catch errors to prevent unhandled promise rejections, but don't act on them here
     fetchMembers('Founding').catch(() => {})
     fetchMembers('Lifetime').catch(() => {})
   }, [])
 
+  // Effect to handle browser Back/Forward buttons
   useEffect(() => {
+    // Callback to update route state when history changes
     const onPopState = () => setRoute(window.location.pathname)
+    
+    // Add event listener
     window.addEventListener('popstate', onPopState)
     
+    // Cleanup listener on unmount
     return () => window.removeEventListener('popstate', onPopState)
   }, [])
 
+  // Navigation menu configuration
   const nav = [
     { label: t('nav.about_us'), href: '/about' },
     { label: t('nav.members'), href: '/members' },
@@ -52,16 +66,20 @@ function App() {
 
   return (
     <div className="site">
+      {/* Conditionally render Header if not on Admin page */}
       {route !== '/admin' && <Header nav={nav} route={route} t={t} lang={lang} setLang={setLang} navigate={navigate} />}
 
+      {/* Suspense wrapper to handle loading states for lazy-loaded components */}
       <Suspense fallback={<LoadingFallback />}>
+        {/* Route Rendering Logic based on current 'route' state */}
         {route === '/' && <Home t={t} lang={lang} navigate={navigate} />}
         {route === '/about' && <About t={t} />}
-        {route === '/programs' && <About t={t} initialTab="programs" />} {/* Redirect to About (programs tab) */}
-        {route === '/health-info' && <About t={t} initialTab="health" />} {/* Redirect to About (health tab) */}
+        {route === '/programs' && <About t={t} initialTab="programs" />} {/* Legacy Redirect to About (programs tab) */}
+        {route === '/health-info' && <About t={t} initialTab="health" />} {/* Legacy Redirect to About (health tab) */}
         
         {route === '/members' && <Members t={t} />}
-        {/* Backward compatibility routes - redirect to main members page if possible, or just render it */}
+        
+        {/* Backward compatibility routes for specific member types */}
         {route === '/members-Founding' && <Members t={t} />}
         {route === '/members-Lifetime' && <Members t={t} />}
         {route === '/members-Senior-Citizen' && <Members t={t} />}
@@ -69,20 +87,29 @@ function App() {
         {route === '/members-Helping' && <Members t={t} />}
         
         {route === '/news' && <News t={t} />}
-        {/* Redirect old routes */}
-        {/* {route === '/programs' && <Programs t={t} />} Removed */}
-        {/* {route === '/health-info' && <HealthInfo t={t} />} Removed */}
+        {/* Removed legacy routes commented out below */}
+        {/* {route === '/programs' && <Programs t={t} />} */}
+        {/* {route === '/health-info' && <HealthInfo t={t} />} */}
+        
         {route === '/membership' && <Membership t={t} />}
         {route === '/downloads' && <About t={t} initialTab="downloads" />}
         {route === '/gallery' && <Gallery t={t} />}
         {route === '/contact' && <Contact t={t} />}
-        {route === '/donate' && <Contact t={t} />} {/* Redirect to Contact (donate tab) */}
-        {route === '/notices' && <News t={t} />} {/* Redirect notices route to News component as well for backward compatibility */}
+        {route === '/donate' && <Contact t={t} />} {/* Redirect /donate to Contact page (donate tab) */}
+        {route === '/notices' && <News t={t} />} {/* Redirect /notices to News component */}
+        
+        {/* Admin Dashboard Route */}
         {route === '/admin' && <Admin />}
       </Suspense>
 
+      {/* Conditionally render Footer if not on Admin page */}
       {route !== '/admin' && <Footer t={t} />}
+      
+      {/* Utility component to scroll to top on navigation */}
       <ScrollToTop />
+      
+      {/* PWA Install Prompt - Appears when the app is installable */}
+      <InstallPrompt />
     </div>
   )
 }

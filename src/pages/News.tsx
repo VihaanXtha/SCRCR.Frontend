@@ -1,10 +1,10 @@
 import '../App.css'
-import { useState, useEffect } from 'react'
-import SubHero from '../components/SubHero'
-import bannerImg from '../assets/images/hero-slider/scrc-slider-7-1.jpg'
-import { fetchNews, fetchNotices } from '../services/content'
-import type { NewsItem, NoticeItem } from '../types/content'
-import { getOptimizedUrl } from '../utils/image'
+import { useState, useEffect } from 'react' // React hooks for state and side effects
+import SubHero from '../components/SubHero' // Page banner component
+import bannerImg from '../assets/images/hero-slider/scrc-slider-7-1.jpg' // Default banner image
+import { fetchNews, fetchNotices } from '../services/content' // API services for fetching content
+import type { NewsItem, NoticeItem } from '../types/content' // TypeScript interfaces
+import { getOptimizedUrl } from '../utils/image' // Image optimization utility
 
 // Define a unified type for content items (News + Notices) to handle them together
 // This intersection type adds a 'type' discriminator and normalized 'date'/'image' fields
