@@ -13,6 +13,10 @@ export default function InstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false)
 
   useEffect(() => {
+    // Check if the app is already installed
+    const isInstalled = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true
+    if (isInstalled) return
+
     // Handler to capture the install prompt event
     const handler = (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
