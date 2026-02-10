@@ -50,8 +50,21 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
       </a>
 
       {/* Hamburger Button for Mobile Menu */}
-      {/* 'hamburger' class is hidden on desktop, shown on mobile (see App.css media queries) */}
-      <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Menu">☰</button>
+      <button 
+        className="hamburger" 
+        onClick={() => setOpen(!open)} 
+        aria-label={open ? "Close Menu" : "Open Menu"}
+      >
+        {open ? (
+          <span style={{ fontSize: '2rem', lineHeight: '1' }}>×</span>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        )}
+      </button>
 
       {/* Navigation Links */}
       {/* 'nav' class handles the menu layout. 'open' class is toggled by state for mobile visibility. */}
