@@ -37,8 +37,10 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
   }
 
   return (
+    // 'topbar' class defines the sticky header layout (see App.css .topbar)
     <header className="topbar">
       {/* Brand Logo and Title */}
+      {/* 'brand' class uses flexbox to align logo and text (see App.css .brand) */}
       <a href="/" className="brand" onClick={(e) => handleNav(e, '/')}>
         <img src={logo} alt="logo" className="logo" />
         <div className="brand-text">
@@ -48,9 +50,11 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
       </a>
 
       {/* Hamburger Button for Mobile Menu */}
+      {/* 'hamburger' class is hidden on desktop, shown on mobile (see App.css media queries) */}
       <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Menu">☰</button>
 
-      {/* Navigation Links - Responsive behavior handled via CSS classes */}
+      {/* Navigation Links */}
+      {/* 'nav' class handles the menu layout. 'open' class is toggled by state for mobile visibility. */}
       <nav className={`nav ${open ? 'open' : ''}`}>
         {nav.map(n => (
           <div key={n.label} className="nav-item">
@@ -61,7 +65,7 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
               <button className="nav-label" type="button">{n.label}</button>
             )}
             
-            {/* Dropdown Menu for child items */}
+            {/* Dropdown Menu for child items - visibility controlled by CSS hover on .nav-item */}
             {n.children && (
               <div className="dropdown">
                 {n.children.map(c => (
@@ -74,6 +78,7 @@ export default function Header({ nav, route, t, lang, setLang, navigate }: {
 
         {/* Action Buttons: Donate & Language Toggle */}
         <div className="nav-actions">
+          {/* 'btn sm' classes apply shared button styles with small padding (see App.css .btn) */}
           <a href="/donate" className="btn sm" onClick={(e) => handleNav(e, '/donate')}>{t('nav.donate')}</a>
           <button className="btn sm" onClick={() => { setLang(lang === 'en' ? 'ne' : 'en'); setOpen(false); }}>
             {lang === 'en' ? 'ने' : 'EN'}
