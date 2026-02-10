@@ -1,25 +1,44 @@
+/* Import Tailwind CSS base styles, components, and utilities */
 @import "tailwindcss";
 
+/* Define global CSS variables and root-level styles */
 :root {
+  /* Set the primary font family with fallbacks */
   font-family: 'Noto Sans Devanagari', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  
+  /* Set base line-height for better readability */
   line-height: 1.5;
+  
+  /* Set default font weight */
   font-weight: 400;
+  
+  /* Set default text color */
   color: #222;
+  
+  /* Set default background color */
   background-color: #ffffff;
+  
+  /* Optimize font rendering */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Apply border-box sizing to all elements for easier layout calculations */
 * {
   box-sizing: border-box;
 }
+
+/* Reset body margins and ensure minimum dimensions */
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
+
+/* Set default link color */
 a {
   color: #e43f6f;
 }
