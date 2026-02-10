@@ -1438,24 +1438,6 @@ h3 {
     padding: 10px 16px;
   }
   
-  .nav {
-    display: none; /* Needs a mobile menu implementation or stacking */
-    /* For now, let's just make it wrap and stack if visible, but ideally we need a hamburger menu.
-       The existing CSS has .hamburger { display: none }, so we should probably enable it if logic exists.
-       However, without changing JS/HTML for menu toggle, we should just ensure links wrap gracefully.
-    */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    margin-top: 12px;
-  }
-  
-  .nav-item {
-    width: auto;
-  }
-
   /* Components */
   .card img, .news-card img, .post-card img {
     height: 180px; /* Adjust image height */
