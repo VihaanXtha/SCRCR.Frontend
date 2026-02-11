@@ -20,6 +20,14 @@ try {
   if (isValidConfig(firebaseConfig)) {
     app = initializeApp(firebaseConfig)
     messaging = getMessaging(app)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then((reg) => {
+        const target = reg.active || navigator.serviceWorker.controller
+        try {
+          target?.postMessage({ type: 'INIT_FIREBASE', config: firebaseConfig })
+        } catch {}
+      })
+    }
   } else {
     console.warn('Firebase config missing; skipping messaging init')
   }
