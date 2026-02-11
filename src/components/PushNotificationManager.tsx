@@ -59,6 +59,28 @@ export default function PushNotificationManager() {
     }
 
     registerSw();
+
+    // Heads-up: receive broadcast messages from SW for instant UI feedback
+    const onMessage = (e: MessageEvent) => {
+      const data = e.data;
+      if (data && data.type === 'PUSH') {
+        try {
+          if (Notification.permission === 'granted') {
+            new Notification(data.payload.title, {
+              body: data.payload.body,
+              icon: '/pwa-192x192.png',
+              badge: '/pwa-192x192.png',
+              requireInteraction: true,
+              data: { url: data.payload.url }
+            });
+          }
+        } catch {}
+      }
+    };
+    navigator.serviceWorker.addEventListener('message', onMessage);
+    return () => {
+      navigator.serviceWorker.removeEventListener('message', onMessage);
+    };
   }, []);
 
   const subscribeUser = async (registration: ServiceWorkerRegistration) => {
