@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { useAutoScroll } from '../hooks/useAutoScroll'
 
 // Define the structure for a Person object with bilingual support
-type Person = { name: string; nameEn?: string; role: string; roleEn?: string; img: string }
+type Person = { name: string; nameEn?: string; sbname?: string; sbnameEn?: string; role: string; roleEn?: string; img: string }
 
 /**
  * StaffSection Component
@@ -49,6 +49,10 @@ export default function StaffSection({ staff, t, lang }: { staff: Person[]; t: (
             {/* Display Name based on Language */}
             <div className="font-bold text-lg text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">
               {lang === 'en' ? (s.nameEn || s.name) : s.name}
+            </div>
+            {/* Display sub-Name based on Language */}
+            <div className="font-bold text-lg text-gray-800 group-hover/card:text-[#e43f6f] transition-colors mb-1">
+              {lang === 'en' ? (s.sbnameEn || s.sbname) : s.sbname}
             </div>
             {/* Display Role based on Language */}
             <div className="text-sm text-gray-500 font-medium uppercase tracking-wide bg-gray-50 inline-block px-3 py-1 rounded-full">

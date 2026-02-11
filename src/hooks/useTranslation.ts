@@ -45,12 +45,12 @@ const dictionary: Record<string, Record<string, string>> = {
   "activities.title": { en: "Our Activities", ne: "हमारी गतिविधियाँ" },
   "leaders.title": { en: "Our Leadership", ne: "हमारे नेतृत्व" },
   "core.title": { en: "Core Management Team", ne: "कोर मैनेजमेंट टीम" },
-  "staff.title": { en: "Office Staff", ne: "ऑफिस स्टाफ" },
-  "staff.our_team": { en: "OUR TEAM", ne: "हाम्रो टोली" },
+  "staff.title": { en: "Baristha Sadaya", ne: "बारिष्ठ सदया" },
+  "staff.our_team": { en: "CORE MEMBERS", ne: "कोर सदस्यहरू" },
   "dpmt.title": { en: "Daily Program Management Team (DPMT)", ne: "दैनिक कार्यक्रम व्यवस्थापन उप-समिति (DPMT)" },
   "dpmt.our_committee": { en: "OUR COMMITTEE", ne: "हाम्रो समिति" },
   "gallery.title": { en: "Photo Gallery", ne: "फोटो ग्यालरी" },
-  "gallery.memories": { en: "Our Memories", ne: "Our Memories" },
+  "gallery.memories": { en: "Our Memories", ne: "हाम्रा स्मृतिहरू" },
   "gallery.video": { en: "Video Gallery", ne: "भिडियो ग्यालरी" },
   "gallery.filter.all": { en: "All", ne: "सबै" },
   "gallery.filter.photo": { en: "Photos", ne: "फोटोहरू" },
@@ -184,9 +184,9 @@ const dictionary: Record<string, Record<string, string>> = {
   "programs.past": { en: "Past Programs", ne: "विगतका कार्यक्रमहरू" },
   "programs.regular": { en: "Regular Activities", ne: "नियमित गतिविधिहरू" },
   "programs.desc": { en: "Join us in our daily and weekly activities designed for physical and mental well-being.", ne: "शारीरिक र मानसिक कल्याणको लागि डिजाइन गरिएको हाम्रो दैनिक र साप्ताहिक गतिविधिहरूमा सामेल हुनुहोस्।" },
-  "home.welcome": { en: "WELCOME TO SCRC", ne: "SCRC मा स्वागत छ" },
+  "home.welcome": { en: "WELCOME TO SCRCR", ne: "SCRCR मा स्वागत छ" },
   "home.message_from": { en: "Message From", ne: "सन्देश" },
-  "home.scrc_leader": { en: "SCRC Leader", ne: "SCRC नेता" },
+  "home.scrc_leader": { en: "SCRCR Leader", ne: "SCRCR नेता" },
   "home.what_we_do": { en: "WHAT WE DO", ne: "हामी के गर्छौं" },
   "home.scrc_activity": { en: "SCRC Activity", ne: "SCRC गतिविधि" },
   "home.leadership": { en: "LEADERSHIP", ne: "नेतृत्व" },
@@ -227,14 +227,13 @@ const dictionary: Record<string, Record<string, string>> = {
   "donate.bank_name": { en: "ABC Bank Ltd", ne: "एबिसी बैंक लिमिटेड" },
   "donate.acc_name_val": { en: "Jestha Nagrik Milan Kendra", ne: "ज्येष्ठ नागरिक मिलन केन्द्र" },
   "home.stats.exp_prefix": { en: "We have", ne: "हामीसँग" },
-  "home.stats.exp_years": { en: "13 years", ne: "१३ वर्ष" },
   "home.stats.exp_suffix": { en: "of experience", ne: "को अनुभव छ" },
   "home.stats.desc": {
-    en: "We have been continuously contributing to quality education and positive educational development, empowering students to thrive in a rapidly changing world.",
-    ne: "हामीले गुणस्तरीय शिक्षा र सकारात्मक शैक्षिक विकासमा निरन्तर योगदान पुर्‍याउँदै आएका छौं, विद्यार्थीहरूलाई तीव्र रूपमा परिवर्तन भइरहेको विश्वमा फस्टाउन सशक्त बनाउँदै।"
+    en: "We have been dedicated to enhancing the lives of senior citizens through recreation, learning, and social connection, creating a joyful and fulfilling environment for all.",
+    ne: "हामीले वरिष्ठ नागरिकहरूको जीवनमा सक्रियता, सिकाइ र सामाजिक सहभागितामार्फत सकारात्मक विकासमा निरन्तर योगदान पुर्‍याउँदै आएका छौं, उनीहरूलाई उत्साही र सशक्त जीवन बिताउन सक्षम बनाउँदै।"
   },
-  "home.stats.graduates": { en: "Graduates / Alumni", ne: "स्नातक / पूर्व विद्यार्थी" },
-  "home.stats.employers": { en: "Employer Companies", ne: "रोजगारदाता कम्पनीहरू" },
+  "home.stats.members": { en: "Members", ne: "सदस्यहरू" },
+  "home.stats.senior_citizens": { en: "Senior Citizens", ne: "ज्येष्ठ नागरिकहरू" },
   "home.stats.ranking": { en: "Ranked in Lumbini Province", ne: "लुम्बिनी प्रदेशमा स्थान" },
   "nav.notice": { en: "Notice", ne: "सूचना" },
   "downloads.report_annual_8081": { en: "Annual Report 2080/81", ne: "वार्षिक प्रतिवेदन २०८०/८१" },
@@ -264,6 +263,12 @@ const dictionary: Record<string, Record<string, string>> = {
   "pwa.install_dec": { en: "Install this application on your device for a better experience.", ne: "तपाईंको उपकरणमा यो एप्लिकेसन स्थापना गर्नुहोस् राम्रो अनुभवको लागि।" },
   "pwa.install_btn" : { en: "Install", ne: "स्थापना गर्नुहोस्" },
   "common.close": { en: "Close", ne: "बन्द गर्नुहोस्" },
+  "intro.location": { en: "Rupandehi", ne: "रूपन्देही" },
+  "intro.label": { en: "WHO WE ARE", ne: "हम कौन हैं" },
+  "brand.desc": {
+    en: "Senior Citizen Recreation Centre, Shringeshwardham, Rupandehi is a non-profit organization dedicated to enhancing the lives of senior citizens through recreation, learning, and social connection. Our mission is to create a joyful and fulfilling environment where seniors can thrive, fostering a sense of community and well-being.",
+    ne: "ज्येष्ठ नागरिक मनोरञ्जन केन्द्र, श्रृङ्गेश्वरधाम, रुपन्देही एक गैर-नाफामूलक संस्था है जो वरिष्ठ नागरिकों के जीवन को सक्रियता, सीखने और सामाजिक संबंध के माध्यम से बेहतर बनाने के लिए समर्पित है। हमारा मिशन एक खुशहाल और संतोषजनक वातावरण बनाना है जहाँ वरिष्ठ नागरिक फल-फूल सकें, समुदाय की भावना और कल्याण को बढ़ावा देते हुए।"
+  },
 };
 
 /**

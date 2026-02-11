@@ -247,7 +247,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full relative z-10">
           <div className="flex flex-col justify-center items-center text-center space-y-8">
             <h2 className="text-5xl md:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-lg">
-              {t('home.stats.exp_prefix')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500"><CountUp end={13} lang={lang} /> {lang === 'en' ? 'Years' : 'वर्ष'}</span> <br />{t('home.stats.exp_suffix')}
+              {t('home.stats.exp_prefix')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500"><CountUp end={7} lang={lang} /> {lang === 'en' ? 'Years' : 'वर्ष'}</span> <br />{t('home.stats.exp_suffix')}
             </h2>
             <p className="text-blue-100 text-xl font-light max-w-lg leading-relaxed">{t('home.stats.desc')}</p>
             <div className="h-1 w-24 bg-gradient-to-r from-orange-400 to-pink-500 rounded-full mt-4"></div>
@@ -258,8 +258,8 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
               <div className="mb-6 p-4 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white w-8 h-8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
               </div>
-              <h3 className="text-4xl lg:text-5xl font-extrabold text-white mb-2 tracking-tight"><CountUp end={1000} lang={lang} suffix="+" /></h3>
-              <p className="text-sm text-blue-200 font-bold uppercase tracking-widest">{t('home.stats.graduates')}</p>
+              <h3 className="text-4xl lg:text-5xl font-extrabold text-white mb-2 tracking-tight"><CountUp end={500} lang={lang} suffix="+" /></h3>
+              <p className="text-sm text-blue-200 font-bold uppercase tracking-widest">{t('home.stats.members')}</p>
             </div>
 
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 flex flex-col items-center text-center hover:bg-white/10 transition-all duration-300 shadow-2xl hover:shadow-purple-500/20 transform hover:-translate-y-2 group mt-0 md:-mt-8">
@@ -267,7 +267,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white w-8 h-8"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
               </div>
               <h3 className="text-4xl lg:text-5xl font-extrabold text-white mb-2 tracking-tight"><CountUp end={100} lang={lang} suffix="+" /></h3>
-              <p className="text-sm text-blue-200 font-bold uppercase tracking-widest">{t('home.stats.employers')}</p>
+              <p className="text-sm text-blue-200 font-bold uppercase tracking-widest">{t('home.stats.senior_citizens')}</p>
             </div>
 
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 flex flex-col items-center text-center hover:bg-white/10 transition-all duration-300 shadow-2xl hover:shadow-purple-500/20 transform hover:-translate-y-2 group">

@@ -27,7 +27,7 @@ export default function Intro({ t, lang, navigate }: { t: (k: string) => string;
             {/* Label Overlay (Bottom Left) */}
             <div className="absolute bottom-8 left-0 bg-gradient-to-r from-[#e43f6f] to-[#c6285b] text-white px-8 py-4 rounded-r-full shadow-lg max-w-[90%] transform transition-transform duration-500 group-hover:translate-x-2">
               <div className="font-bold text-lg md:text-xl uppercase tracking-wide leading-tight">SCRCR</div>
-              <div className="text-xs md:text-sm font-medium opacity-90 mt-1 uppercase tracking-wider">Rupandehi</div>
+              <div className="text-xs md:text-sm font-medium opacity-90 mt-1 uppercase tracking-wider">{t('intro.location')}</div>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function Intro({ t, lang, navigate }: { t: (k: string) => string;
 
             <div className="relative z-10 flex flex-col items-center">
               <span className="inline-block px-4 py-1 bg-[#e43f6f] text-white text-xs font-bold tracking-widest rounded-full mb-6 shadow-sm">
-                WHO WE ARE
+                {t('intro.label')}
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 leading-tight">
                 {t('intro.heading')}

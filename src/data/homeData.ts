@@ -40,24 +40,37 @@ export const activities = [
 ]
 
 export const leaderQuotes = [
-  { name: 'Kewal Das', nameEn: 'Kewal Das', role: 'President', roleEn: 'President', img: 'https://placehold.co/160x160', quote: 'समाज सेवा हमारा धर्म है।', quoteEn: 'Social service is our religion.' },
-  { name: 'Hari Om', nameEn: 'Hari Om', role: 'Vice President', roleEn: 'Vice President', img: 'https://placehold.co/160x160', quote: 'एकता में शक्ति है।', quoteEn: 'Unity is strength.' },
-  { name: 'Vikas Patel', nameEn: 'Vikas Patel', role: 'Secretary', roleEn: 'Secretary', img: 'https://placehold.co/160x160', quote: 'युवा ही भविष्य हैं।', quoteEn: 'Youth are the future.' }
+  { name: 'यदुनाथ पाण्डेय', nameEn: 'Yadunath Pandey', role: 'अध्यक्ष', roleEn: 'President', img: 'https://placehold.co/160x160', quote: 'समाज सेवा हमारा धर्म है।', quoteEn: 'Social service is our religion.' },
+  { name: 'ओमि पुन', nameEn: 'Omi Pun', role: 'उपाध्यक्ष', roleEn: 'Vice President', img: 'https://placehold.co/160x160', quote: 'एकता में शक्ति है।', quoteEn: 'Unity is strength.' },
+  { name: 'दयानिधि भण्डारी', nameEn: 'Dayanidhi Bhandari', role: 'सचिव', roleEn: 'Secretary', img: 'https://placehold.co/160x160', quote: 'युवा ही भविष्य हैं।', quoteEn: 'Youth are the future.' }
 ]
 
 export const leaders = [
-  { name: 'गौरव पटेल', nameEn: 'Gaurav Patel', role: 'अध्यक्ष', roleEn: 'President', img: 'https://placehold.co/160x160' },
-  { name: 'हितेश सोनी', nameEn: 'Hitesh Soni', role: 'उपाध्यक्ष', roleEn: 'Vice President', img: 'https://placehold.co/160x160' },
-  { name: 'नरेश जैन', nameEn: 'Naresh Jain', role: 'महामंत्री', roleEn: 'General Secretary', img: 'https://placehold.co/160x160' },
-  { name: 'राजेश गुप्ता', nameEn: 'Rajesh Gupta', role: 'कोषाध्यक्ष', roleEn: 'Treasurer', img: 'https://placehold.co/160x160' },
-  { name: 'विनोद शर्मा', nameEn: 'Vinod Sharma', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
-  { name: 'राहुल अग्रवाल', nameEn: 'Rahul Agrawal', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' }
+  { name: 'यदुनाथ पाण्डेय', nameEn: 'Yadunath Pandey', role: 'अध्यक्ष', roleEn: 'President', img: 'https://placehold.co/160x160' },
+  { name: 'ओमि पुन', nameEn: 'Omi Pun', role: 'उपाध्यक्ष', roleEn: 'Vice President', img: 'https://placehold.co/160x160' },
+  { name: 'दयानिधि भण्डारी', nameEn: 'Dayanidhi Bhandari', role: 'सचिव', roleEn: 'Secretary', img: 'https://placehold.co/160x160' },
+  { name: 'मधुसुदन पाण्डे', nameEn: 'Madhusudan Pandey', role: 'कोषाध्यक्ष', roleEn: 'Treasurer', img: 'https://placehold.co/160x160' },
+  { name: 'बसन्त गोदार', nameEn: 'Basant Godar', role: 'सहसचिव', roleEn: 'Vice Secretary', img: 'https://placehold.co/160x160' },
+  { name: 'पुष्पा गौतम', nameEn: 'Pushpa Gautam', role: 'सहकोषाध्यक्ष', roleEn: 'Vice Treasurer', img: 'https://placehold.co/160x160' },
+  { name: 'ईश्वरी प्रसाद गौतम', nameEn: 'Ishwari Prasad Gautam', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'तुल्सीराम कडेंल', nameEn: 'Tulsiram Kadel', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' }, 
+  { name: 'पुरुषोत्तम पाण्डे', nameEn: 'Purushottam Pandey', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  { name: 'कुसानन्द न्यौपाने', nameEn: 'Kusananand Neupane', role: 'सदस्य', roleEn: 'Member', img: 'https://placehold.co/160x160' },
+  
+  { name: 'इ.हिरा बहादुर भलामी', nameEn: 'Hira Bahadur Bhalami', role: 'सल्लाकार', roleEn: 'Advisor', img: 'https://placehold.co/160x160' },
+  { name: 'टिकाराम घिमिरे', nameEn: 'Tikaram Ghimire', role: 'सल्लाकार', roleEn: 'Advisor', img: 'https://placehold.co/160x160' },
+  { name: 'टिकाराम न्यौपाने', nameEn: 'Tikaram Neupane', role: 'सल्लाकार', roleEn: 'Advisor', img: 'https://placehold.co/160x160' },
+  { name: 'गोपाल बहादुर पोखरेल', nameEn: 'Gopal Bahadur Pokharel', role: 'सल्लाकार', roleEn: 'Advisor', img: 'https://placehold.co/160x160' },
+  { name: 'मोतीलाल भण्डारी', nameEn: 'Motilal Bhandari', role: 'सल्लाकार', roleEn: 'Advisor', img: 'https://placehold.co/160x160' },
+ 
 ]
 
 export const staff = [
   { 
-    name: 'श्री बालाराम भट्टराई', 
-    nameEn: 'Shree Balaram Bhattarai',
+    name: 'श्री हिरा बहादुर भलामी', 
+    nameEn: 'Shree Hira Bahadur Bhalami',
+    sbname: '- रेनुका भलामी',
+    sbnameEn: '- Renuka Bhalami',
     role: 'बरिष्ठ सदस्य', 
     roleEn: 'Baristha Sadasya',
     img: firstImg 
@@ -65,41 +78,53 @@ export const staff = [
   { 
     name: 'श्री यदुनाथ पाण्डेय', 
     nameEn: 'Shree Yadunath Pandey',
+    sbname: '- मीरा पाण्डेय',
+    sbnameEn: '- Mira Pandey',
     role: 'बरिष्ठ सदस्य', 
     roleEn: 'Baristha Sadasya',
     img: secondImg 
   },
   { 
-    name: 'श्री खेमराज पोखरेल', 
-    nameEn: 'Shree Khemraj Pokhrel',
+    name: 'श्री खेमराज पुन', 
+    nameEn: 'Shree Khemraj Pun',
+    sbname: '- ओमी पुन',
+    sbnameEn: '- Omi Pun',
     role: 'बरिष्ठ सदस्य', 
     roleEn: 'Baristha Sadasya',
     img: thirdImg 
   },
   { 
-    name: 'श्री नेत्र प्रसाद बस्याल', 
-    nameEn: 'Shree Netra Prasad Basyal',
+    name: 'श्री नेत्र प्रसाद ज्ञवाली', 
+    nameEn: 'Shree Netra Prasad Gyawali',
+    sbname: '- मायादेवी ज्ञवाली',
+    sbnameEn: '- Mayadevi Gyawali',
     role: 'बरिष्ठ सदस्य', 
     roleEn: 'Baristha Sadasya',
     img: fourthImg 
   },
   { 
-    name: 'श्री ऋषिराम भण्डारी', 
-    nameEn: 'Shree Rishiram Bhandari',
+    name: 'श्री ऋषि बहादुर भण्डारी', 
+    nameEn: 'Shree Rishir Bahadur Bhandari',
+    sbname: '- मीना भण्डारी',
+    sbnameEn: '- Meena Bhandari',
     role: 'बरिष्ठ सदस्य', 
     roleEn: 'Baristha Sadasya',
     img: fifthImg 
   },
   { 
-    name: 'श्री लोक बहादुर खत्री', 
-    nameEn: 'Shree Lok Bahadur Khatri',
+    name: 'श्री मोतीलाल भण्डारी', 
+    nameEn: 'Shree Motilal Bhandari',
+    sbname: '- सावित्रा भण्डारी',
+    sbnameEn: '- Savitra Bhandari',
     role: 'बरिष्ठ सदस्य', 
     roleEn: 'Baristha Sadasya',
     img: sixthImg 
   },
   { 
-    name: 'श्री जीवकला थापा', 
-    nameEn: 'Shree Jivakala Thapa',
+    name: 'श्री तुल्सीराम कडेंल', 
+    nameEn: 'Shree Tulsi Ram Kadel',
+    sbname: '',
+    sbnameEn: '',
     role: 'बरिष्ठ सदस्य', 
     roleEn: 'Baristha Sadasya',
     img: seventhImg 
