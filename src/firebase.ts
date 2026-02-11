@@ -41,7 +41,12 @@ export async function requestPermissionAndToken() {
   if (permission !== 'granted') return null
   let swReg: ServiceWorkerRegistration | undefined
   try {
-    swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    // We reuse the existing registration for sw.js instead of registering firebase-messaging-sw.js
+    // This prevents having two competing service workers.
+    swReg = await navigator.serviceWorker.getRegistration('/sw.js')
+    if (!swReg) {
+      swReg = await navigator.serviceWorker.register('/sw.js')
+    }
   } catch {}
   const token = await getToken(messaging, {
     vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,

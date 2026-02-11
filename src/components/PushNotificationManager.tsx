@@ -12,6 +12,7 @@ export default function PushNotificationManager() {
 
     const registerSw = async () => {
         try {
+            // Heads up: We use sw.js which includes Firebase logic
             await navigator.serviceWorker.register('/sw.js');
             attachForegroundHandler();
             const token = await requestPermissionAndToken();
