@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { requestPermissionAndToken, attachForegroundHandler } from '../firebase'
 
 const VAPID_PUBLIC_KEY = 'BHKnV6TV1pUNOtf3yuesnZHzZegXRAMxlVJMtrSUgJKiTvPDwF17XP8pk0ZbSGWBrmYd6CQCuSZVnO-FUrA728c'
 const API_BASE = (import.meta as any).env?.VITE_API_BASE || 'https://scrcr-backend.vercel.app'
@@ -27,31 +28,15 @@ export default function PushNotificationManager() {
 
     const registerSw = async () => {
         try {
-            const registration = await navigator.serviceWorker.register('/sw.js');
-            
-            // Logic:
-            // 1. Check if we are already granted. If so, ensure subscription is active/refreshed.
-            // 2. If default (promptable), we wait for "install" signal or just ask.
-            // The user said: "after the applicatin is installed ask for notificatin"
-            
-            // Check if app is installed (standalone mode)
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true;
-
-            if (Notification.permission === 'granted') {
-                subscribeUser(registration);
-            } else if (Notification.permission === 'default' && isStandalone) {
-                // If installed but permission not yet decided, ask nicely.
-                // We can use the Notification.requestPermission() directly or show a custom UI.
-                // For simplicity and to meet the requirement, we'll request it.
-                // Note: Some browsers require a user gesture. We might need a button if this fails.
-                try {
-                    const permission = await Notification.requestPermission();
-                    if (permission === 'granted') {
-                        subscribeUser(registration);
-                    }
-                } catch (e) {
-                    console.log('Needs user gesture for notifications');
-                }
+            await navigator.serviceWorker.register('/sw.js');
+            attachForegroundHandler();
+            const token = await requestPermissionAndToken();
+            if (token) {
+              await fetch(`${API_BASE}/api/notifications/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token }),
+              });
             }
         } catch (error) {
             console.error('Service Worker registration failed:', error);
@@ -83,26 +68,7 @@ export default function PushNotificationManager() {
     };
   }, []);
 
-  const subscribeUser = async (registration: ServiceWorkerRegistration) => {
-      try {
-          const subscription = await registration.pushManager.subscribe({
-              userVisibleOnly: true,
-              applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
-          });
-
-          // Send subscription to backend
-          // We wrap it in JSON.stringify to match the backend expectation (text column storing JSON)
-          await fetch(`${API_BASE}/api/notifications/register`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ token: JSON.stringify(subscription) }),
-          });
-      } catch (e) {
-          console.error('Failed to subscribe', e);
-      }
-  }
+  const subscribeUser = async (_registration: ServiceWorkerRegistration) => {}
 
   return null;
 }
