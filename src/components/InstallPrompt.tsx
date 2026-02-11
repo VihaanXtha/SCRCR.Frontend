@@ -12,11 +12,21 @@ export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [showPrompt, setShowPrompt] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
     // Check if the app is already installed
     const isInstalled = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true
     if (isInstalled) return
+
+    // Detect iOS
+    const userAgent = window.navigator.userAgent.toLowerCase()
+    const ios = /iphone|ipad|ipod/.test(userAgent)
+    if (ios) {
+      setIsIOS(true)
+      // Show prompt after a small delay for iOS users
+      setTimeout(() => setShowPrompt(true), 2000)
+    }
 
     // Handler to capture the install prompt event
     const handler = (e: Event) => {
@@ -45,6 +55,12 @@ export default function InstallPrompt() {
 
   // Function to trigger the installation flow
   const handleInstallClick = async () => {
+    if (isIOS) {
+      // iOS doesn't support programmatic install, show instructions
+      alert(t('pwa.ios_instruction') || "To install: Tap 'Share' icon ↓ and select 'Add to Home Screen' ⊞")
+      return
+    }
+
     if (!deferredPrompt) return
 
     // Show the install prompt
@@ -112,10 +128,20 @@ export default function InstallPrompt() {
               onClick={handleInstallClick}
               className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
             >
-              <span>{t('pwa.install_btn')}</span>
+              <span>{isIOS ? (t('pwa.ios_install_btn') || 'How to Install') : t('pwa.install_btn')}</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14"></path>
-                <path d="M12 5l7 7-7 7"></path>
+                {isIOS ? (
+                  <>
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <polyline points="16 6 12 2 8 6"></polyline>
+                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                  </>
+                ) : (
+                  <>
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                  </>
+                )}
               </svg>
             </button>
 
