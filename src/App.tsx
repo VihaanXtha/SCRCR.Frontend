@@ -24,7 +24,7 @@ const Membership = lazy(() => import('./pages/Membership'))
 function App() {
   // Destructure translation utilities and language state
   const { t, lang, setLang } = useTranslation()
-  
+
   // State to manage the current route/path locally (SPA routing)
   const [route, setRoute] = useState<string>(window.location.pathname)
 
@@ -39,18 +39,18 @@ function App() {
   useEffect(() => {
     // Fire and forget fetch requests for 'Founding' and 'Lifetime' members
     // We catch errors to prevent unhandled promise rejections, but don't act on them here
-    fetchMembers('Founding').catch(() => {})
-    fetchMembers('Lifetime').catch(() => {})
+    fetchMembers('Founding').catch(() => { })
+    fetchMembers('Lifetime').catch(() => { })
   }, [])
 
   // Effect to handle browser Back/Forward buttons
   useEffect(() => {
     // Callback to update route state when history changes
     const onPopState = () => setRoute(window.location.pathname)
-    
+
     // Add event listener
     window.addEventListener('popstate', onPopState)
-    
+
     // Cleanup listener on unmount
     return () => window.removeEventListener('popstate', onPopState)
   }, [])
@@ -77,41 +77,41 @@ function App() {
         {route === '/about' && <About t={t} />}
         {route === '/programs' && <About t={t} initialTab="programs" />} {/* Legacy Redirect to About (programs tab) */}
         {route === '/health-info' && <About t={t} initialTab="health" />} {/* Legacy Redirect to About (health tab) */}
-        
+
         {route === '/members' && <Members t={t} />}
-        
+
         {/* Backward compatibility routes for specific member types */}
         {route === '/members-Founding' && <Members t={t} />}
         {route === '/members-Lifetime' && <Members t={t} />}
         {route === '/members-Senior-Citizen' && <Members t={t} />}
         {route === '/members-donation' && <Members t={t} />}
         {route === '/members-Helping' && <Members t={t} />}
-        
+
         {route === '/news' && <News t={t} />}
         {/* Removed legacy routes commented out below */}
         {/* {route === '/programs' && <Programs t={t} />} */}
         {/* {route === '/health-info' && <HealthInfo t={t} />} */}
-        
+
         {route === '/membership' && <Membership t={t} />}
         {route === '/downloads' && <About t={t} initialTab="downloads" />}
         {route === '/gallery' && <Gallery t={t} />}
         {route === '/contact' && <Contact t={t} />}
         {route === '/donate' && <Contact t={t} />} {/* Redirect /donate to Contact page (donate tab) */}
         {route === '/notices' && <News t={t} />} {/* Redirect /notices to News component */}
-        
+
         {/* Admin Dashboard Route */}
         {route === '/admin' && <Admin />}
       </Suspense>
 
       {/* Conditionally render Footer if not on Admin page */}
       {route !== '/admin' && <Footer t={t} />}
-      
+
       {/* Utility component to scroll to top on navigation */}
       <ScrollToTop />
-      
+
       {/* PWA Install Prompt - Appears when the app is installable */}
       <InstallPrompt />
-      
+
       {/* Push Notification Manager - Handles subscriptions */}
       <PushNotificationManager />
     </div>
