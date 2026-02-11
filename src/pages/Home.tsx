@@ -388,7 +388,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
             <div className="relative group" onMouseEnter={onMouseEnterActivities} onMouseLeave={onMouseLeaveActivities}>
               <div className="carousel flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide" ref={activitiesRef}>
                 {activities.map((a, i) => (
-                  <div key={`${a.title}-${i}`} className="min-w-[85vw] md:min-w-[380px] snap-start">
+                  <div key={`${a.title}-${i}`} className="min-w-[calc(100vw-2rem)] md:min-w-[380px] snap-start">
                     <div
                       className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 h-full cursor-pointer group"
                       onClick={() => setCurrentPopup({
