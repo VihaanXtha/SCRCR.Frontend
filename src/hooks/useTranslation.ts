@@ -282,8 +282,13 @@ const dictionary: Record<string, Record<string, string>> = {
  * - setLang: Function to update the language.
  */
 export function useTranslation() {
-  // State to hold the current language. Default is 'ne' (Nepali).
-  const [lang, setLang] = useState<'en' | 'ne'>('ne');
+  const [lang, setLangState] = useState<'en' | 'ne'>(() => {
+    try {
+      const saved = localStorage.getItem('lang');
+      if (saved === 'en' || saved === 'ne') return saved as 'en' | 'ne';
+    } catch {}
+    return 'ne';
+  });
 
   /**
    * Translation Function (t)
@@ -293,6 +298,13 @@ export function useTranslation() {
    */
   const t = (k: string) => {
     return dictionary[k]?.[lang] ?? k;
+  };
+
+  const setLang = (next: 'en' | 'ne') => {
+    setLangState(next);
+    try {
+      localStorage.setItem('lang', next);
+    } catch {}
   };
 
   return { t, lang, setLang };

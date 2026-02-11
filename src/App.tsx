@@ -27,6 +27,7 @@ function App() {
 
   // State to manage the current route/path locally (SPA routing)
   const [route, setRoute] = useState<string>(window.location.pathname)
+  const [showLangPrompt, setShowLangPrompt] = useState(false)
 
   // Function to handle client-side navigation without full page reload
   const navigate = (path: string) => {
@@ -54,6 +55,20 @@ function App() {
     // Cleanup listener on unmount
     return () => window.removeEventListener('popstate', onPopState)
   }, [])
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('lang')
+      if (!saved) setShowLangPrompt(true)
+    } catch {
+      setShowLangPrompt(true)
+    }
+  }, [])
+
+  const selectLang = (l: 'en' | 'ne') => {
+    setLang(l)
+    setShowLangPrompt(false)
+  }
 
   // Navigation menu configuration
   const nav = [
@@ -110,10 +125,25 @@ function App() {
       <ScrollToTop />
 
       {/* PWA Install Prompt - Appears when the app is installable */}
-      <InstallPrompt />
+      {!showLangPrompt && <InstallPrompt />}
 
       {/* Push Notification Manager - Handles subscriptions */}
       <PushNotificationManager />
+
+      {showLangPrompt && (
+        <div className="member-modal" onClick={() => setShowLangPrompt(false)}>
+          <div className="notice-modal-content" onClick={e => e.stopPropagation()}>
+            <div className="notice-header">
+              <div className="notice-title">Select Language</div>
+              <button className="notice-close" onClick={() => setShowLangPrompt(false)}>×</button>
+            </div>
+            <div className="center" style={{ gap: 12 }}>
+              <button className="btn" onClick={() => selectLang('en')}>English</button>
+              <button className="btn" onClick={() => selectLang('ne')}>नेपाली</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

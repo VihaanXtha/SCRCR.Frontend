@@ -97,14 +97,14 @@ export default function InstallPrompt() {
             </svg>
           </div>
           <h3 className="relative z-10 text-xl font-bold text-white tracking-tight">
-            {t('pwa.install_title') || 'Install App'}
+            {t('pwa.install_title')}
           </h3>
         </div>
 
         {/* Content */}
         <div className="p-6 text-center">
           <p className="text-gray-600 mb-6 leading-relaxed">
-            {t('pwa.install_desc') || 'Get the best experience with offline access, notifications, and faster loading speeds.'}
+            {t('pwa.install_desc')}
           </p>
 
           <div className="flex flex-col gap-3">
