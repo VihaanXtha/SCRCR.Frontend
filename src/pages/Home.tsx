@@ -237,7 +237,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
 
       {/* Experience / Stats Section */}
       {/* Experience / Stats Section */}
-      <div className="w-full bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 py-24 px-4 md:px-12 relative overflow-hidden flex items-center min-h-[60vh]">
+      <div className="w-full bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 py-12 md:py-24 px-4 md:px-12 relative overflow-hidden flex items-center min-h-[auto] md:min-h-[60vh]">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-500/10 rounded-full blur-[100px]"></div>
@@ -287,7 +287,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
       {/* Leader Quotes Section: Carousel of quotes from leaders */}
       <AnimatedSection className="w-full max-w-7xl mx-auto px-4 py-12" type="zoom-in">
         <div className="py-8">
-          <div className="w-full max-w-7xl mx-auto min-h-[600px] flex flex-col justify-center">
+          <div className="w-full max-w-7xl mx-auto min-h-[auto] md:min-h-[600px] flex flex-col justify-center">
             {leaderQuotes.map((q, i) => (
               <div
                 key={`${q.name}-${i}`}
@@ -388,7 +388,7 @@ export default function Home({ t, lang, navigate }: { t: (k: string) => string; 
             <div className="relative group" onMouseEnter={onMouseEnterActivities} onMouseLeave={onMouseLeaveActivities}>
               <div className="carousel flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide" ref={activitiesRef}>
                 {activities.map((a, i) => (
-                  <div key={`${a.title}-${i}`} className="min-w-[380px] snap-start">
+                  <div key={`${a.title}-${i}`} className="min-w-[85vw] md:min-w-[380px] snap-start">
                     <div
                       className="bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 h-full cursor-pointer group"
                       onClick={() => setCurrentPopup({

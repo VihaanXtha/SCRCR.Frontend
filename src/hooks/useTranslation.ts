@@ -12,8 +12,8 @@ const dictionary: Record<string, Record<string, string>> = {
     ne: "ज्येष्ठ नागरिक मिलन केन्द्र रुपन्देही (SCRCR)",
   },
   "brand.sub": {
-    en: "Shri Ramkrishna Namdev Samaj Sansthan",
-    ne: "श्री रामकृष्ण नामदेव समाज संस्थान",
+    en: "Honoring Elders in a Civilized Society",
+    ne: "सभ्य समाजमा ज्येष्ठहरूको सम्मान",
   },
   "nav.home": { en: "Home", ne: "होम" },
   "nav.about_us": { en: "About Us", ne: "हाम्रो बारेमा" },
@@ -75,6 +75,7 @@ const dictionary: Record<string, Record<string, string>> = {
   "contact.sending": { en: "Sending...", ne: "पठाउँदै..." },
   "contact.success": { en: "Message sent successfully!", ne: "सन्देश सफलतापूर्वक पठाइयो!" },
   "contact.error": { en: "Failed to send message. Please try again.", ne: "सन्देश पठाउन असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।" },
+  "contact.location": { en: "Our Location", ne: "हमारा स्थान" },
   "donate.support": {
     en: "Support our Cause",
     ne: "आम्रो उद्देश्यलाई सहयोग गर्नुहोस्",
@@ -259,6 +260,10 @@ const dictionary: Record<string, Record<string, string>> = {
   "services.emergency.desc": { en: "24/7 emergency contact and ambulance coordination for members.", ne: "सदस्यहरूको लागि २४/७ आकस्मिक सम्पर्क र एम्बुलेन्स समन्वय।" },
   "services.emergency.contact.title": { en: "Emergency Contact", ne: "आकस्मिक सम्पर्क" },
   "services.emergency.contact.desc": { en: "For immediate assistance, please contact our emergency hotline.", ne: "तत्काल सहयोगको लागि, कृपया हाम्रो आकस्मिक हटलाइनमा सम्पर्क गर्नुहोस्।" },
+  "pwa.install_tittle" : { en: "Install App", ne: "एप्लिकेसन स्थापना गर्नुहोस्" },
+  "pwa.install_dec": { en: "Install this application on your device for a better experience.", ne: "तपाईंको उपकरणमा यो एप्लिकेसन स्थापना गर्नुहोस् राम्रो अनुभवको लागि।" },
+  "pwa.install_btn" : { en: "Install", ne: "स्थापना गर्नुहोस्" },
+  "common.close": { en: "Close", ne: "बन्द गर्नुहोस्" },
 };
 
 /**

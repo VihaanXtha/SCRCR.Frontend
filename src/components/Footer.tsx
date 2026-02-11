@@ -19,12 +19,12 @@ export default function Footer({ t }: { t: (k: string) => string }) {
           <div className="flex items-center gap-4">
             <img src={logo} alt="SCRC Logo" className="w-16 h-16 rounded-full border-2 border-white/20 shadow-lg" />
             <div className="flex flex-col">
-              <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-white">{t('band.org')}</h2>
-              <span className="text-sm text-blue-200/80 font-medium tracking-wide">{t('band.tag')}</span>
+              <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-white">{t('brand.title')}</h2>
+              <span className="text-sm text-blue-200/80 font-medium tracking-wide">{t('brand.sub')}</span>
             </div>
           </div>
           <p className="text-gray-400 leading-relaxed text-sm max-w-sm">
-            {t('band.desc') || t('band.title')}
+            {t('brand.desc') || t('brand.title')}
           </p>
 
           {/* Social Media Links */}
