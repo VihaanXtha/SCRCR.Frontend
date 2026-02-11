@@ -1,23 +1,7 @@
 import { useEffect } from 'react'
 import { requestPermissionAndToken, attachForegroundHandler } from '../firebase'
 
-const VAPID_PUBLIC_KEY = 'BHKnV6TV1pUNOtf3yuesnZHzZegXRAMxlVJMtrSUgJKiTvPDwF17XP8pk0ZbSGWBrmYd6CQCuSZVnO-FUrA728c'
 const API_BASE = (import.meta as any).env?.VITE_API_BASE || 'https://scrcr-backend.vercel.app'
-
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
-    .replace(/_/g, '/');
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
 
 export default function PushNotificationManager() {
   useEffect(() => {
@@ -67,8 +51,6 @@ export default function PushNotificationManager() {
       navigator.serviceWorker.removeEventListener('message', onMessage);
     };
   }, []);
-
-  const subscribeUser = async (_registration: ServiceWorkerRegistration) => {}
 
   return null;
 }
